@@ -3,8 +3,8 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
-//import MODEL from './penguin.gltf';
 import MODEL from './10033_Penguin_v1_iterations-2.obj';
+import MATERIAL from './10033_Penguin_v1_iterations-2.mtl'
 
 
 class Penguin extends Group {
@@ -25,10 +25,18 @@ class Penguin extends Group {
 
         this.name = 'penguin';
 
-        const loader = new OBJLoader();
-        loader.load(MODEL, (object) => {
-          this.add(object);
+        const mtlLoader = new MTLLoader();
+        mtlLoader.load(MATERIAL, (materials) => {
+          const loader = new OBJLoader();
+          loader.setMaterials(materials);
+          loader.load(MODEL, (object) => {
+            object.scale.divideScalar(30);
+            object.rotateX(-90*Math.PI/180);
+            console.log(object);
+            this.add(object);
+          });
         });
+
         // Add self to parent's update list
         //parent.addToUpdateList(this);
 
