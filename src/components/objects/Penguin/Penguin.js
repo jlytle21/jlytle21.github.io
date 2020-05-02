@@ -1,7 +1,11 @@
 import { Group } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js';
-import MODEL from './penguin.gltf';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
+//import MODEL from './penguin.gltf';
+import MODEL from './10033_Penguin_v1_iterations-2.obj';
+
 
 class Penguin extends Group {
     constructor(parent) {
@@ -17,13 +21,14 @@ class Penguin extends Group {
         //};
 
         // Load object
-        const loader = new GLTFLoader();
+        //const loader = new GLTFLoader();
 
         this.name = 'penguin';
-        loader.load(MODEL, (gltf) => {
-            this.add(gltf.scene);
-        });
 
+        const loader = new OBJLoader();
+        loader.load(MODEL, (object) => {
+          this.add(object);
+        });
         // Add self to parent's update list
         //parent.addToUpdateList(this);
 

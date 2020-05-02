@@ -20,7 +20,7 @@ class SeedScene extends Scene {
 
         // Add meshes to scene
         const land = new Land();
-        const flower = new Flower(this);
+        //const flower = new Flower(this);
         const penguin = new Penguin(this);
         const lights = new BasicLights();
         this.add(land, penguin, lights);

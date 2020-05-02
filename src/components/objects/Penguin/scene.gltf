@@ -205,18 +205,18 @@
   "buffers": [
     {
       "byteLength": 56400,
-      "uri": "/Users/jonahlytle/Library/Mobile Documents/com~apple~CloudDocs/Princeton University/Spring Courses 2020/COS 426/knockout/code/src/components/objects/Penguin/scene.bin"
+      "uri": "/Users/jonahlytle/Library/Mobile Documents/com~apple~CloudDocs/Princeton University/Spring Courses 2020/COS 426/knockout/src/components/objects/Penguin/scene.bin"
     }
   ],
   "images": [
     {
-      "uri": "/Users/jonahlytle/Library/Mobile Documents/com~apple~CloudDocs/Princeton University/Spring Courses 2020/COS 426/knockout/code/src/components/objects/Penguin/textures/lambert1_baseColor.png"
+      "uri": "/Users/jonahlytle/Library/Mobile Documents/com~apple~CloudDocs/Princeton University/Spring Courses 2020/COS 426/knockout/src/components/objects/Penguin/textures/lambert1_baseColor.png"
     },
     {
-      "uri": "/Users/jonahlytle/Library/Mobile Documents/com~apple~CloudDocs/Princeton University/Spring Courses 2020/COS 426/knockout/code/src/components/objects/Penguin/textures/lambert1_metallicRoughness.png"
+      "uri": "/Users/jonahlytle/Library/Mobile Documents/com~apple~CloudDocs/Princeton University/Spring Courses 2020/COS 426/knockout/src/components/objects/Penguin/textures/lambert1_metallicRoughness.png"
     },
     {
-      "uri": "/Users/jonahlytle/Library/Mobile Documents/com~apple~CloudDocs/Princeton University/Spring Courses 2020/COS 426/knockout/code/src/components/objects/Penguin/textures/lambert1_normal.png"
+      "uri": "/Users/jonahlytle/Library/Mobile Documents/com~apple~CloudDocs/Princeton University/Spring Courses 2020/COS 426/knockout/src/components/objects/Penguin/textures/lambert1_normal.png"
     }
   ],
   "materials": [
