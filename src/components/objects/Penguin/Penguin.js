@@ -32,7 +32,7 @@ class Penguin extends Group {
           loader.load(MODEL, (object) => {
             object.scale.divideScalar(30);
             object.rotateX(-90*Math.PI/180);
-            console.log(object);
+            //console.log(object);
             this.add(object);
           });
         });
