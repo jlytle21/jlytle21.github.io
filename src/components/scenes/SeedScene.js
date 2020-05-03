@@ -11,7 +11,7 @@ class SeedScene extends Scene {
         // Init state
         this.state = {
             gui: new Dat.GUI(), // Create GUI for scene
-            rotationSpeed: 0,
+            rotationSpeed: 0.2,
             updateList: [],
         };
 
@@ -67,7 +67,7 @@ class SeedScene extends Scene {
 
         // Call update for each object in the updateList
         for (const obj of updateList) {
-            obj.update(timeStamp);
+            obj.update(0.1, 0.1);
         }
     }
 }
