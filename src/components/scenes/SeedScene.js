@@ -20,18 +20,18 @@ class SeedScene extends Scene {
 
         let numPlayers = 2;
         for (let i = 0; i < numPlayers; i++) {
-          if (i == 1) {
-            let penguin1 = new Penguin(this, -9, -4);
-            let penguin2 = new Penguin(this, -3, -4);
-            let penguin3 = new Penguin(this, 3, -4);
-            let penguin4 = new Penguin(this, 9, -4);
+          if (i == 0) {
+            let penguin1 = new Penguin(this, -9, -9, 0);
+            let penguin2 = new Penguin(this, -3, -9, 0);
+            let penguin3 = new Penguin(this, 3, -9, 0);
+            let penguin4 = new Penguin(this, 9, -9, 0);
             this.add(penguin1, penguin2, penguin3, penguin4);
           }
-          if (i == 2) {
-            let penguin5 = new Penguin(this, -9, 4);
-            let penguin6 = new Penguin(this, -3, 4);
-            let penguin7 = new Penguin(this, 3, 4);
-            let penguin8 = new Penguin(this, 9, 4);
+          if (i == 1) {
+            let penguin5 = new Penguin(this, -9, 9, 180);
+            let penguin6 = new Penguin(this, -3, 9, 180);
+            let penguin7 = new Penguin(this, 3, 9, 180);
+            let penguin8 = new Penguin(this, 9, 9, 180);
             this.add(penguin5, penguin6, penguin7, penguin8);
           }
           else {
