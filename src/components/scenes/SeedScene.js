@@ -1,6 +1,6 @@
 import * as Dat from 'dat.gui';
-import { Scene, Color } from 'three';
-import { Flower, Ice, Penguin } from 'objects';
+import { Scene, Color, Vector3 } from 'three';
+import { Ice, Penguin } from 'objects';
 import { BasicLights } from 'lights';
 
 class SeedScene extends Scene {
@@ -20,8 +20,8 @@ class SeedScene extends Scene {
 
         // set number of players UP TO 4
         let numPlayers = 4;
-        let minimum = -30;
-        let maximum = 30;
+        let minimum = -15;
+        let maximum = 15;
         let increment = (maximum-minimum) / 5;
         for (let i = 0; i < numPlayers; i++) {
           if (i == 0) {
@@ -67,7 +67,7 @@ class SeedScene extends Scene {
 
         // Call update for each object in the updateList
         for (const obj of updateList) {
-            obj.update(0.1, 0.1);
+            obj.update(0, 0); // moves penguins 0 in x and 0 in z direction
         }
     }
 }

@@ -1,4 +1,4 @@
-import { Group } from 'three';
+import { Group, Vector3 } from 'three';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
@@ -13,7 +13,13 @@ class Penguin extends Group {
         super();
 
 
+
         this.name = 'penguin';
+        // Init state
+        this.state = {
+            gui: parent.state.gui,
+            position: new Vector3(x, 0, z),
+        };
 
         const mtlLoader = new MTLLoader();
         //mtlLoader.setResourcePath('./');
@@ -26,8 +32,11 @@ class Penguin extends Group {
             object.rotateX(-90*Math.PI/180);
             object.rotateZ(rotation*Math.PI/180);
             object.position.x = x;
+            this.position.x = x;
             object.position.z = z;
+            this.position.z = z;
             object.position.y = 1;
+            this.position.y = 1;
             this.add(object);
             parent.addToUpdateList(this);
           });
