@@ -7,7 +7,7 @@ import MODEL from './10033_Penguin_v1_iterations-2.obj';
 import MATERIAL from './10033_Penguin_v1_iterations-2.mtl';
 
 class Penguin extends Group {
-    constructor(parent, x, z) {
+    constructor(parent, x, z, rotation) {
         // Call parent Group() constructor
         super();
 
@@ -33,6 +33,7 @@ class Penguin extends Group {
           loader.load(MODEL, (object) => {
             object.scale.divideScalar(30);
             object.rotateX(-90*Math.PI/180);
+            object.rotateZ(rotation*Math.PI/180);
             object.position.x = x;
             object.position.z = z;
             console.log(object);
