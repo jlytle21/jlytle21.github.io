@@ -18,12 +18,33 @@ class SeedScene extends Scene {
         // Set background to a nice color
         this.background = new Color(0x7ec0ee);
 
-        // Add meshes to scene
-        const ice = new Ice();
-        //const flower = new Flower(this);
-        const penguin = new Penguin(this);
+        let numPlayers = 2;
+        for (let i = 0; i < numPlayers; i++) {
+          if (i == 1) {
+            let penguin1 = new Penguin(this, -9, -4);
+            let penguin2 = new Penguin(this, -3, -4);
+            let penguin3 = new Penguin(this, 3, -4);
+            let penguin4 = new Penguin(this, 9, -4);
+            this.add(penguin1, penguin2, penguin3, penguin4);
+          }
+          if (i == 2) {
+            let penguin5 = new Penguin(this, -9, 4);
+            let penguin6 = new Penguin(this, -3, 4);
+            let penguin7 = new Penguin(this, 3, 4);
+            let penguin8 = new Penguin(this, 9, 4);
+            this.add(penguin5, penguin6, penguin7, penguin8);
+          }
+          else {
+            let penguin1 = new Penguin(this, 1, 5);
+            let penguin2 = new Penguin(this, 2, 5);
+            let penguin3 = new Penguin(this, 3, 5);
+            let penguin4 = new Penguin(this, 4, 0);
+          }
+
+        }
         const lights = new BasicLights();
-        this.add(ice, penguin, lights);
+        const ice = new Ice();
+        this.add(ice, lights);
 
         // Populate GUI
         this.state.gui.add(this.state, 'rotationSpeed', -5, 5);

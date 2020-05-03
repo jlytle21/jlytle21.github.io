@@ -6,9 +6,8 @@ import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import MODEL from './10033_Penguin_v1_iterations-2.obj';
 import MATERIAL from './10033_Penguin_v1_iterations-2.mtl';
 
-
 class Penguin extends Group {
-    constructor(parent) {
+    constructor(parent, x, z) {
         // Call parent Group() constructor
         super();
 
@@ -26,13 +25,17 @@ class Penguin extends Group {
         this.name = 'penguin';
 
         const mtlLoader = new MTLLoader();
+        //mtlLoader.setResourcePath('./');
+        //console.log(mtlLoader);
         mtlLoader.load(MATERIAL, (materials) => {
           const loader = new OBJLoader();
           loader.setMaterials(materials);
           loader.load(MODEL, (object) => {
             object.scale.divideScalar(30);
             object.rotateX(-90*Math.PI/180);
-            //console.log(object);
+            object.position.x = x;
+            object.position.z = z;
+            console.log(object);
             this.add(object);
           });
         });
