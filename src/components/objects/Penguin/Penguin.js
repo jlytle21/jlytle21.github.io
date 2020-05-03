@@ -31,12 +31,12 @@ class Penguin extends Group {
           const loader = new OBJLoader();
           loader.setMaterials(materials);
           loader.load(MODEL, (object) => {
-            object.scale.divideScalar(30);
+            object.scale.divideScalar(20);
             object.rotateX(-90*Math.PI/180);
             object.rotateZ(rotation*Math.PI/180);
             object.position.x = x;
             object.position.z = z;
-            console.log(object);
+            object.position.y = 1;
             this.add(object);
           });
         });

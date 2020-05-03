@@ -20,36 +20,34 @@ class SeedScene extends Scene {
 
         // set number of players UP TO 4
         let numPlayers = 4;
+        let minimum = -30;
+        let maximum = 30;
+        let increment = (maximum-minimum) / 5;
         for (let i = 0; i < numPlayers; i++) {
           if (i == 0) {
-            let penguin1 = new Penguin(this, -9, -15, 0);
-            let penguin2 = new Penguin(this, -3, -15, 0);
-            let penguin3 = new Penguin(this, 3, -15, 0);
-            let penguin4 = new Penguin(this, 9, -15, 0);
-            this.add(penguin1, penguin2, penguin3, penguin4);
+            for (let j = 1; j <= 4; j++) {
+              let penguin = new Penguin(this, minimum+j*increment, minimum, 0);
+              this.add(penguin);
+            }
           }
           if (i == 1) {
-            let penguin5 = new Penguin(this, -9, 15, 180);
-            let penguin6 = new Penguin(this, -3, 15, 180);
-            let penguin7 = new Penguin(this, 3, 15, 180);
-            let penguin8 = new Penguin(this, 9, 15, 180);
-            this.add(penguin5, penguin6, penguin7, penguin8);
+            for (let j = 1; j <= 4; j++) {
+              let penguin = new Penguin(this, minimum+j*increment, maximum, 180)
+              this.add(penguin);
+            }
           }
           if (i == 2) {
-            let penguin9 = new Penguin(this, 15, -9, 270);
-            let penguin10 = new Penguin(this, 15, -3, 270);
-            let penguin11 = new Penguin(this, 15, 3, 270);
-            let penguin12 = new Penguin(this, 15, 9, 270);
-            this.add(penguin9, penguin10, penguin11, penguin12);
+            for (let j = 1; j <= 4; j++) {
+              let penguin = new Penguin(this, minimum, minimum+j*increment, 90)
+              this.add(penguin);
+            }
           }
           if (i == 3) {
-            let penguin13 = new Penguin(this, -15, -9, 90);
-            let penguin14 = new Penguin(this, -15, -3, 90);
-            let penguin15 = new Penguin(this, -15, 3, 90);
-            let penguin16 = new Penguin(this, -15, 9, 90);
-            this.add(penguin13, penguin14, penguin15, penguin16);
+            for (let j = 1; j <= 4; j++) {
+              let penguin = new Penguin(this, maximum, minimum+j*increment, 270)
+              this.add(penguin);
+            }
           }
-
         }
         const lights = new BasicLights();
         const ice = new Ice();
