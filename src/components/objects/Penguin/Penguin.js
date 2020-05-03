@@ -4,7 +4,7 @@ import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import MODEL from './10033_Penguin_v1_iterations-2.obj';
-import MATERIAL from './10033_Penguin_v1_iterations-2.mtl'
+import MATERIAL from './10033_Penguin_v1_iterations-2.mtl';
 
 
 class Penguin extends Group {

@@ -1,3 +1,3 @@
 export * from './Flower';
-export * from './Land';
+export * from './Ice';
 export * from './Penguin';
