@@ -5,6 +5,7 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import MODEL from './10033_Penguin_v1_iterations-2.obj';
 import MATERIAL from './10033_Penguin_v1_iterations-2.mtl';
+import IMAGE from './10033_Penguin_v1_Diffuse.jpg'
 
 class Penguin extends Group {
     constructor(parent, x, z, rotation) {
