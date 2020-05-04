@@ -21,6 +21,8 @@ class Penguin extends Group {
         this.velocity = new Vector3(0,0,0);
         // set penguinMass
         this.mass = 0;
+        // Boolean that signifies whether or not penguin is falling off ice
+        this.isFalling = false;
 
         // delete unused
         delete this.up;
@@ -50,8 +52,10 @@ class Penguin extends Group {
 
     // apply gravitational force to penguin
     applyGravity() {
-      this.updateForce(new Vector3(0, -10, 0));
+      this.updateForce(new Vector3(0, -5, 0));
     }
+
+
     // check if two penguins collide
     collide(penguin) {
       let radius = 1;
@@ -86,7 +90,11 @@ class Penguin extends Group {
     }
 
     // update the friction element of each penguin
+    // Check if penguin is falling off ice, if so no need to apply friction
     applyFriction() {
+      if (this.isFalling) {
+        return;
+      }
       let velocity = this.velocity.clone();
       velocity.normalize;
       this.netForce = velocity.negate();
@@ -101,8 +109,11 @@ class Penguin extends Group {
     updateForce(force) {
       this.netForce.add(force);
     }
-    update(x, z) {
+
+    // Updates position of penguin
+    update(x, y, z) {
       this.position.x += x;
+      this.position.y += y;
       this.position.z += z;
     }
 }
