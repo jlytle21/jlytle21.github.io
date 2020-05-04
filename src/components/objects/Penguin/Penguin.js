@@ -70,11 +70,13 @@ class Penguin extends Group {
         temp1.dot(x1_x2);
         temp1.divideScalar(x1_x2.length() * x1_x2.length());
         temp1.multiply(x1_x2);
+        temp1.multiplyScalar(this.mass);
         this.velocity.sub(temp1);
         let temp2 = v2_v1.clone();
         temp2.dot(x2_x1);
         temp2.divideScalar(x2_x1.length() * x2_x1.length());
         temp2.multiply(x2_x1);
+        temp2.multiplyScalar(penguin.mass);
         penguin.velocity.sub(temp2);
         return true;
       }
