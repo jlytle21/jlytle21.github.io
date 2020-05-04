@@ -4,7 +4,7 @@ import MODEL from './land.gltf';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 
 class Ice extends Group {
-    constructor() {
+    constructor(penguins) {
         // Call parent Group() constructor
         super();
 

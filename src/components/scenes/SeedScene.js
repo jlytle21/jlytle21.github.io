@@ -19,6 +19,7 @@ class SeedScene extends Scene {
         this.background = new Color(0x7ec0ee);
 
         // set number of players UP TO 4
+        let penguinsArray = [];
         let numPlayers = 4;
         let minimum = -15;
         let maximum = 15;
@@ -28,29 +29,33 @@ class SeedScene extends Scene {
             for (let j = 1; j <= 4; j++) {
               let penguin = new Penguin(this, minimum+j*increment, minimum, 0);
               this.add(penguin);
+              penguinsArray.push(penguin);
             }
           }
           if (i == 1) {
             for (let j = 1; j <= 4; j++) {
               let penguin = new Penguin(this, minimum+j*increment, maximum, 180)
               this.add(penguin);
+              penguinsArray.push(penguin);
             }
           }
           if (i == 2) {
             for (let j = 1; j <= 4; j++) {
               let penguin = new Penguin(this, minimum, minimum+j*increment, 90)
               this.add(penguin);
+              penguinsArray.push(penguin);
             }
           }
           if (i == 3) {
             for (let j = 1; j <= 4; j++) {
               let penguin = new Penguin(this, maximum, minimum+j*increment, 270)
               this.add(penguin);
+              penguinsArray.push(penguin);
             }
           }
         }
         const lights = new BasicLights();
-        const ice = new Ice();
+        const ice = new Ice(penguinsArray);
         this.add(ice, lights);
 
         // Populate GUI
@@ -61,13 +66,38 @@ class SeedScene extends Scene {
         this.state.updateList.push(object);
     }
 
+
+    // Check if penguin centers are within bounds of ice. If not, apply downward force on penguin. Else do nothing.
+    handlePenguinsOffIce() {
+
+    }
+
+    // Check if penguins are currently within eps of one another, calls penguin launch method to update force of
+    // colliding penguins
+    handlePenguinCollisions() {
+
+    }
+
+
+
     update(timeStamp) {
         const { rotationSpeed, updateList } = this.state;
         this.rotation.y = (rotationSpeed * timeStamp) / 10000;
 
+        // Method to check if penguins are on ice, updates forces acting on penguin to apply downward force
+        // If they are off ice, otherwise does nothing
+        // handlePenguinsOffIce()
+
+        // Method to check if penguins are within EPS of one another's cylinder
+        // If two penguins collide, calls penguin launch method in correct direction with same magnitude as when they collided
+        // handlePenguinCollisions()
+
+        // Method to update velocities of penguins
+
+
         // Call update for each object in the updateList
         for (const obj of updateList) {
-            obj.update(0, 0); // moves penguins 0 in x and 0 in z direction
+            obj.update(0, 0, 0); // moves penguins 0 in x and 0 in z direction
         }
     }
 }
