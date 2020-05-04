@@ -19,6 +19,8 @@ class Penguin extends Group {
         this.netForce = new Vector3(0,0,0);
         // set velocity
         this.velocity = new Vector3(0,0,0);
+        // set penguinMass
+        this.mass = 0;
 
         // delete unused
         delete this.up;
@@ -26,8 +28,7 @@ class Penguin extends Group {
         delete this.userData;
 
         const mtlLoader = new MTLLoader(); // load material loader
-        //mtlLoader.setResourcePath('./');
-        //console.log(mtlLoader);
+        mtlLoader.setPath('./');
         mtlLoader.load(MATERIAL, (materials) => { // load material
           const loader = new OBJLoader(); // load object loader
           loader.setMaterials(materials); // set material
@@ -56,13 +57,37 @@ class Penguin extends Group {
       let radius = 1;
       let peng1 = this.position;
       let peng2 = penguin.position;
-      if (peng1.distanceTo(peng2) + 2*radius < 1) { // update forces based on collision
-
+      let v1_v2 = new Vector3(0,0,0);
+      let v2_v1 = v1_v2.clone();
+      let x1_x2 = v1_v2.clone();
+      let x2_x1 = v1_v2.clone();
+      if (peng1.distanceTo(peng2) + 2*radius < 1) { // update velocity based on collision
+        v1_v2.subVectors(this.velocity, penguin.velocity);
+        v2_v1.subVectors(penguin.velocity, this.velocity);
+        x1_x2.subVectors(peng1, peng2);
+        x2_x1.subVectors(peng2, peng1);
+        let temp1 = v1_v2.clone();
+        temp1.dot(x1_x2);
+        temp1.divideScalar(x1_x2.length() * x1_x2.length());
+        temp1.multiply(x1_x2);
+        this.velocity.sub(temp1);
+        let temp2 = v2_v1.clone();
+        temp2.dot(x2_x1);
+        temp2.divideScalar(x2_x1.length() * x2_x1.length());
+        temp2.multiply(x2_x1);
+        penguin.velocity.sub(temp2);
         return true;
       }
       else { // do nothing if no collision
-      return false;
+        return false;
       }
+    }
+
+    // update the friction element of each penguin
+    applyFriction() {
+      let velocity = this.velocity.clone();
+      velocity.normalize;
+      this.netForce = velocity.negate();
     }
 
     // returns location of penguin
