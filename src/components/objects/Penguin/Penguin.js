@@ -23,6 +23,8 @@ class Penguin extends Group {
         this.mass = 0;
         // Boolean that signifies whether or not penguin is falling off ice
         this.isFalling = false;
+        // Initial coordinates of penguin
+        this.coordinates = new Vector3(x, 1, z);
 
         // delete unused
         delete this.up;
@@ -52,7 +54,7 @@ class Penguin extends Group {
 
     // apply gravitational force to penguin
     applyGravity() {
-      this.updateForce(new Vector3(0, -5, 0));
+      this.netForce = new Vector3(0, -10, 0);
     }
 
 
@@ -88,6 +90,13 @@ class Penguin extends Group {
         return false;
       }
     }
+
+
+    // Method to launch penguin by setting velocity vector to user input
+    launch(vector) {
+      this.velocity = vector;
+    }
+
 
     // update the friction element of each penguin
     // Check if penguin is falling off ice, if so no need to apply friction

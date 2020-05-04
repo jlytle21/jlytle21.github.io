@@ -46,6 +46,8 @@ class SeedScene extends Scene {
               let penguin = new Penguin(this, minimum, minimum+j*increment, 90)
               this.add(penguin);
               this.penguinsArray.push(penguin);
+              let initialVelocity = new Vector3(80, 0, 0);
+              penguin.launch(initialVelocity);
             }
           }
           if (i == 3) {
@@ -56,6 +58,12 @@ class SeedScene extends Scene {
             }
           }
         }
+
+        for (let p of this.penguinsArray) {
+          console.log(p.coordinates);
+        }
+
+
         const lights = new BasicLights();
         const ice = new Ice();
         this.add(ice, lights);
@@ -74,9 +82,10 @@ class SeedScene extends Scene {
     handlePenguinsOffIce() {
       let edge = 17;
       for (let p of this.penguinsArray) {
-        //console.log(p.position.x);
         // console.log(p.position.y);
-        if (Math.abs(p.location().x) > edge || Math.abs(p.location().y) > edge && !isFalling) {
+        if ((Math.abs(p.position.x) > edge || Math.abs(p.position.z) > edge) && !p.isFalling) {
+          console.log(p.coordinates);
+          //console.log(p.position.z);
           p.isFalling = true;
           p.applyGravity();
           //console.log(Math.abs(p.location().x));
@@ -122,9 +131,11 @@ class SeedScene extends Scene {
         //console.log(p.position.x);
         let acc = p.netForce.clone();
         let v = p.velocity.clone();
-        let displacement = v.multiplyScalar(deltaT).add(acc.multiplyScalar(0.5 * deltaT * deltaT));
+        //let displacement = v.multiplyScalar(deltaT).add(acc.multiplyScalar(0.5 * deltaT * deltaT));
         // displacement.x = displacement.x + 0.03
+        let displacement = v.multiplyScalar(deltaT);
         p.position.add(displacement);
+        //p.coordinates.add(displacement);
         // console.log(displacement.y);
         //p.update(displacement.x, displacement.y, displacement.z);
       }
@@ -139,8 +150,8 @@ class SeedScene extends Scene {
         this.handlePenguinsOffIce();
         this.handlePenguinCollisions();
         this.handleFriction();
-        this.updateVelocities(0.05);
-        this.updatePenguinPositions(0.05);
+        this.updateVelocities(0.01);
+        this.updatePenguinPositions(0.01);
 
 
         // Call update for each object in the updateList
