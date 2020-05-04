@@ -11,7 +11,7 @@ class SeedScene extends Scene {
         // Init state
         this.state = {
             gui: new Dat.GUI(), // Create GUI for scene
-            rotationSpeed: 0.2,
+            rotationSpeed: 0.0,
             updateList: [],
         };
 
@@ -21,6 +21,8 @@ class SeedScene extends Scene {
         // set number of players UP TO 4
         let penguinsArray = [];
         let numPlayers = 4;
+        // 17 is out of bounds
+        let penguinMass = 1;
         let minimum = -15;
         let maximum = 15;
         let increment = (maximum-minimum) / 5;
@@ -69,13 +71,49 @@ class SeedScene extends Scene {
 
     // Check if penguin centers are within bounds of ice. If not, apply downward force on penguin. Else do nothing.
     handlePenguinsOffIce() {
-
+      let edge = 17;
+      for (let p of penguinsArray) {
+        if (Math.abs(p.location().x) > edge || Math.abs(p.location().y) > edge) {
+          p.fall();
+        }
+      }
     }
 
     // Check if penguins are currently within eps of one another, calls penguin launch method to update force of
     // colliding penguins
     handlePenguinCollisions() {
+      for (let i = 0; i < penguinsArray.length - 1; i++) {
+        let currentPenguin = penguinsArray[i];
 
+        for (let j = i + 1; j < penguinsArray.length; j++) {
+          currentPenguin.intersect(penguinsArray[j]);
+        }
+      }
+    }
+
+    // Apply friction to each penguin by decreasing acceleration
+    handleFriction() {
+      for (let p of penguinsArray) {
+        p.applyFriction();
+      }
+    }
+
+    // Update velocities of each penguin based on accerlations
+    updateVelocities(deltaT) {
+      for (let p of penguinsArray) {
+        let acc = p.netForce.copy();
+        p.velocity = p.velocity.add(acc.multiplyScalar(deltaT));
+      }
+    }
+
+    // Update positions of each penguin based on displacement
+    updatePenguinPositions(deltaT) {
+      for (let p of penguinsArray) {
+        let acc = p.netForce.copy();
+        let v = p.velocity.copy();
+        let displacement = v.multiplyScalar(deltaT) + acc.multiplyScalar(0.5 * deltaT * deltaT);
+        p.updatePosition(displacement);
+      }
     }
 
 
@@ -84,15 +122,11 @@ class SeedScene extends Scene {
         const { rotationSpeed, updateList } = this.state;
         this.rotation.y = (rotationSpeed * timeStamp) / 10000;
 
-        // Method to check if penguins are on ice, updates forces acting on penguin to apply downward force
-        // If they are off ice, otherwise does nothing
-        // handlePenguinsOffIce()
-
-        // Method to check if penguins are within EPS of one another's cylinder
-        // If two penguins collide, calls penguin launch method in correct direction with same magnitude as when they collided
-        // handlePenguinCollisions()
-
-        // Method to update velocities of penguins
+        // handlePenguinsOffIce();
+        // handlePenguinCollisions();
+        // handleFriction();
+        // updateVelocities();
+        // updatePenguinPositions();
 
 
         // Call update for each object in the updateList
