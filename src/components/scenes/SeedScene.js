@@ -35,35 +35,35 @@ class SeedScene extends Scene {
     let minimum = -30;
     let maximum = 30;
     let increment = (maximum-minimum) / 5;
-    for (let i = 0; i < numPlayers; i++) {
+    for (let i = 0; i < this.numPlayers; i++) {
       if (i == 0) {
         for (let j = 1; j <= 4; j++) {
-          let penguin = new Penguin(this, minimum+j*increment, minimum, 0);
-          this.add(penguin);
-          this.penguinsArray.push(penguin);
+          this.penguin = new Penguin(this, minimum+j*increment, minimum, 0);
+          this.add(this.penguin);
+          this.penguinsArray.push(this.penguin);
         }
       }
       if (i == 1) {
         for (let j = 1; j <= 4; j++) {
-          let penguin = new Penguin(this, minimum+j*increment, maximum, 180)
-          this.add(penguin);
-          this.penguinsArray.push(penguin);
+          this.penguin = new Penguin(this, minimum+j*increment, maximum, 180)
+          this.add(this.penguin);
+          this.penguinsArray.push(this.penguin);
         }
       }
       if (i == 2) {
         for (let j = 1; j <= 4; j++) {
-          let penguin = new Penguin(this, minimum, minimum+j*increment, 90)
-          this.add(penguin);
-          this.penguinsArray.push(penguin);
+          this.penguin = new Penguin(this, minimum, minimum+j*increment, 90)
+          this.add(this.penguin);
+          this.penguinsArray.push(this.penguin);
           let initialVelocity = new Vector3(40, 0, 40);
-          penguin.launch(initialVelocity);
+          this.penguin.launch(initialVelocity);
         }
       }
       if (i == 3) {
         for (let j = 1; j <= 4; j++) {
-          let penguin = new Penguin(this, maximum, minimum+j*increment, 270)
-          this.add(penguin);
-          this.penguinsArray.push(penguin);
+          this.penguin = new Penguin(this, maximum, minimum+j*increment, 270)
+          this.add(this.penguin);
+          this.penguinsArray.push(this.penguin);
         }
       }
     }

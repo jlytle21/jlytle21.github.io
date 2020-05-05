@@ -30,12 +30,6 @@ class Penguin extends Group {
         // Initial coordinates of penguin
         this.coordinates = new Vector3(x, 1, z);
 
-        // delete unused
-        delete this.up;
-        delete this.rotation;
-        delete this.userData;
-
-
         const loader = new OBJLoader(); // load object loader
         loader.load(MODEL, (object) => {
           let texture = new TextureLoader().load(IMAGE1);
@@ -51,15 +45,10 @@ class Penguin extends Group {
           object.rotateX(-90*Math.PI/180); // rotate so right way up
           object.rotateZ(rotation*Math.PI/180); // rotate so right way up
           object.position.x = x; // set position variables
-          //this.position.x = x;
           object.position.z = z;
-          //this.position.z = z;
           object.position.y = 1;
-          //this.position.y = 1;
           this.add(object); // add object to this
         });
-        console.log(this);
-        debugger;
       }
 
     // apply gravitational force to penguin
