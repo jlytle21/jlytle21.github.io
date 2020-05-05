@@ -3,6 +3,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
+import { TextureLoader } from 'three/src/loaders/TextureLoader.js';
 import MODEL from './10033_Penguin_v1_iterations-2.obj';
 import MATERIAL from './10033_Penguin_v1_iterations-2.mtl';
 import IMAGE from './10033_Penguin_v1_Diffuse.jpg'
@@ -32,22 +33,27 @@ class Penguin extends Group {
         delete this.userData;
 
         const mtlLoader = new MTLLoader(); // load material loader
-        mtlLoader.setPath('./');
         mtlLoader.load(MATERIAL, (materials) => { // load material
+          materials.preload();
           const loader = new OBJLoader(); // load object loader
           loader.setMaterials(materials); // set material
           loader.load(MODEL, (object) => {
+            let texture = new TextureLoader().load(IMAGE);
+            object.traverse((child) => {
+              if (child.type == "Mesh") {
+                child.material.map = texture;
+              }
+            });
             object.scale.divideScalar(20); // scale object
             object.rotateX(-90*Math.PI/180); // rotate so right way up
             object.rotateZ(rotation*Math.PI/180); // rotate so right way up
             object.position.x = x; // set position variables
-            this.position.x = x;
+            //this.position.x = x;
             object.position.z = z;
-            this.position.z = z;
+            //this.position.z = z;
             object.position.y = 1;
-            this.position.y = 1;
+            //this.position.y = 1;
             this.add(object); // add object to this
-            parent.addToUpdateList(this); // add to update list
           });
         });
     }
@@ -103,6 +109,9 @@ class Penguin extends Group {
     applyFriction() {
       if (this.isFalling) {
         return;
+      }
+      if (this.velocity.length() < 0.25) {
+        this.netForce = new Vector3(0,0,0);
       }
       let velocity = this.velocity.clone();
       velocity.normalize;
