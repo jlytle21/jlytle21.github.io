@@ -76,27 +76,17 @@ class Penguin extends Group {
         x1_x2.subVectors(x1, x2);
         x2_x1.subVectors(x2, x1);
 
+        let temp1 = v1_v2.dot(x1_x2) / (x1_x2.length() * x1_x2.length());
+        let temp2 = x1_x2.clone();
+        temp2.multiplyScalar(temp1);
+        temp2.multiplyScalar((2*penguin.mass) / (penguin.mass + this.mass));
+        this.velocity.sub(temp2);
 
-        let temp1 = v1_v2.clone();
-        temp1.dot(x1_x2);
-        temp1.divideScalar(x1_x2.length() * x1_x2.length());
-        temp1.multiply(x1_x2);
-        temp1.multiplyScalar((2*penguin.mass) / (penguin.mass + this.mass));
-        console.log(this.velocity);
-        console.log(temp1);
-        this.velocity.sub(temp1);
-        console.log(this.velocity);
-
-        let temp2 = v2_v1.clone();
-        temp2.dot(x2_x1);
-        temp2.divideScalar(x2_x1.length() * x2_x1.length());
-        temp2.multiply(x2_x1);
-        temp2.multiplyScalar((2*this.mass) / (penguin.mass + this.mass));
-        console.log(penguin.velocity);
-        console.log(temp2);
-        penguin.velocity.sub(temp2);
-        console.log(penguin.velocity);
-        debugger;
+        let temp3 = v2_v1.dot(x2_x1) / (x2_x1.length() * x2_x1.length());
+        let temp4 = x2_x1.clone();
+        temp4.multiplyScalar(temp3);
+        temp4.multiplyScalar((2*penguin.mass) / (penguin.mass + this.mass));
+        penguin.velocity.sub(temp4);
 
         return true;
       }
