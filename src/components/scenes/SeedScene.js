@@ -28,8 +28,10 @@ class SeedScene extends Scene {
     // Round number
     this.round = 1;
 
+    // Number of players
+    this.numPlayers = 4;
+
     // set number of players UP TO 4
-    let numPlayers = 4;
     let minimum = -30;
     let maximum = 30;
     let increment = (maximum-minimum) / 5;
@@ -156,7 +158,13 @@ class SeedScene extends Scene {
     this.iceScale = 1.0 - (0.15 * (this.round - 1));
     this.ice.scene.scale.multiplyScalar(this.iceScale);
 
-    for
+    // Also have to move penguins with ice
+    for (let p of this.penguinsArray) {
+      let oldCoords = p.coordinates.clone();
+      p.coordinates.multiplyScalar(this.iceScale);
+      let difference = p.coordinates.clone().sub(oldCoords);
+      p.position.add(difference);
+    }
 
 
 
