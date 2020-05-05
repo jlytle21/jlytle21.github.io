@@ -21,6 +21,13 @@ class SeedScene extends Scene {
     // Array of penguins in scene
     this.penguinsArray = [];
 
+    // Scale of size of ice sheet
+    // Is initially 1 and then decreases each round
+    this.iceScale = 1.0;
+
+    // Round number
+    this.round = 1;
+
     // set number of players UP TO 4
     let numPlayers = 4;
     let minimum = -30;
@@ -65,8 +72,8 @@ class SeedScene extends Scene {
 
 
     const lights = new BasicLights();
-    const ice = new Ice();
-    this.add(ice, lights);
+    this.ice = new Ice();
+    this.add(this.ice, lights);
 
     // Populate GUI
     this.state.gui.add(this.state, 'rotationSpeed', -5, 5);
@@ -141,6 +148,23 @@ class SeedScene extends Scene {
       // console.log(displacement.y);
       //p.update(displacement.x, displacement.y, displacement.z);
     }
+  }
+
+  // Function that performs a single round of the game
+  performRound() {
+    // Rescales ice
+    this.iceScale = 1.0 - (0.15 * (this.round - 1));
+    this.ice.scene.scale.multiplyScalar(this.iceScale);
+
+    for
+
+
+
+
+
+
+    // Sets round var to next round at end of round
+    this.round = this.round + 1;
   }
 
 
