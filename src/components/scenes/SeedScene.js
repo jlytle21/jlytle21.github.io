@@ -23,8 +23,8 @@ class SeedScene extends Scene {
 
         // set number of players UP TO 4
         let numPlayers = 4;
-        let minimum = -15;
-        let maximum = 15;
+        let minimum = -30;
+        let maximum = 30;
         let increment = (maximum-minimum) / 5;
         for (let i = 0; i < numPlayers; i++) {
           if (i == 0) {
@@ -80,7 +80,7 @@ class SeedScene extends Scene {
 
     // Check if penguin centers are within bounds of ice. If not, apply downward force on penguin. Else do nothing.
     handlePenguinsOffIce() {
-      let edge = 17;
+      let edge = 32;
       for (let p of this.penguinsArray) {
         // console.log(p.position.y);
         console.log(p.coordinates.x);
