@@ -154,6 +154,9 @@ class SeedScene extends Scene {
 
   // Function that performs a single round of the game
   performRound() {
+    // Queue for launching penguins
+    let launchQueue = [];
+
     // Rescales ice
     this.iceScale = 1.0 - (0.15 * (this.round - 1));
     this.ice.scene.scale.multiplyScalar(this.iceScale);
@@ -166,10 +169,23 @@ class SeedScene extends Scene {
       p.position.add(difference);
     }
 
+    // allow each player to launch four penguins
+    for (let i = 0; i < this.numPlayers; i++) {
 
+      // Pop up message informing user i+1 that it is their turn to launch penguins
 
+      for (let j = i * 4; j < 4 + i * 4; j++) {
+        // Eventually get input from user here through key listeners to get magnitude and direction for
+        // launch vector
+        let launchVector = new Vector3();
+        launchqueue.push(launchVector);
+      }
+    }
 
-
+    // Launch all penguins at the same time
+    for (let i = 0; i < this.penguinsArray.length; i++) {
+      this.penguinsArray[i].launch(launchQueue[i]);
+    }
 
     // Sets round var to next round at end of round
     this.round = this.round + 1;
