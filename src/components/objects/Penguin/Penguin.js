@@ -60,12 +60,12 @@ class Penguin extends Group {
     // check if two penguins collide
     collide(penguin) {
       let radius = 1;
-      let x1 = this.coordinates;
-      let x2 = penguin.coordinates;
+      let x1 = this.coordinates.clone();
+      let x2 = penguin.coordinates.clone();
       if (x1.distanceTo(x2) < 2*radius) { // update velocity based on collision
         console.log("collision");
-        let v1 = this.velocity;
-        let v2 = penguin.velocity;
+        let v1 = this.velocity.clone();
+        let v2 = penguin.velocity.clone();
         let v1_v2 = new Vector3(0,0,0);
         let v2_v1 = v1_v2.clone();
         let x1_x2 = v1_v2.clone();
@@ -83,6 +83,7 @@ class Penguin extends Group {
         temp1.multiply(x1_x2);
         temp1.multiplyScalar((2*penguin.mass) / (penguin.mass + this.mass));
         console.log(this.velocity);
+        console.log(temp1);
         this.velocity.sub(temp1);
         console.log(this.velocity);
 
@@ -92,9 +93,10 @@ class Penguin extends Group {
         temp2.multiply(x2_x1);
         temp2.multiplyScalar((2*this.mass) / (penguin.mass + this.mass));
         console.log(penguin.velocity);
+        console.log(temp2);
         penguin.velocity.sub(temp2);
         console.log(penguin.velocity);
-        //debugger;
+        debugger;
 
         return true;
       }
