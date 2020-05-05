@@ -46,7 +46,7 @@ class SeedScene extends Scene {
           let penguin = new Penguin(this, minimum, minimum+j*increment, 90)
           this.add(penguin);
           this.penguinsArray.push(penguin);
-          let initialVelocity = new Vector3(40, 0, 0);
+          let initialVelocity = new Vector3(40, 0, 40);
           penguin.launch(initialVelocity);
         }
       }
@@ -59,9 +59,9 @@ class SeedScene extends Scene {
       }
     }
 
-    for (let p of this.penguinsArray) {
-      console.log(p.coordinates);
-    }
+    //for (let p of this.penguinsArray) {
+      //console.log(p.coordinates);
+    //}
 
 
     const lights = new BasicLights();
@@ -80,13 +80,14 @@ class SeedScene extends Scene {
 
   // Check if penguin centers are within bounds of ice. If not, apply downward force on penguin. Else do nothing.
   handlePenguinsOffIce() {
-    let edge = 32;
+    let edge = 34;
     for (let p of this.penguinsArray) {
       // console.log(p.position.y);
       //console.log(p.coordinates.x);
       if ((Math.abs(p.coordinates.x) > edge || Math.abs(p.coordinates.z) > edge) && !p.isFalling) {
         //console.log(p.position.x);
         //console.log(p.position.z);
+        console.log(p);
         p.isFalling = true;
         p.applyGravity();
         //console.log(Math.abs(p.location().x));

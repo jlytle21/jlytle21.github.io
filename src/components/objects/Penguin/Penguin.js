@@ -21,7 +21,7 @@ class Penguin extends Group {
         // set velocity
         this.velocity = new Vector3(0,0,0);
         // set penguinMass
-        this.mass = 0;
+        this.mass = 1;
         // Boolean that signifies whether or not penguin is falling off ice
         this.isFalling = false;
         // Initial coordinates of penguin
@@ -60,20 +60,22 @@ class Penguin extends Group {
 
     // apply gravitational force to penguin
     applyGravity() {
-      this.netForce = new Vector3(0, -10, 0);
+      this.netForce = new Vector3(0, -60, 0);
     }
 
 
     // check if two penguins collide
     collide(penguin) {
       let radius = 1;
-      let peng1 = this.position;
-      let peng2 = penguin.position;
+      let peng1 = this.coordinates;
+      let peng2 = penguin.coordinates;
       let v1_v2 = new Vector3(0,0,0);
       let v2_v1 = v1_v2.clone();
       let x1_x2 = v1_v2.clone();
       let x2_x1 = v1_v2.clone();
-      if (peng1.distanceTo(peng2) + 2*radius < 1) { // update velocity based on collision
+      if (peng1.distanceTo(peng2) < 2*radius) { // update velocity based on collision
+        console.log("collision");
+
         v1_v2.subVectors(this.velocity, penguin.velocity);
         v2_v1.subVectors(penguin.velocity, this.velocity);
         x1_x2.subVectors(peng1, peng2);
@@ -83,6 +85,10 @@ class Penguin extends Group {
         temp1.divideScalar(x1_x2.length() * x1_x2.length());
         temp1.multiply(x1_x2);
         temp1.multiplyScalar(this.mass);
+        
+
+       
+
         this.velocity.sub(temp1);
         let temp2 = v2_v1.clone();
         temp2.dot(x2_x1);
@@ -90,6 +96,8 @@ class Penguin extends Group {
         temp2.multiply(x2_x1);
         temp2.multiplyScalar(penguin.mass);
         penguin.velocity.sub(temp2);
+
+        
         return true;
       }
       else { // do nothing if no collision
