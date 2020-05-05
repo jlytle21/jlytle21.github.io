@@ -46,7 +46,7 @@ class SeedScene extends Scene {
               let penguin = new Penguin(this, minimum, minimum+j*increment, 90)
               this.add(penguin);
               this.penguinsArray.push(penguin);
-              let initialVelocity = new Vector3(80, 0, 0);
+              let initialVelocity = new Vector3(40, 0, 0);
               penguin.launch(initialVelocity);
             }
           }
@@ -83,8 +83,9 @@ class SeedScene extends Scene {
       let edge = 17;
       for (let p of this.penguinsArray) {
         // console.log(p.position.y);
-        if ((Math.abs(p.position.x) > edge || Math.abs(p.position.z) > edge) && !p.isFalling) {
-          console.log(p.coordinates);
+        console.log(p.coordinates.x);
+        if ((Math.abs(p.coordinates.x) > edge || Math.abs(p.coordinates.z) > edge) && !p.isFalling) {
+          console.log(p.position.x);
           //console.log(p.position.z);
           p.isFalling = true;
           p.applyGravity();
@@ -120,7 +121,7 @@ class SeedScene extends Scene {
         //console.log(p);
         //console.log(p.position.x);
         let acc = p.netForce.clone();
-        p.velocity = p.velocity.add(acc.multiplyScalar(deltaT));
+        p.velocity.add(acc.multiplyScalar(deltaT));
       }
     }
 
@@ -133,9 +134,9 @@ class SeedScene extends Scene {
         let v = p.velocity.clone();
         //let displacement = v.multiplyScalar(deltaT).add(acc.multiplyScalar(0.5 * deltaT * deltaT));
         // displacement.x = displacement.x + 0.03
-        let displacement = v.multiplyScalar(deltaT);
-        p.position.add(displacement);
-        //p.coordinates.add(displacement);
+        v.multiplyScalar(deltaT);
+        p.position.add(v);
+        p.coordinates.add(v);
         // console.log(displacement.y);
         //p.update(displacement.x, displacement.y, displacement.z);
       }
