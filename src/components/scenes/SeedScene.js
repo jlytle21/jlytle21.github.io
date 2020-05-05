@@ -1,6 +1,6 @@
 import * as Dat from 'dat.gui';
 import { Scene, Color, Vector3 } from 'three';
-import { Ice, Penguin } from 'objects';
+import { Ice, Penguin, Water } from 'objects';
 import { BasicLights } from 'lights';
 
 class SeedScene extends Scene {
@@ -16,7 +16,12 @@ class SeedScene extends Scene {
     };
 
     // Set background to a nice color
-    this.background = new Color(0x7ec0ee);
+    this.background = new Color('#87CEEB');
+
+    const lights = new BasicLights();
+    this.ice = new Ice();
+    this.water = new Water();
+    this.add(this.ice, this.water, lights);
 
     // Array of penguins in scene
     this.penguinsArray = [];
@@ -73,9 +78,7 @@ class SeedScene extends Scene {
     //}
 
 
-    const lights = new BasicLights();
-    this.ice = new Ice();
-    this.add(this.ice, lights);
+
 
     // Populate GUI
     this.state.gui.add(this.state, 'rotationSpeed', -5, 5);

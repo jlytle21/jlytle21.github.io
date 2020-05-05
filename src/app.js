@@ -6,7 +6,7 @@
  * handles window resizes.
  *
  */
-import { WebGLRenderer, PerspectiveCamera, Vector3 } from 'three';
+import { WebGLRenderer, PerspectiveCamera, Vector3, Math } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { SeedScene } from 'scenes';
 
@@ -33,6 +33,7 @@ controls.enableDamping = true;
 controls.enablePan = false;
 controls.minDistance = 4;
 controls.maxDistance = 160;
+controls.maxPolarAngle = 3.141692654/2; // don't let go below ground
 controls.update();
 
 // Render loop

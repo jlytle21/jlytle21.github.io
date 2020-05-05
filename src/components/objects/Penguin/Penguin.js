@@ -1,6 +1,4 @@
 import { Group, Vector3, Vector2 } from 'three';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { TWEEN } from 'three/examples/jsm/libs/tween.module.min.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import { TextureLoader } from 'three/src/loaders/TextureLoader.js';
