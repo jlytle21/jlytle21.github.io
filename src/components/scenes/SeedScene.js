@@ -46,6 +46,8 @@ class SeedScene extends Scene {
           this.penguin = new Penguin(this, minimum+j*increment, minimum, 0);
           this.add(this.penguin);
           this.penguinsArray.push(this.penguin);
+          let initialVelocity = new Vector3(0, 0, 80);
+          this.penguin.launch(initialVelocity);
         }
       }
       if (i == 1) {
@@ -60,7 +62,7 @@ class SeedScene extends Scene {
           this.penguin = new Penguin(this, minimum, minimum+j*increment, 90)
           this.add(this.penguin);
           this.penguinsArray.push(this.penguin);
-          let initialVelocity = new Vector3(40, 0, 40);
+          let initialVelocity = new Vector3(80, 0, 40);
           this.penguin.launch(initialVelocity);
         }
       }
@@ -69,6 +71,8 @@ class SeedScene extends Scene {
           this.penguin = new Penguin(this, maximum, minimum+j*increment, 270)
           this.add(this.penguin);
           this.penguinsArray.push(this.penguin);
+          let initialVelocity = new Vector3(-80, 0, 40);
+          this.penguin.launch(initialVelocity);
         }
       }
     }
