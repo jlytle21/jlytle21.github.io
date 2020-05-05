@@ -76,7 +76,6 @@ class SeedScene extends Scene {
         }
       }
     }
-
     //for (let p of this.penguinsArray) {
       //console.log(p.coordinates);
     //}
@@ -201,7 +200,7 @@ class SeedScene extends Scene {
 
 
   update(timeStamp) {
-    //console.log(timeStamp);
+    if (timeStamp < 10000) return; // wait for everything to load
     const { rotationSpeed, updateList } = this.state;
     this.rotation.y = (rotationSpeed * timeStamp) / 10000;
 
