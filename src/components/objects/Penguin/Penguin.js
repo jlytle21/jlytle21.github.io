@@ -58,7 +58,8 @@ class Penguin extends Group {
           //this.position.y = 1;
           this.add(object); // add object to this
         });
-
+        console.log(this);
+        debugger;
       }
 
     // apply gravitational force to penguin
@@ -70,36 +71,41 @@ class Penguin extends Group {
     // check if two penguins collide
     collide(penguin) {
       let radius = 1;
-      let peng1 = this.coordinates;
-      let peng2 = penguin.coordinates;
-      let v1_v2 = new Vector3(0,0,0);
-      let v2_v1 = v1_v2.clone();
-      let x1_x2 = v1_v2.clone();
-      let x2_x1 = v1_v2.clone();
-      if (peng1.distanceTo(peng2) < 2*radius) { // update velocity based on collision
+      let x1 = this.coordinates;
+      let x2 = penguin.coordinates;
+      if (x1.distanceTo(x2) < 2*radius) { // update velocity based on collision
         console.log("collision");
+        let v1 = this.velocity;
+        let v2 = penguin.velocity;
+        let v1_v2 = new Vector3(0,0,0);
+        let v2_v1 = v1_v2.clone();
+        let x1_x2 = v1_v2.clone();
+        let x2_x1 = v1_v2.clone();
 
-        v1_v2.subVectors(this.velocity, penguin.velocity);
-        v2_v1.subVectors(penguin.velocity, this.velocity);
-        x1_x2.subVectors(peng1, peng2);
-        x2_x1.subVectors(peng2, peng1);
+        v1_v2.subVectors(v1, v2);
+        v2_v1.subVectors(v2, v1);
+        x1_x2.subVectors(x1, x2);
+        x2_x1.subVectors(x2, x1);
+
+
         let temp1 = v1_v2.clone();
         temp1.dot(x1_x2);
         temp1.divideScalar(x1_x2.length() * x1_x2.length());
         temp1.multiply(x1_x2);
         temp1.multiplyScalar((2*penguin.mass) / (penguin.mass + this.mass));
-
-
-
-
+        console.log(this.velocity);
         this.velocity.sub(temp1);
+        console.log(this.velocity);
+
         let temp2 = v2_v1.clone();
         temp2.dot(x2_x1);
         temp2.divideScalar(x2_x1.length() * x2_x1.length());
         temp2.multiply(x2_x1);
         temp2.multiplyScalar((2*this.mass) / (penguin.mass + this.mass));
+        console.log(penguin.velocity);
         penguin.velocity.sub(temp2);
-
+        console.log(penguin.velocity);
+        //debugger;
 
         return true;
       }
