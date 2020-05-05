@@ -6,7 +6,10 @@ import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import { TextureLoader } from 'three/src/loaders/TextureLoader.js';
 import MODEL from './10033_Penguin_v1_iterations-2.obj';
 import MATERIAL from './10033_Penguin_v1_iterations-2.mtl';
-import IMAGE from './10033_Penguin_v1_Diffuse.jpg'
+import IMAGE1 from './10033_Penguin_v1_Diffuse1.jpg';
+import IMAGE2 from './10033_Penguin_v1_Diffuse2.jpg'
+import IMAGE3 from './10033_Penguin_v1_Diffuse3.jpg'
+import IMAGE4 from './10033_Penguin_v1_Diffuse4.jpg'
 
 class Penguin extends Group {
     constructor(parent, x, z, rotation) {
@@ -32,31 +35,31 @@ class Penguin extends Group {
         delete this.rotation;
         delete this.userData;
 
-        const mtlLoader = new MTLLoader(); // load material loader
-        mtlLoader.load(MATERIAL, (materials) => { // load material
-          materials.preload();
-          const loader = new OBJLoader(); // load object loader
-          loader.setMaterials(materials); // set material
-          loader.load(MODEL, (object) => {
-            let texture = new TextureLoader().load(IMAGE);
-            object.traverse((child) => {
-              if (child.type == "Mesh") {
-                child.material.map = texture;
-              }
-            });
-            object.scale.divideScalar(20); // scale object
-            object.rotateX(-90*Math.PI/180); // rotate so right way up
-            object.rotateZ(rotation*Math.PI/180); // rotate so right way up
-            object.position.x = x; // set position variables
-            //this.position.x = x;
-            object.position.z = z;
-            //this.position.z = z;
-            object.position.y = 1;
-            //this.position.y = 1;
-            this.add(object); // add object to this
+
+        const loader = new OBJLoader(); // load object loader
+        loader.load(MODEL, (object) => {
+          let texture = new TextureLoader().load(IMAGE1);
+          if (rotation == 90) texture = new TextureLoader().load(IMAGE2);
+          if (rotation == 180) texture = new TextureLoader().load(IMAGE3);
+          if (rotation == 270) texture = new TextureLoader().load(IMAGE4);
+          object.traverse((child) => {
+            if (child.type == "Mesh") {
+              child.material.map = texture;
+            }
           });
+          object.scale.divideScalar(20); // scale object
+          object.rotateX(-90*Math.PI/180); // rotate so right way up
+          object.rotateZ(rotation*Math.PI/180); // rotate so right way up
+          object.position.x = x; // set position variables
+          //this.position.x = x;
+          object.position.z = z;
+          //this.position.z = z;
+          object.position.y = 1;
+          //this.position.y = 1;
+          this.add(object); // add object to this
         });
-    }
+
+      }
 
     // apply gravitational force to penguin
     applyGravity() {
@@ -84,20 +87,20 @@ class Penguin extends Group {
         temp1.dot(x1_x2);
         temp1.divideScalar(x1_x2.length() * x1_x2.length());
         temp1.multiply(x1_x2);
-        temp1.multiplyScalar(this.mass);
-        
+        temp1.multiplyScalar((2*penguin.mass) / (penguin.mass + this.mass));
 
-       
+
+
 
         this.velocity.sub(temp1);
         let temp2 = v2_v1.clone();
         temp2.dot(x2_x1);
         temp2.divideScalar(x2_x1.length() * x2_x1.length());
         temp2.multiply(x2_x1);
-        temp2.multiplyScalar(penguin.mass);
+        temp2.multiplyScalar((2*this.mass) / (penguin.mass + this.mass));
         penguin.velocity.sub(temp2);
 
-        
+
         return true;
       }
       else { // do nothing if no collision
