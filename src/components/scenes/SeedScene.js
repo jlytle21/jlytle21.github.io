@@ -16,9 +16,8 @@ class SeedScene extends Scene {
       sentInstructions: false,
     };
 
-
     // event listeners for mouse and keys
-    window.addEventListener('click', this.onMouseClick, false );
+    window.addEventListener("click", this.onMouseClick, false );
     window.addEventListener("keydown", this.handleImpactEvents, false);
 
     //determine if selections are happening
@@ -188,6 +187,7 @@ class SeedScene extends Scene {
   }
 
   handleImpactEvents(event) {
+    console.log(event.key);
     if (event.key == "Enter") {
       this.selectionOver = true;
     }
@@ -269,9 +269,8 @@ class SeedScene extends Scene {
       let numClicks = 0;
       let positions = [];
       let currentPenguin;
-      console.log(this.selectionOver);
-      /*
-      while(this.selectionOver == false) {
+      this.selectionOver = false;
+      /*while (!selectionOver) {
         if (this.lastClick[0] != -1) {
           if (numClicks == 0) {
             for (let p of this.penguinsArray) {
@@ -297,7 +296,7 @@ class SeedScene extends Scene {
           }
         }
       }
-*/
+
 
      // Go through each penguin
       for (let j = i * 4; j < 4 + i * 4; j++) {
@@ -309,7 +308,7 @@ class SeedScene extends Scene {
           launchqueue.push(launchVector);
         }
       }
-      
+*/
     }
 
     // Launch all penguins at the same time
@@ -333,13 +332,12 @@ class SeedScene extends Scene {
     const { rotationSpeed, updateList } = this.state;
     this.rotation.y = (rotationSpeed * timeStamp) / 10000;
 
-    console.log(this.penguinsArray);
     let still = this.arePenguinsStill();
-
+    console.log("Number of penguins left: " + this.penguinsArray.length);
     if (still) {
       let gameOver = this.performRound(camera); // returns false if game is over
     }
-    console.log(this.penguinsArray);
+
     this.handlePenguinsOffIce();
     this.handlePenguinCollisions();
     this.handleFriction();
