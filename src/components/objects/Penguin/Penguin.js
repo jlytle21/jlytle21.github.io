@@ -63,7 +63,6 @@ class Penguin extends Group {
       let x1 = this.coordinates.clone();
       let x2 = penguin.coordinates.clone();
       if (x1.distanceTo(x2) < 2*radius) { // update velocity based on collision
-        console.log("collision");
         let v1 = this.velocity.clone();
         let v2 = penguin.velocity.clone();
         let v1_v2 = new Vector3(0,0,0);

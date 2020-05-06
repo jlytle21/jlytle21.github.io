@@ -117,7 +117,7 @@ class SeedScene extends Scene {
       if ((Math.abs(p.coordinates.x) > edge || Math.abs(p.coordinates.z) > edge) && !p.isFalling) {
         //console.log(p.position.x);
         //console.log(p.position.z);
-        console.log(p);
+        console.log(this.penguinsArray);
         p.isFalling = true;
         p.applyGravity();
         //console.log(Math.abs(p.location().x));
@@ -188,6 +188,19 @@ class SeedScene extends Scene {
     }
   }
 
+  // Function to check if all penguins on board have velocity of 0
+  // Also waits a second or two after penguins have fallen off edge
+  arePenguinsStill() {
+    let still = true;
+    let zero = new Vector3(0.0, 0.0, 0.0);
+    for(let p of this.penguinsArray) {
+      if (!p.velocity.equals(zero) && (p.coordinates.y > -50)) {
+        still = false;
+      }
+    }
+    return still;
+  }
+
 
 
   // Function that performs a single round of the game
@@ -196,8 +209,9 @@ class SeedScene extends Scene {
     let launchQueue = [];
     
     // Rescales ice
+    console.log(this.ice);
     this.iceScale = 1.0 - (0.15 * (this.round - 1));
-    this.ice.scene.scale.multiplyScalar(this.iceScale);
+    this.ice.scale.multiplyScalar(this.iceScale);
 
     // Also have to move penguins with ice
     for (let p of this.penguinsArray) {
@@ -277,6 +291,10 @@ class SeedScene extends Scene {
     }
     const { rotationSpeed, updateList } = this.state;
     this.rotation.y = (rotationSpeed * timeStamp) / 10000;
+
+    if (this.arePenguinsStill()) {
+      this.performRound(camera);
+    }
 
     this.handlePenguinsOffIce();
     this.handlePenguinCollisions();
