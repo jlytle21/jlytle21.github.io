@@ -6,12 +6,18 @@
  * handles window resizes.
  *
  */
-import { WebGLRenderer, PerspectiveCamera, Vector3, Math } from 'three';
+import { WebGLRenderer, PerspectiveCamera, Vector3 } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { SeedScene } from 'scenes';
+import * as Dat from 'dat.gui';
 
 // Initialize core ThreeJS components
-const scene = new SeedScene();
+let numPlayers = window.prompt('Enter Number of Players: [2,3,4]', 2);
+while (numPlayers != 2 && numPlayers != 3 && numPlayers != 4) {
+  window.alert("Enter a number between 2 and 4")
+  numPlayers = window.prompt('Enter Number of Players');
+  }
+const scene = new SeedScene(numPlayers);
 const camera = new PerspectiveCamera();
 const renderer = new WebGLRenderer({ antialias: true });
 

@@ -4,7 +4,7 @@ import { Ice, Penguin, Water } from 'objects';
 import { BasicLights } from 'lights';
 
 class SeedScene extends Scene {
-  constructor() {
+  constructor(numPlayers) {
     // Call parent Scene() constructor
     super();
 
@@ -13,6 +13,7 @@ class SeedScene extends Scene {
       gui: new Dat.GUI(), // Create GUI for scene
       rotationSpeed: 0.0,
       updateList: [],
+      sentInstructions: false,
     };
 
     // Set background to a nice color
@@ -34,7 +35,7 @@ class SeedScene extends Scene {
     this.round = 1;
 
     // Number of players
-    this.numPlayers = 4;
+    this.numPlayers = numPlayers;
 
     // set number of players UP TO 4
     let minimum = -30;
@@ -84,7 +85,7 @@ class SeedScene extends Scene {
 
 
     // Populate GUI
-    this.state.gui.add(this.state, 'rotationSpeed', -5, 5);
+    //this.state.gui.add(this.state, 'rotationSpeed', -5, 5);
   }
 
   addToUpdateList(object) {
@@ -201,6 +202,10 @@ class SeedScene extends Scene {
 
   update(timeStamp) {
     if (timeStamp < 10000) return; // wait for everything to load
+    if (this.state.sentInstructions == false) {
+      window.alert("INSTRUCTIONS: Be the last man standing!");
+      this.state.sentInstructions = true;
+    }
     const { rotationSpeed, updateList } = this.state;
     this.rotation.y = (rotationSpeed * timeStamp) / 10000;
 
