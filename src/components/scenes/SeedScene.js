@@ -1,5 +1,5 @@
 import * as Dat from 'dat.gui';
-import { Scene, Color, Vector2, Vector3, DodecahedronBufferGeometry } from 'three';
+import { Scene, Color, ArrowHelper, Vector3, DodecahedronBufferGeometry } from 'three';
 import { Ice, Penguin, Water } from 'objects';
 import { BasicLights } from 'lights';
 
@@ -17,17 +17,18 @@ class SeedScene extends Scene {
     };
 
     // event listeners for mouse and keys
-    window.addEventListener("click", this.onMouseClick, false );
-    window.addEventListener("keydown", this.handleImpactEvents, false);
+    window.addEventListener("click", (e) => this.onMouseClick(e), false );
+    window.addEventListener("keydown", (e) => this.handleImpactEvents(e), false);
 
-    //determine if selections are happening
-    this.selections = false;
+    this.lastPosition = new Vector3(0, .35, 0);
 
-    // queue for click positions (Only will store if we are currently making selections)
-    this.lastClick = new Vector2(-1, -1);
+    // TO be used to select 
+    this.selectionPlayer = 1; 
+    this.selectionPenguin = 1; 
+
 
     // to determine if all selections were made
-    this.selectionOver = false;
+    this.selectionOver = true;
 
     // Set background to a nice color
     this.background = new Color('#87CEEB');
@@ -95,10 +96,11 @@ class SeedScene extends Scene {
         }
       }
     }
-    //for (let p of this.penguinsArray) {
-      //console.log(p.coordinates);
-    //}
-
+    /*
+    for (let p of this.penguinsArray) {
+      console.log(p.coordinates);
+    }
+    */
 
 
 
@@ -178,19 +180,113 @@ class SeedScene extends Scene {
   }
 
   onMouseClick(event) {
+    /*
+    console.log("===========");
+    console.log(this.selectionOver);
+    console.log("-------------");
     if (this.selectionOver == false) {
-      let x = ( event.clientX / window.innerWidth ) * 2 - 1;
-      let y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-      this.lastClick[0] = x;
-      this.lastClick[1] = y;
-    }
+      let translatex = window.innerWidth / 2;
+      let translatey = window.innerHeight / 2; 
+      let x = event.screenX - translatex;
+      let y = event.screenY - translatey;
+      let currentClick = new Vector3(x, 0.35, y);
+      let counter = 0;
+      let currPenguin;
+      for (let p of this.penguinsArray) {
+        if (p.player == this.selectionPlayer) {
+          counter++; 
+          if (counter == this.selectionPenguin) {
+            currPenguin = p; 
+            break;
+          }
+        }
+      }
+      console.log(currPenguin.coordinates);
+      console.log(event.screenX + ", " + event.screenY);
+      console.log(currentClick);
+      let penguinPos = currPenguin.coordinates;
+      let direction = currentClick.clone().sub(penguinPos).normalize();
+      var color = 0xFF0000;
+      var arrow = new ArrowHelper(direction, penguinPos, penguinPos.distanceTo(currentClick), color);
+      console.log(arrow);
+      if (currPenguin.arrow != null) {
+        this.remove(currPenguin.arrow);
+      }
+      this.add(arrow);
+      currPenguin.arrow = arrow;
+    } */
   }
 
   handleImpactEvents(event) {
-    console.log(event.key);
-    if (event.key == "Enter") {
-      this.selectionOver = true;
+    if (event.key == "Enter" && this.selectionOver == false) {
+      let oldSelection = this.selectionPlayer;
+      this.lastPosition = new Vector3(0, .35, 0);
+      if (this.selectionPenguin + 1 <= this.remaining[this.selectionPlayer]) {
+        this.selectionPenguin = this.selectionPenguin + 1;
+        this.drawArrow(this.lastPosition);
+        return;
+      }
+      if (this.selectionPlayer + 1 > this.numPlayers) {
+        this.selectionOver = true;  
+        this.performRoundEnding();
+        return;
+      } else {
+        for (let i = this.selectionPlayer + 1; i <= this.numPlayers; i++) {
+          if (this.remaining[i] > 0) {
+            this.selectionPlayer = i; 
+            this.selectionPenguin = 1;
+            window.alert("Player " + i + "'s Turn!");
+            window.alert("Use the arrow keys to adjust the arrow");
+            window.alert("Click Enter to move to next Penguin!");
+            this.drawArrow(this.lastPosition);
+            break;
+          } 
+        }
+        if (oldSelection == this.selectionPlayer) {
+          this.selectionOver = true;  
+          this.performRoundEnding();
+        }
+      }
+    } else if (this.selectionOver == false) {
+      let difference;
+      if (event.key == "ArrowUp") {
+        difference = new Vector3(0, 0, -1);
+      } else if (event.key == "ArrowDown") {
+        difference = new Vector3(0, 0, +1);
+      } else if (event.key == "ArrowLeft") {
+        difference = new Vector3(-1, 0, 0);
+      } else if (event.key == "ArrowRight") {
+        difference = new Vector3(+1, 0, 0);
+      } else {
+        return;
+      }
+
+      let currentClick = this.lastPosition.add(difference);
+      this.drawArrow(currentClick);
     }
+  }
+
+  drawArrow(currentClick) {
+    let counter = 0;
+      let currPenguin;
+      for (let p of this.penguinsArray) {
+        if (p.player == this.selectionPlayer) {
+          counter++; 
+          if (counter == this.selectionPenguin) {
+            currPenguin = p; 
+            break;
+          }
+        }
+      }
+      let penguinPos = currPenguin.coordinates;
+      let direction = currentClick.clone().sub(penguinPos).normalize();
+      var color = 0xFF0000;
+      var arrow = new ArrowHelper(direction, penguinPos, penguinPos.distanceTo(currentClick), color);
+      if (currPenguin.arrow != null) {
+        this.remove(currPenguin.arrow);
+      }
+      this.add(arrow);
+      currPenguin.arrow = arrow;
   }
 
   // Function to check if all penguins on board have velocity of 0
@@ -231,124 +327,85 @@ class SeedScene extends Scene {
   // Function that performs a single round of the game
   performRound(camera) { // returns false if game is over
     // Check if Game is over
-    console.log(this.remaining);
-    let playersLeft = 0;
-    let player = 1;
-    for (let i = 1; i <= this.numPlayers; i++) {
-      if (this.remaining[i] > 0) {
-        playersLeft += 1;
-        player = i;
-      }
-    }
-    if (playersLeft == 1) {
-      window.alert("Player " + player + " wins!");
-      return false;
-    }
-    if (playersLeft == 0) {
-      window.alert("Game ends in a tie!");
-      return false;
-    }
-    // Queue for launching penguins
-    let launchQueue = [];
-
-    // Rescales ice
-    console.log(this.ice);
-    console.log(this.penguinsArray);
-    this.iceScale = 1.0 - (0.15 * (this.round - 1));
-    let selectedObject = this.getObjectByName(this.ice.name);
-    //this.remove(selectedObject);
-    // animate();
-    //this.remove();
-    this.remove(this.ice);
-    //this.ice = new Ice(this.iceScale);
-    //this.add(this.ice);
-    // this.ice.scale.multiplyScalar(this.iceScale);
-
-    // Also have to move penguins with ice
-    for (let p of this.penguinsArray) {
-      let oldCoords = p.coordinates.clone();
-      p.coordinates.multiplyScalar(this.iceScale);
-      let difference = p.coordinates.clone().sub(oldCoords);
-      p.position.add(difference);
-    }
-
-    // allow each player to launch four penguins
-    for (let i = 1; i <= this.numPlayers; i++) {
-      if (this.remaining[i] == 0) continue; // skip players with no penguins
-      window.alert("Player " + i + "'s Turn!"); // inform player
-      let numClicks = 0;
-      let positions = [];
-      let currentPenguin;
-      console.log(this.selectionOver);
-
-      /*  New Code I just added, still doesn't solve the issue
-      for (let j = 0; j < this.penguinsArray.length; j++) {
-        if (this.penguinsArray[j].player == i) {
-          document.onclick = inputChange;
-
-          function inputChange(e) {
-            this.lastClick=  new Vector2(e.clientX, e.clientY);
-          }
-          if (this.selectionOver == false) {
-            j--;
-          } else {
-            this.selectionOver = false;
-          }
+    //console.log(this.remaining);
+    if (this.selectionOver == true) {
+      let playersLeft = 0;
+      let player = 1;
+      for (let i = 1; i <= this.numPlayers; i++) {
+        if (this.remaining[i] > 0) {
+          playersLeft += 1;
+          player = i;
         }
+      }
+      if (playersLeft == 1) {
+        window.alert("Player " + player + " wins!");
+        return false;
+      }
+      if (playersLeft == 0) {
+        window.alert("Game ends in a tie!");
+        return false;
+      }
+
+      /*
+      // Rescales ice
+      //console.log(this.ice);
+      //console.log(this.penguinsArray);
+      this.iceScale = 1.0 - (0.15 * (this.round - 1));
+      let selectedObject = this.getObjectByName(this.ice.name);
+      //this.remove(selectedObject);
+      // animate();
+      //this.remove();
+      this.remove(this.ice);
+      //this.ice = new Ice(this.iceScale);
+      //this.add(this.ice);
+      // this.ice.scale.multiplyScalar(this.iceScale);
+
+      // Also have to move penguins with ice
+      for (let p of this.penguinsArray) {
+        let oldCoords = p.coordinates.clone();
+        p.coordinates.multiplyScalar(this.iceScale);
+        let difference = p.coordinates.clone().sub(oldCoords);
+        p.position.add(difference);
       }
       */
-
-      /* Old Code
-      while(this.selectionOver == false) {
-        if (this.lastClick[0] != -1) {
-          if (numClicks == 0) {
-            for (let p of this.penguinsArray) {
-              if (p.position.distanceTo(new THREE.Vector2(this.lastClick[0], this.lastClick[1])) < 0.1) {
-                currentPenguin = p;
-                positions.push(new THREE.Vector3(this.lastClick[0], .35, this.lastClick[1]));
-                numClicks = 1;
-                break;
-              }
-            }
-          } else {
-            positions.push(new THREE.Vector3(this.lastClick[0], .35, this.lastClick[1]));
-            numClicks = 0;
-            let direction = positions[1].clone().sub(positions[0]).normalize();
-            var arrow = new THREE.ArrowHelper(direction, positions[0], positions[1].distanceTo(positions[0]));
-            this.add(arrow);
-            if (currentPenguin.arrow != null) {
-              this.remove(currentPenguin.arrow);
-              currentPenguin.arrow = arrow;
-            } else {
-              currentPenguin.arrow = arrow;
-            }
-          }
-        }
+    
+      for (let i = 1; i <= this.numPlayers; i++) {
+        if (this.remaining[i] == 0) continue;
+        this.selectionPlayer = i;
+        window.alert("Player " + i + "'s Turn!");
+        window.alert("Use the arrow keys to adjust the arrow");
+        window.alert("Click Enter to move to next Penguin!");
+        this.drawArrow(this.lastPosition);
+        break;
       }
-*/
+      this.selectionOver = false;
+    }    
+     
+  }
 
-    }
 
-    // Go through each penguin alive and using the arrow determine their new velocity
-    /*
+  performRoundEnding() {
+      // Queue for launching penguins
+      let launchQueue = [];
+
+      // Go through each penguin alive and using the arrow determine their new velocity
+    
     for (let p of this.penguinsArray) {
       let launchVector = p.arrow.direction.clone().multiplyScalar(p.arrow.length);
       launchqueue.push(launchVector);
     }
-    */
+    
+        // Launch all penguins at the same time 
+        let counter = 0;
+        for (let p of this.penguinsArray) {
+          p.launch(launchQueue[counter]);
+          counter++;
+        }
+    
+        // Sets round var to next round at end of round
+        this.round += 1;
 
-    // Launch all penguins at the same time
-    let counter = 0;
-    for (let p of this.penguinsArray) {
-      p.launch(launchQueue[counter]);
-      counter++;
-    }
-
-    // Sets round var to next round at end of round
-    this.round += 1;
   }
-
-
 
   update(timeStamp, camera) {
     if (timeStamp < 5000) return; // wait for everything to load
@@ -361,7 +418,7 @@ class SeedScene extends Scene {
     this.rotation.y = (rotationSpeed * timeStamp) / 10000;
 
     let still = this.arePenguinsStill();
-    console.log("Number of penguins left: " + this.penguinsArray.length);
+    //console.log("Number of penguins left: " + this.penguinsArray.length);
     if (still) {
       let gameOver = this.performRound(camera); // returns false if game is over
     }

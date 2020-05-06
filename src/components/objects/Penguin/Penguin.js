@@ -35,6 +35,7 @@ class Penguin extends Group {
         this.player = 1;
 
 
+
         const loader = new OBJLoader(); // load object loader
         loader.load(MODEL, (object) => {
           let texture = new TextureLoader().load(IMAGE1);
