@@ -32,6 +32,10 @@ class SeedScene extends Scene {
     // Set background to a nice color
     this.background = new Color('#87CEEB');
 
+    // Scale of size of ice sheet
+    // Is initially 1 and then decreases each round
+    this.iceScale = 1.0;
+
     const lights = new BasicLights();
     this.ice = new Ice();
     this.water = new Water();
@@ -39,10 +43,6 @@ class SeedScene extends Scene {
 
     // Array of penguins in scene
     this.penguinsArray = [];
-
-    // Scale of size of ice sheet
-    // Is initially 1 and then decreases each round
-    this.iceScale = 1.0;
 
     // Round number
     this.round = 1;
@@ -201,6 +201,7 @@ class SeedScene extends Scene {
     let zero = new Vector3(0.0, 0.0, 0.0);
     for (let p of this.penguinsArray) {
       if (p.coordinates.y < 0) { // removes penguins from scene and array and updates remaining number of penguins
+        console.log(p.coordinates.y);
         let copy = [];
         for (let x of this.penguinsArray) {
           if (x == p) continue;
@@ -317,7 +318,7 @@ class SeedScene extends Scene {
         }
       }
 */
-   
+
     }
 
     // Go through each penguin alive and using the arrow determine their new velocity
@@ -342,7 +343,7 @@ class SeedScene extends Scene {
 
 
   update(timeStamp, camera) {
-    if (timeStamp < 10000) return; // wait for everything to load
+    if (timeStamp < 5000) return; // wait for everything to load
     if (this.state.sentInstructions == false) {
       window.alert("INSTRUCTIONS: Be the last man standing!");
       this.state.sentInstructions = true;
