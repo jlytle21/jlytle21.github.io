@@ -46,7 +46,7 @@ controls.update();
 const onAnimationFrameHandler = (timeStamp) => {
     controls.update();
     renderer.render(scene, camera);
-    scene.update && scene.update(timeStamp);
+    scene.update && scene.update(timeStamp, camera);
     window.requestAnimationFrame(onAnimationFrameHandler);
 };
 window.requestAnimationFrame(onAnimationFrameHandler);

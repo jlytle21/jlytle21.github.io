@@ -26,7 +26,7 @@ class Penguin extends Group {
         // Boolean that signifies whether or not penguin is falling off ice
         this.isFalling = false;
         // Initial coordinates of penguin
-        this.coordinates = new Vector3(x, 1, z);
+        this.coordinates = new Vector3(x, 0.35, z);
 
         const loader = new OBJLoader(); // load object loader
         loader.load(MODEL, (object) => {
@@ -44,7 +44,7 @@ class Penguin extends Group {
           object.rotateZ(rotation*Math.PI/180); // rotate so right way up
           object.position.x = x; // set position variables
           object.position.z = z;
-          object.position.y = 1;
+          object.position.y = 0.35;
           this.add(object); // add object to this
         });
       }

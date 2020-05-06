@@ -200,11 +200,12 @@ class SeedScene extends Scene {
 
 
 
-  update(timeStamp) {
+  update(timeStamp, camera) {
     if (timeStamp < 10000) return; // wait for everything to load
     if (this.state.sentInstructions == false) {
       window.alert("INSTRUCTIONS: Be the last man standing!");
       this.state.sentInstructions = true;
+      camera.position.set(0, 150, 0); // set camera position to above
     }
     const { rotationSpeed, updateList } = this.state;
     this.rotation.y = (rotationSpeed * timeStamp) / 10000;
