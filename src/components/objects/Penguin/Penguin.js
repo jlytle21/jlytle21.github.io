@@ -14,6 +14,8 @@ class Penguin extends Group {
         // Call parent Group() constructor
         super();
 
+        //used for user selecting direction
+        this.arrow = null; 
 
         // set name
         this.name = 'penguin';
