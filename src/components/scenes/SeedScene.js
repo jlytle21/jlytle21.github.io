@@ -48,8 +48,11 @@ class SeedScene extends Scene {
     // Round number
     this.round = 1;
 
-    // Number of players
+    // Number of players + number of penguins remaining per player
     this.numPlayers = numPlayers;
+    const remaining = {};
+    for (let i = 1; i <= numPlayers; i++) remaining[i] = 4;
+    this.remaining = remaining;
 
     // set number of players UP TO 4
     let minimum = -30;
@@ -195,8 +198,9 @@ class SeedScene extends Scene {
     let still = true;
     let zero = new Vector3(0.0, 0.0, 0.0);
     for (let p of this.penguinsArray) {
-      if (p.coordinates.y < -50) { // removes penguins from scene and array
+      if (p.coordinates.y < -50) { // removes penguins from scene and array and updates remaining number of penguins
         this.remove(p);
+        this.remaining[p.player] -= 1;
         let copy = [];
         for (let x of this.penguinsArray) {
           if (x == p) continue;
@@ -204,12 +208,11 @@ class SeedScene extends Scene {
         }
         this.penguinsArray = copy;
       }
-
-      if (Math.abs(p.velocity.x) > 0.0001 || Math.abs(p.velocity.z) > 0.0001) {
+      // check if velocity is effectively 0
+      if (Math.abs(p.velocity.x) > 0.001 || Math.abs(p.velocity.z) > 0.001) {
         still = false;
       }
     }
-    console.log(still);
     return still;
   }
 
@@ -306,7 +309,10 @@ class SeedScene extends Scene {
 
     console.log(this.arePenguinsStill());
     if (this.arePenguinsStill()) {
-      this.performRound(camera);
+      console.log('Penguins are still');
+      console.log(this.penguinsArray);
+      debugger;
+      //this.performRound(camera);
     }
 
     this.handlePenguinsOffIce();

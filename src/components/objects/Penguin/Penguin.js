@@ -29,13 +29,24 @@ class Penguin extends Group {
         this.isFalling = false;
         // Initial coordinates of penguin
         this.coordinates = new Vector3(x, 0.35, z);
+        // set player ID
+        this.player = 1;
 
         const loader = new OBJLoader(); // load object loader
         loader.load(MODEL, (object) => {
           let texture = new TextureLoader().load(IMAGE1);
-          if (rotation == 90) texture = new TextureLoader().load(IMAGE2);
-          if (rotation == 180) texture = new TextureLoader().load(IMAGE3);
-          if (rotation == 270) texture = new TextureLoader().load(IMAGE4);
+          if (rotation == 90) {
+            texture = new TextureLoader().load(IMAGE2);
+            this.player = 2;
+          }
+          if (rotation == 180) {
+            texture = new TextureLoader().load(IMAGE3);
+            this.player = 3;
+          }
+          if (rotation == 270) {
+            texture = new TextureLoader().load(IMAGE4);
+            this.player = 4;
+          }
           object.traverse((child) => {
             if (child.type == "Mesh") {
               child.material.map = texture;
