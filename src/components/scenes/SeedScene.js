@@ -37,7 +37,7 @@ class SeedScene extends Scene {
     this.iceScale = 1.0;
 
     const lights = new BasicLights();
-    this.ice = new Ice();
+    this.ice = new Ice(this.iceScale);
     this.water = new Water();
     this.add(this.ice, this.water, lights);
 
@@ -63,7 +63,7 @@ class SeedScene extends Scene {
           this.penguin = new Penguin(this, minimum+j*increment, minimum, 0);
           this.add(this.penguin);
           this.penguinsArray.push(this.penguin);
-          let initialVelocity = new Vector3(0, 0, 80);
+          let initialVelocity = new Vector3(0, 0, 40);
           this.penguin.launch(initialVelocity);
         }
       }
@@ -253,8 +253,16 @@ class SeedScene extends Scene {
 
     // Rescales ice
     console.log(this.ice);
+    console.log(this.penguinsArray);
     this.iceScale = 1.0 - (0.15 * (this.round - 1));
-    this.ice.scale.multiplyScalar(this.iceScale);
+    let selectedObject = this.getObjectByName(this.ice.name);
+    //this.remove(selectedObject);
+    // animate();
+    //this.remove();
+    this.remove(this.ice);
+    //this.ice = new Ice(this.iceScale);
+    //this.add(this.ice);
+    // this.ice.scale.multiplyScalar(this.iceScale);
 
     // Also have to move penguins with ice
     for (let p of this.penguinsArray) {
