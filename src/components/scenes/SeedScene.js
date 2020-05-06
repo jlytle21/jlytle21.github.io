@@ -213,6 +213,9 @@ class SeedScene extends Scene {
         still = false;
       }
     }
+    if (still) { // set velocity to zero
+      for (let p of this.penguinsArray) p.velocity = zero;
+    }
     return still;
   }
 
