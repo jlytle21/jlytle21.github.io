@@ -7,7 +7,7 @@ class SeedScene extends Scene {
   constructor(numPlayers) {
     // Call parent Scene() constructor
     super();
-    
+
     // Init state
     this.state = {
       gui: new Dat.GUI(), // Create GUI for scene
@@ -22,12 +22,12 @@ class SeedScene extends Scene {
     window.addEventListener("keydown", this.handleImpactEvents, false);
 
     //determine if selections are happening
-    this.selections = false; 
+    this.selections = false;
 
     // queue for click positions (Only will store if we are currently making selections)
     this.lastClick = [-1, -1];
 
-    // to determine if all selections were made 
+    // to determine if all selections were made
     this.selectionOver = false;
 
     // Set background to a nice color
@@ -106,7 +106,7 @@ class SeedScene extends Scene {
     this.state.updateList.push(object);
   }
 
-  
+
 
   // Check if penguin centers are within bounds of ice. If not, apply downward force on penguin. Else do nothing.
   handlePenguinsOffIce() {
@@ -117,7 +117,7 @@ class SeedScene extends Scene {
       if ((Math.abs(p.coordinates.x) > edge || Math.abs(p.coordinates.z) > edge) && !p.isFalling) {
         //console.log(p.position.x);
         //console.log(p.position.z);
-        console.log(this.penguinsArray);
+        //console.log(this.penguinsArray);
         p.isFalling = true;
         p.applyGravity();
         //console.log(Math.abs(p.location().x));
@@ -177,27 +177,39 @@ class SeedScene extends Scene {
     if (this.selectionOver == false) {
       let x = ( event.clientX / window.innerWidth ) * 2 - 1;
       let y = - ( event.clientY / window.innerHeight ) * 2 + 1;
-      this.lastClick[0] = x; 
-      this.lastClick[1] = y; 
+      this.lastClick[0] = x;
+      this.lastClick[1] = y;
     }
   }
 
   handleImpactEvents(event) {
     if (event.key == "Enter") {
-      this.selectionOver = true; 
+      this.selectionOver = true;
     }
   }
 
   // Function to check if all penguins on board have velocity of 0
   // Also waits a second or two after penguins have fallen off edge
+  // Also removes penguins off ice
   arePenguinsStill() {
     let still = true;
     let zero = new Vector3(0.0, 0.0, 0.0);
-    for(let p of this.penguinsArray) {
-      if (!p.velocity.equals(zero) && (p.coordinates.y > -50)) {
+    for (let p of this.penguinsArray) {
+      if (p.coordinates.y < -50) { // removes penguins from scene and array
+        this.remove(p);
+        let copy = [];
+        for (let x of this.penguinsArray) {
+          if (x == p) continue;
+          else copy.push(x);
+        }
+        this.penguinsArray = copy;
+      }
+
+      if (Math.abs(p.velocity.x) > 0.0001 || Math.abs(p.velocity.z) > 0.0001) {
         still = false;
       }
     }
+    console.log(still);
     return still;
   }
 
@@ -207,7 +219,7 @@ class SeedScene extends Scene {
   performRound(camera) {
     // Queue for launching penguins
     let launchQueue = [];
-    
+
     // Rescales ice
     console.log(this.ice);
     this.iceScale = 1.0 - (0.15 * (this.round - 1));
@@ -227,24 +239,24 @@ class SeedScene extends Scene {
       // Pop up message informing user i+1 that it is their turn to launch penguins
       window.alert("Player " + i + "'s Turn!");
       window.alert("Press the Enter Button when complete!");
-      let numClicks = 0; 
+      let numClicks = 0;
       let positions = [];
-      let currentPenguin; 
+      let currentPenguin;
 
       while(this.selectionOver == false) {
         if (this.lastClick[0] != -1) {
           if (numClicks == 0) {
             for (let p of this.penguinsArray) {
               if (p.position.distanceTo(new THREE.Vector2(this.lastClick[0], this.lastClick[1])) < 0.1) {
-                currentPenguin = p; 
+                currentPenguin = p;
                 positions.push(new THREE.Vector3(this.lastClick[0], .35, this.lastClick[1]));
                 numClicks = 1;
-                break; 
+                break;
               }
             }
           } else {
             positions.push(new THREE.Vector3(this.lastClick[0], .35, this.lastClick[1]));
-            numClicks = 0; 
+            numClicks = 0;
             let direction = positions[1].clone().sub(positions[0]).normalize();
             var arrow = new THREE.ArrowHelper(direction, positions[0], positions[1].distanceTo(positions[0]));
             this.add(arrow);
@@ -252,7 +264,7 @@ class SeedScene extends Scene {
               this.remove(currentPenguin.arrow);
               currentPenguin.arrow = arrow;
             } else {
-              currentPenguin.arrow = arrow; 
+              currentPenguin.arrow = arrow;
             }
           }
         }
@@ -277,7 +289,7 @@ class SeedScene extends Scene {
     }
 
     // Sets round var to next round at end of round
-    this.round = this.round + 1;
+    this.round += 1;
   }
 
 
@@ -292,6 +304,7 @@ class SeedScene extends Scene {
     const { rotationSpeed, updateList } = this.state;
     this.rotation.y = (rotationSpeed * timeStamp) / 10000;
 
+    console.log(this.arePenguinsStill());
     if (this.arePenguinsStill()) {
       this.performRound(camera);
     }
