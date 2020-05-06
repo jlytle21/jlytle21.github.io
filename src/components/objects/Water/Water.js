@@ -23,9 +23,9 @@ class Water extends Group {
               }
             });
             object.scale.multiplyScalar(1000);
-            object.position.y += 15;
-            object.position.x -= 200;
-            object.position.z -= 250;
+            object.position.y += 45;
+            object.position.x -= 400;
+            object.position.z -= 450;
             this.add(object);
         });
     }
