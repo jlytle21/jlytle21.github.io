@@ -73,6 +73,8 @@ class SeedScene extends Scene {
           this.penguin = new Penguin(this, minimum+j*increment, maximum, 180)
           this.add(this.penguin);
           this.penguinsArray.push(this.penguin);
+          let initialVelocity = new Vector3(0, 0, 0);
+          this.penguin.launch(initialVelocity)
         }
       }
       if (i == 2) {
@@ -207,22 +209,35 @@ class SeedScene extends Scene {
           else copy.push(x);
         }
         this.penguinsArray = copy;
+        return false;
       }
       // check if velocity is effectively 0
       if (Math.abs(p.velocity.x) > 0.001 || Math.abs(p.velocity.z) > 0.001) {
-        still = false;
+        return false;
       }
     }
-    if (still) { // set velocity to zero
-      for (let p of this.penguinsArray) p.velocity = zero;
-    }
-    return still;
+    // set velocity to zero
+    for (let p of this.penguinsArray) p.velocity = zero;
+    return true;
   }
 
 
 
   // Function that performs a single round of the game
   performRound(camera) {
+    // Check if Game is over
+    console.log(this.remaining);
+    let playersLeft = 0;
+    let player = 1;
+    for (let i = 1; i <= this.numPlayers; i++) {
+      if (this.remaining[i] > 0) {
+        playersLeft += 1;
+        player = i;
+      }
+    }
+    if (playersLeft == 1) window.alert("Player " + player + " wins!");
+    if (playersLeft == 0) window.alert("Game ends in a tie!");
+
     // Queue for launching penguins
     let launchQueue = [];
 
@@ -240,15 +255,14 @@ class SeedScene extends Scene {
     }
 
     // allow each player to launch four penguins
-    for (let i = 0; i < this.numPlayers; i++) {
-
-      // Pop up message informing user i+1 that it is their turn to launch penguins
-      window.alert("Player " + i + "'s Turn!");
+    for (let i = 1; i <= this.numPlayers; i++) {
+      if (this.remaining[i] == 0) continue; // skip players with no penguins
+      window.alert("Player " + i + "'s Turn!"); // inform player
       window.alert("Press the Enter Button when complete!");
       let numClicks = 0;
       let positions = [];
       let currentPenguin;
-
+      /*
       while(this.selectionOver == false) {
         if (this.lastClick[0] != -1) {
           if (numClicks == 0) {
@@ -287,6 +301,7 @@ class SeedScene extends Scene {
           launchqueue.push(launchVector);
         }
       }
+      */
     }
 
     // Launch all penguins at the same time
@@ -310,12 +325,10 @@ class SeedScene extends Scene {
     const { rotationSpeed, updateList } = this.state;
     this.rotation.y = (rotationSpeed * timeStamp) / 10000;
 
-    console.log(this.arePenguinsStill());
-    if (this.arePenguinsStill()) {
-      console.log('Penguins are still');
-      console.log(this.penguinsArray);
-      debugger;
-      //this.performRound(camera);
+    let still = this.arePenguinsStill();
+    console.log(still);
+    if (still) {
+      this.performRound(camera);
     }
 
     this.handlePenguinsOffIce();

@@ -36,12 +36,12 @@ class Penguin extends Group {
         loader.load(MODEL, (object) => {
           let texture = new TextureLoader().load(IMAGE1);
           if (rotation == 90) {
-            texture = new TextureLoader().load(IMAGE2);
-            this.player = 2;
-          }
-          if (rotation == 180) {
             texture = new TextureLoader().load(IMAGE3);
             this.player = 3;
+          }
+          if (rotation == 180) {
+            texture = new TextureLoader().load(IMAGE2);
+            this.player = 2;
           }
           if (rotation == 270) {
             texture = new TextureLoader().load(IMAGE4);
