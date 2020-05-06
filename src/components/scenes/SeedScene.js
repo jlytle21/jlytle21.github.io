@@ -1,5 +1,5 @@
 import * as Dat from 'dat.gui';
-import { Scene, Color, Vector3 } from 'three';
+import { Scene, Color, Vector2, Vector3, DodecahedronBufferGeometry } from 'three';
 import { Ice, Penguin, Water } from 'objects';
 import { BasicLights } from 'lights';
 
@@ -25,7 +25,7 @@ class SeedScene extends Scene {
     this.selections = false;
 
     // queue for click positions (Only will store if we are currently making selections)
-    this.lastClick = [-1, -1];
+    this.lastClick = new Vector2(-1, -1);
 
     // to determine if all selections were made
     this.selectionOver = false;
@@ -208,6 +208,7 @@ class SeedScene extends Scene {
         }
         this.penguinsArray = copy;
         this.remaining[p.player] -= 1;
+        p.alive = false;
         this.remove(p);
         return false;
       }
@@ -222,6 +223,7 @@ class SeedScene extends Scene {
     }
     return true;
   }
+
 
 
 
@@ -265,12 +267,29 @@ class SeedScene extends Scene {
     for (let i = 1; i <= this.numPlayers; i++) {
       if (this.remaining[i] == 0) continue; // skip players with no penguins
       window.alert("Player " + i + "'s Turn!"); // inform player
-      window.alert("Press the Enter Button when complete!");
       let numClicks = 0;
       let positions = [];
       let currentPenguin;
       console.log(this.selectionOver);
-      /*
+
+      /*  New Code I just added, still doesn't solve the issue
+      for (let j = 0; j < this.penguinsArray.length; j++) {
+        if (this.penguinsArray[j].player == i) {
+          document.onclick = inputChange;
+
+          function inputChange(e) {
+            this.lastClick=  new Vector2(e.clientX, e.clientY);
+          }
+          if (this.selectionOver == false) {
+            j--;
+          } else {
+            this.selectionOver = false;
+          }
+        }
+      }
+      */
+
+      /* Old Code
       while(this.selectionOver == false) {
         if (this.lastClick[0] != -1) {
           if (numClicks == 0) {
@@ -298,23 +317,22 @@ class SeedScene extends Scene {
         }
       }
 */
-
-     // Go through each penguin
-      for (let j = i * 4; j < 4 + i * 4; j++) {
-        if (this.penguinsArray[j].arrow != null) {
-          let launchVector = this.penguinsArray[j].arrow.direction.clone().multiplyScalar(this.penguinsArray[j].arrow.length);
-          launchqueue.push(launchVector);
-        } else {
-          let launchVector = new Vector3();
-          launchqueue.push(launchVector);
-        }
-      }
-      
+   
     }
 
+    // Go through each penguin alive and using the arrow determine their new velocity
+    /*
+    for (let p of this.penguinsArray) {
+      let launchVector = p.arrow.direction.clone().multiplyScalar(p.arrow.length);
+      launchqueue.push(launchVector);
+    }
+    */
+
     // Launch all penguins at the same time
-    for (let i = 0; i < this.penguinsArray.length; i++) {
-      this.penguinsArray[i].launch(launchQueue[i]);
+    let counter = 0;
+    for (let p of this.penguinsArray) {
+      p.launch(launchQueue[counter]);
+      counter++;
     }
 
     // Sets round var to next round at end of round

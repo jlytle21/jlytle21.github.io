@@ -17,6 +17,8 @@ class Penguin extends Group {
         //used for user selecting direction
         this.arrow = null;
 
+        // boolean that signifies if the penguin is alive or not
+        this.alive = true;
         // set name
         this.name = 'penguin';
         // set force
