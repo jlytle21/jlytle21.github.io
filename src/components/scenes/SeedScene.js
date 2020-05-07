@@ -29,6 +29,7 @@ class SeedScene extends Scene {
     this.selectionPlayer = 1;
     this.selectionPenguin = 1;
 
+    this.sendMessage = true;
 
     // to determine if all selections were made
     this.selectionOver = true;
@@ -259,11 +260,8 @@ class SeedScene extends Scene {
           if (this.remaining[i] > 0) {
             this.deleteArrow(oldSelection);
             this.selectionPlayer = i;
-            this.selectionPenguin = 1;
-            window.alert("Player " + i + "'s Turn!");
-            window.alert("Use the arrow keys to adjust the arrow");
-            window.alert("Click Enter to move to next Penguin!");
-            this.drawArrow(this.lastPosition);
+            this.selectionPenguin = 1;    
+            this.sendMessage = false;        
             break;
           }
         }
@@ -370,6 +368,57 @@ class SeedScene extends Scene {
   performRound(camera) { // returns false if game is over
     // Check if Game is over
     //console.log(this.remaining);
+    if (this.sendMessage == false) {
+      /*
+      this.element = document.createElement("DIV");
+      this.element.style.width = "100px";
+      this.element.style.height = "100px";
+      this.element.style.background = "red";
+      this.element.style.color = "white";
+      this.element.innerHTML = "Hello";
+		  this.element.innerText = "test";
+      document.body.appendChild(this.element);
+      */
+
+
+      /*
+      // Creating a div element
+      var divElement = document.createElement("Div");
+      divElement.id = "divID";
+
+      // Styling it
+      divElement.style.textAlign = "center";
+      divElement.style.fontWeight = "bold";
+      divElement.style.fontSize = "smaller";
+      divElement.style.paddingTop = "15px";
+
+      // Adding a paragraph to it
+      var paragraph = document.createElement("P");
+      var text = document.createTextNode("Another paragraph, yay! This one will be styled different from the rest since we styled the DIV we specifically created.");
+      paragraph.appendChild(text);
+      divElement.appendChild(paragraph);
+
+      // Adding a button, cause why not!
+      var button = document.createElement("Button");
+      var textForButton = document.createTextNode("Release the alert");
+      button.appendChild(textForButton);
+      button.addEventListener("click", function(){
+          alert("Hi!");
+      });
+      divElement.appendChild(button);
+
+      // Appending the div element to body
+      document.getElementsByTagName("body")[0].appendChild(divElement);
+
+*/
+      console.log(this);
+      window.alert("Player " + this.selectionPlayer + "'s Turn!");
+      window.alert("Use the arrow keys to adjust the arrow");
+      window.alert("Click Enter to move to next Penguin!");
+      this.drawArrow(this.lastPosition);
+      this.sendMessage = true;
+    }
+
     if (this.selectionOver == true) {
       let playersLeft = 0;
       let player = 1;
@@ -390,11 +439,11 @@ class SeedScene extends Scene {
 
 
       // Rescales ice
-      if (this.round <= 5) {
-        this.iceScale = 1.0 - (0.15 * (this.round));
+      if (this.round <= 7) {
+        this.iceScale = 1.0 - (0.1 * (this.round));
       }
       else {
-        this.iceScale = 0.25;
+        this.iceScale = 0.3;
       }
       //console.log(selectedObject);
       // selectedObject.shrink(this.iceScale);
@@ -406,11 +455,13 @@ class SeedScene extends Scene {
 
 
       // Also have to move penguins with ice
-      for (let p of this.penguinsArray) {
-        let oldCoords = p.coordinates.clone();
-        p.coordinates.multiplyScalar(this.iceScale);
-        let difference = p.coordinates.clone().sub(oldCoords);
-        p.position.add(difference);
+      if (this.round <= 7) {
+        for (let p of this.penguinsArray) {
+          let oldCoords = p.coordinates.clone();
+          p.coordinates.multiplyScalar(this.iceScale);
+          let difference = p.coordinates.clone().sub(oldCoords);
+          p.position.add(difference);
+        }
       }
 
 
@@ -418,10 +469,7 @@ class SeedScene extends Scene {
         if (this.remaining[i] == 0) continue;
         this.selectionPlayer = i;
         this.selectionPenguin = 1;
-        window.alert("Player " + i + "'s Turn!");
-        window.alert("Use the arrow keys to adjust the arrow");
-        window.alert("Click Enter to move to next Penguin!");
-        this.drawArrow(this.lastPosition);
+        this.sendMessage = false;
         break;
       }
       this.selectionOver = false;
