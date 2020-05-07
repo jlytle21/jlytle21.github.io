@@ -442,6 +442,9 @@ class SeedScene extends Scene {
     const { rotationSpeed, updateList } = this.state;
     this.rotation.y = (rotationSpeed * timeStamp) / 10000;
 
+    this.water.material.uniforms[ 'time' ].value += 1.0 / 60.0; // animate water
+
+
     let still = this.arePenguinsStill();
     //console.log("Number of penguins left: " + this.penguinsArray.length);
     if (still) {
