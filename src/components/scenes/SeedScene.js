@@ -1,10 +1,10 @@
 import * as Dat from 'dat.gui';
-import { Scene, Color, ArrowHelper, Vector3, DodecahedronBufferGeometry, RepeatWrapping, TextureLoader, PlaneBufferGeometry, Mesh, SphereBufferGeometry, MeshBasicMaterial } from 'three';
+import { Scene, Color, ArrowHelper, Vector3, DodecahedronBufferGeometry, RepeatWrapping, TextureLoader, PlaneBufferGeometry } from 'three';
 import { Ice, Penguin } from 'objects';
 import { Water } from 'three/examples/jsm/objects/Water.js';
-import { Sky } from 'three/examples/jsm/objects/Sky.js';
 import WaterNormals from './textures/waternormals.jpg';
 import { BasicLights } from 'lights';
+
 
 class SeedScene extends Scene {
   constructor(numPlayers) {
@@ -62,7 +62,6 @@ class SeedScene extends Scene {
     );
     this.water.rotation.x = - Math.PI / 2;
     this.water.position.y -= 10;
-
 
     this.add(this.ice, this.water, lights);
 
