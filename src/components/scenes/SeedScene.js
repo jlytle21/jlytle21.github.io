@@ -1,8 +1,9 @@
 import * as Dat from 'dat.gui';
-import { Scene, Color, ArrowHelper, Vector3, DodecahedronBufferGeometry, RepeatWrapping, TextureLoader, PlaneBufferGeometry } from 'three';
+import { Scene, Color, ArrowHelper, Vector3, DodecahedronBufferGeometry, RepeatWrapping, TextureLoader, PlaneBufferGeometry, Mesh, SphereBufferGeometry, MeshBasicMaterial } from 'three';
 import { Ice, Penguin } from 'objects';
 import { Water } from 'three/examples/jsm/objects/Water.js';
-import WaterNormals from './textures/waternormals.jpg'
+import { Sky } from 'three/examples/jsm/objects/Sky.js';
+import WaterNormals from './textures/waternormals.jpg';
 import { BasicLights } from 'lights';
 
 class SeedScene extends Scene {
@@ -39,8 +40,8 @@ class SeedScene extends Scene {
     // Is initially 1 and then decreases each round
     this.iceScale = 1.0;
 
-    const lights = new BasicLights();
-    this.ice = new Ice(this.iceScale);
+    const lights = new BasicLights(); // load lights
+    this.ice = new Ice(this.iceScale); // load ice
     // load water
     var waterGeometry = new PlaneBufferGeometry( 10000, 10000 );
     this.water = new Water(
@@ -61,6 +62,8 @@ class SeedScene extends Scene {
     );
     this.water.rotation.x = - Math.PI / 2;
     this.water.position.y -= 10;
+
+
     this.add(this.ice, this.water, lights);
 
     // Array of penguins in scene
