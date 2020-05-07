@@ -86,7 +86,7 @@ class Penguin extends Group {
       p2.addScaledVector(velocity2, 0.0001);
       let d = x1.distanceTo(x2);
       let d2 = p1.distanceTo(p2);
-      if (d < 2*radius && d > d2) { // update velocity based on collision (check if moving away from each other)
+      if (d < 2.3*radius && d > d2) { // update velocity based on collision (check if moving away from each other)
 
         let v1 = this.velocity.clone();
         let v2 = penguin.velocity.clone();
