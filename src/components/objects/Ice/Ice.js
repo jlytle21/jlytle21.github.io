@@ -13,7 +13,7 @@ class Ice extends Group {
         this.name = 'ice';
 
         loader.load(MODEL, (object) => {
-            let offset = new Vector3(0.0, -1, 0.0);
+            let offset = new Vector3(0.0, -1 * scalar, 0.0);
             object.scene.scale.multiplyScalar(20 * scalar);
             object.scene.position.add(offset);
             //console.log(object);

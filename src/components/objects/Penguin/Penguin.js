@@ -137,6 +137,7 @@ class Penguin extends Group {
       }
       let velocity = this.velocity.clone();
       velocity.normalize;
+      velocity.multiplyScalar(1.5);
       this.netForce = velocity.negate();
     }
 
