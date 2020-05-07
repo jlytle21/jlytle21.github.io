@@ -29,6 +29,7 @@ class SeedScene extends Scene {
     this.selectionPlayer = 1;
     this.selectionPenguin = 1;
 
+    this.sendMessage = true;
 
     // to determine if all selections were made
     this.selectionOver = true;
@@ -260,11 +261,8 @@ class SeedScene extends Scene {
           if (this.remaining[i] > 0) {
             this.deleteArrow(oldSelection);
             this.selectionPlayer = i;
-            this.selectionPenguin = 1;
-            window.alert("Player " + i + "'s Turn!");
-            window.alert("Use the arrow keys to adjust the arrow");
-            window.alert("Click Enter to move to next Penguin!");
-            this.drawArrow(this.lastPosition);
+            this.selectionPenguin = 1;    
+            this.sendMessage = false;        
             break;
           }
         }
@@ -371,6 +369,14 @@ class SeedScene extends Scene {
   performRound(camera) { // returns false if game is over
     // Check if Game is over
     //console.log(this.remaining);
+    if (this.sendMessage == false) {
+      window.alert("Player " + this.selectionPlayer + "'s Turn!");
+      window.alert("Use the arrow keys to adjust the arrow");
+      window.alert("Click Enter to move to next Penguin!");
+      this.drawArrow(this.lastPosition);
+      this.sendMessage = true;
+    }
+
     if (this.selectionOver == true) {
       let playersLeft = 0;
       let player = 1;
@@ -419,10 +425,7 @@ class SeedScene extends Scene {
         if (this.remaining[i] == 0) continue;
         this.selectionPlayer = i;
         this.selectionPenguin = 1;
-        window.alert("Player " + i + "'s Turn!");
-        window.alert("Use the arrow keys to adjust the arrow");
-        window.alert("Click Enter to move to next Penguin!");
-        this.drawArrow(this.lastPosition);
+        this.sendMessage = false;
         break;
       }
       this.selectionOver = false;
