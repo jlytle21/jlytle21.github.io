@@ -17,8 +17,9 @@ while (numPlayers != 2 && numPlayers != 3 && numPlayers != 4) {
   window.alert("Enter a number between 2 and 4")
   numPlayers = window.prompt('Enter Number of Players');
   }
-const scene = new SeedScene(numPlayers);
+
 const camera = new PerspectiveCamera();
+const scene = new SeedScene(numPlayers, camera);
 const renderer = new WebGLRenderer({ antialias: true });
 
 // Set up camera

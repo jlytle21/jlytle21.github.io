@@ -7,7 +7,7 @@ import { BasicLights } from 'lights';
 
 
 class SeedScene extends Scene {
-  constructor(numPlayers) {
+  constructor(numPlayers, camera) {
     // Call parent Scene() constructor
     super();
 
@@ -30,6 +30,8 @@ class SeedScene extends Scene {
     this.selectionPenguin = 1;
 
     this.sendMessage = true;
+
+    this.camera = camera; // save camera
 
     // to determine if all selections were made
     this.selectionOver = true;
@@ -242,6 +244,8 @@ class SeedScene extends Scene {
   }
 
   handleImpactEvents(event) {
+    if (event.key == "1") this.camera.position.set(0, 150, 0);
+
     if (event.key == "Enter" && this.selectionOver == false) {
       let oldSelection = this.selectionPlayer;
       this.lastPosition = new Vector3(0, .35, 0);
@@ -260,8 +264,8 @@ class SeedScene extends Scene {
           if (this.remaining[i] > 0) {
             this.deleteArrow(oldSelection);
             this.selectionPlayer = i;
-            this.selectionPenguin = 1;    
-            this.sendMessage = false;        
+            this.selectionPenguin = 1;
+            this.sendMessage = false;
             break;
           }
         }
@@ -294,7 +298,7 @@ class SeedScene extends Scene {
     for (let p of this.penguinsArray) {
       if (p.player == playerId) {
         this.remove(p.arrow);
-        p.arrow = null; 
+        p.arrow = null;
       }
     }
   }
@@ -491,7 +495,7 @@ class SeedScene extends Scene {
   update(timeStamp, camera) {
     if (timeStamp < 5000) return; // wait for everything to load
     if (this.state.sentInstructions == false) {
-      window.alert("INSTRUCTIONS: Be the last man standing!");
+      window.alert("INSTRUCTIONS: Be the last man standing!\nTIPS: Click '1' to view from above");
       this.state.sentInstructions = true;
       camera.position.set(0, 150, 0); // set camera position to above
     }
