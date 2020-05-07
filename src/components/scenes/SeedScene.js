@@ -137,7 +137,7 @@ class SeedScene extends Scene {
 
   // Check if penguin centers are within bounds of ice. If not, apply downward force on penguin. Else do nothing.
   handlePenguinsOffIce() {
-    let edge = 34;
+    let edge = 34 * this.iceScale;
     for (let p of this.penguinsArray) {
       // console.log(p.position.y);
       //console.log(p.coordinates.x);
@@ -331,7 +331,7 @@ class SeedScene extends Scene {
     let still = true;
     let zero = new Vector3(0.0, 0.0, 0.0);
     for (let p of this.penguinsArray) {
-      if (p.coordinates.y < 0) { // removes penguins from scene and array and updates remaining number of penguins
+      if (p.coordinates.y < -20) { // removes penguins from scene and array and updates remaining number of penguins
         console.log(p.coordinates.y);
         let copy = [];
         for (let x of this.penguinsArray) {
@@ -345,7 +345,7 @@ class SeedScene extends Scene {
         return false;
       }
       // check if velocity is effectively 0
-      if (Math.abs(p.velocity.x) > 0.001 || Math.abs(p.velocity.z) > 0.001) {
+      if (Math.abs(p.velocity.x) > 0.3 || Math.abs(p.velocity.z) > 0.3) {
         return false;
       }
     }
