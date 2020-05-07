@@ -1,4 +1,4 @@
-import { Group, Vector3, Vector2 } from 'three';
+import { Group, Vector3, Vector2, Ray } from 'three';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import { TextureLoader } from 'three/src/loaders/TextureLoader.js';
@@ -78,7 +78,16 @@ class Penguin extends Group {
       let radius = 1;
       let x1 = this.coordinates.clone();
       let x2 = penguin.coordinates.clone();
-      if (x1.distanceTo(x2) < 2*radius) { // update velocity based on collision
+      let p1 = x1.clone();
+      let p2 = x2.clone();
+      let velocity1 = this.velocity.clone().normalize();
+      let velocity2 = penguin.velocity.clone().normalize();
+      p1.addScaledVector(velocity1, 0.0001);
+      p2.addScaledVector(velocity2, 0.0001);
+      let d = x1.distanceTo(x2);
+      let d2 = p1.distanceTo(p2);
+      if (d < 2*radius && d > d2) { // update velocity based on collision (check if moving away from each other)
+
         let v1 = this.velocity.clone();
         let v2 = penguin.velocity.clone();
         let v1_v2 = new Vector3(0,0,0);

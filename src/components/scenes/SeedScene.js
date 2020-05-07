@@ -85,8 +85,8 @@ class SeedScene extends Scene {
           this.penguin = new Penguin(this, minimum+j*increment, minimum, 0);
           this.add(this.penguin);
           this.penguinsArray.push(this.penguin);
-          let initialVelocity = new Vector3(0, 0, 40);
-          this.penguin.launch(initialVelocity);
+          //let initialVelocity = new Vector3(0, 0, 40);
+          //this.penguin.launch(initialVelocity);
         }
       }
       if (i == 1) {
@@ -94,8 +94,8 @@ class SeedScene extends Scene {
           this.penguin = new Penguin(this, minimum+j*increment, maximum, 180)
           this.add(this.penguin);
           this.penguinsArray.push(this.penguin);
-          let initialVelocity = new Vector3(0, 0, 0);
-          this.penguin.launch(initialVelocity)
+          //let initialVelocity = new Vector3(0, 0, 0);
+          //this.penguin.launch(initialVelocity)
         }
       }
       if (i == 2) {
@@ -103,8 +103,8 @@ class SeedScene extends Scene {
           this.penguin = new Penguin(this, minimum, minimum+j*increment, 90)
           this.add(this.penguin);
           this.penguinsArray.push(this.penguin);
-          let initialVelocity = new Vector3(80, 0, 40);
-          this.penguin.launch(initialVelocity);
+          //let initialVelocity = new Vector3(80, 0, 40);
+          //this.penguin.launch(initialVelocity);
         }
       }
       if (i == 3) {
@@ -112,8 +112,8 @@ class SeedScene extends Scene {
           this.penguin = new Penguin(this, maximum, minimum+j*increment, 270)
           this.add(this.penguin);
           this.penguinsArray.push(this.penguin);
-          let initialVelocity = new Vector3(-80, 0, 40);
-          this.penguin.launch(initialVelocity);
+          //let initialVelocity = new Vector3(-80, 0, 40);
+          //this.penguin.launch(initialVelocity);
         }
       }
     }
@@ -248,7 +248,7 @@ class SeedScene extends Scene {
         return;
       }
       if (this.selectionPlayer + 1 > this.numPlayers) {
-        this.selectionOver = true;  
+        this.selectionOver = true;
         this.deleteArrow(oldSelection);
         this.performRoundEnding();
         return;
@@ -256,7 +256,7 @@ class SeedScene extends Scene {
         for (let i = this.selectionPlayer + 1; i <= this.numPlayers; i++) {
           if (this.remaining[i] > 0) {
             this.deleteArrow(oldSelection);
-            this.selectionPlayer = i; 
+            this.selectionPlayer = i;
             this.selectionPenguin = 1;
             window.alert("Player " + i + "'s Turn!");
             window.alert("Use the arrow keys to adjust the arrow");
@@ -266,7 +266,7 @@ class SeedScene extends Scene {
           }
         }
         if (oldSelection == this.selectionPlayer) {
-          this.selectionOver = true;  
+          this.selectionOver = true;
           this.deleteArrow(oldSelection);
           this.performRoundEnding();
         }
@@ -423,7 +423,7 @@ class SeedScene extends Scene {
 
 
   performRoundEnding() {
-        // Launch all penguins at the same time 
+        // Launch all penguins at the same time
         for (let p of this.penguinsArray) {
           p.launch(p.nextVelocity);
         }
