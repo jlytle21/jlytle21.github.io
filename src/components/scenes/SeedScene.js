@@ -346,20 +346,23 @@ class SeedScene extends Scene {
         return false;
       }
 
-      /*
+      
       // Rescales ice
-      //console.log(this.ice);
-      //console.log(this.penguinsArray);
-      this.iceScale = 1.0 - (0.15 * (this.round - 1));
-      let selectedObject = this.getObjectByName(this.ice.name);
-      //this.remove(selectedObject);
-      // animate();
-      //this.remove();
+      if (this.round <= 5) {
+        this.iceScale = 1.0 - (0.15 * (this.round));
+      }
+      else {
+        this.iceScale = 0.25;
+      }
+      //console.log(selectedObject);
+      // selectedObject.shrink(this.iceScale);
       this.remove(this.ice);
-      //this.ice = new Ice(this.iceScale);
-      //this.add(this.ice);
-      // this.ice.scale.multiplyScalar(this.iceScale);
+      //this.ice.destructor();
+      this.ice = new Ice(this.iceScale);
+      this.add(this.ice);
+      // console.log(this.ice);
 
+      
       // Also have to move penguins with ice
       for (let p of this.penguinsArray) {
         let oldCoords = p.coordinates.clone();
@@ -367,7 +370,7 @@ class SeedScene extends Scene {
         let difference = p.coordinates.clone().sub(oldCoords);
         p.position.add(difference);
       }
-      */
+      
     
       for (let i = 1; i <= this.numPlayers; i++) {
         if (this.remaining[i] == 0) continue;

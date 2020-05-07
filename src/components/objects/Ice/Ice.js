@@ -24,7 +24,12 @@ class Ice extends Group {
             //object.rotateX(-75*Math.PI/180);
             //object.rotateY(-10*Math.PI/180);
             this.add(object.scene);
+            this.mesh = object.scene;
         });
+    }
+
+    shrink(num) {
+        this.mesh.multiplyScalar(num);
     }
 }
 
