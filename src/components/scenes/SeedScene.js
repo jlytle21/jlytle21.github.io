@@ -416,9 +416,7 @@ class SeedScene extends Scene {
 
 */
       console.log(this);
-      window.alert("Player " + this.selectionPlayer + "'s Turn!");
-      window.alert("Use the arrow keys to adjust the arrow");
-      window.alert("Click Enter to move to next Penguin!");
+      window.alert("Player " + this.selectionPlayer + "'s Turn!\nUse the arrow keys to adjust the arrow\nClick Enter to move to next Penguin!");
       this.drawArrow(this.lastPosition);
       this.sendMessage = true;
     }
