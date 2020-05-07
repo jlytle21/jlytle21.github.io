@@ -34,6 +34,7 @@ class Penguin extends Group {
         // set player ID
         this.player = 1;
 
+        this.nextVelocity;
 
 
         const loader = new OBJLoader(); // load object loader

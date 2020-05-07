@@ -228,11 +228,13 @@ class SeedScene extends Scene {
       }
       if (this.selectionPlayer + 1 > this.numPlayers) {
         this.selectionOver = true;  
+        this.deleteArrow(oldSelection);
         this.performRoundEnding();
         return;
       } else {
         for (let i = this.selectionPlayer + 1; i <= this.numPlayers; i++) {
           if (this.remaining[i] > 0) {
+            this.deleteArrow(oldSelection);
             this.selectionPlayer = i; 
             this.selectionPenguin = 1;
             window.alert("Player " + i + "'s Turn!");
@@ -244,6 +246,7 @@ class SeedScene extends Scene {
         }
         if (oldSelection == this.selectionPlayer) {
           this.selectionOver = true;  
+          this.deleteArrow(oldSelection);
           this.performRoundEnding();
         }
       }
@@ -266,6 +269,14 @@ class SeedScene extends Scene {
     }
   }
 
+  deleteArrow(playerId) {
+    for (let p of this.penguinsArray) {
+      if (p.player == playerId) {
+        this.remove(p.arrow);
+      }
+    }
+  }
+
   drawArrow(currentClick) {
     let counter = 0;
       let currPenguin;
@@ -280,8 +291,11 @@ class SeedScene extends Scene {
       }
       let penguinPos = currPenguin.coordinates;
       let direction = currentClick.clone().sub(penguinPos).normalize();
-      var color = 0xFF0000;
-      var arrow = new ArrowHelper(direction, penguinPos, penguinPos.distanceTo(currentClick), color);
+      let color = 0xFF0000;
+      let length = penguinPos.distanceTo(currentClick)
+      let arrow = new ArrowHelper(direction, penguinPos, length, color);
+      let newForce = direction.clone().multiplyScalar(length * 2.0);
+      currPenguin.nextVelocity = newForce;
       if (currPenguin.arrow != null) {
         this.remove(currPenguin.arrow);
       }
@@ -388,23 +402,10 @@ class SeedScene extends Scene {
 
 
   performRoundEnding() {
-      // Queue for launching penguins
-      let launchQueue = [];
-
-      // Go through each penguin alive and using the arrow determine their new velocity
-    
-    for (let p of this.penguinsArray) {
-      let launchVector = p.arrow.direction.clone().multiplyScalar(p.arrow.length);
-      launchqueue.push(launchVector);
-    }
-    
         // Launch all penguins at the same time 
-        let counter = 0;
         for (let p of this.penguinsArray) {
-          p.launch(launchQueue[counter]);
-          counter++;
+          p.launch(p.nextVelocity);
         }
-    
         // Sets round var to next round at end of round
         this.round += 1;
 
