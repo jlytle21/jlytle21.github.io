@@ -1,6 +1,8 @@
 import * as Dat from 'dat.gui';
-import { Scene, Color, ArrowHelper, Vector3, DodecahedronBufferGeometry } from 'three';
-import { Ice, Penguin, Water } from 'objects';
+import { Scene, Color, ArrowHelper, Vector3, DodecahedronBufferGeometry, RepeatWrapping, TextureLoader, PlaneBufferGeometry } from 'three';
+import { Ice, Penguin } from 'objects';
+import { Water } from 'three/examples/jsm/objects/Water.js';
+import WaterNormals from './textures/waternormals.jpg'
 import { BasicLights } from 'lights';
 
 class SeedScene extends Scene {
@@ -22,9 +24,9 @@ class SeedScene extends Scene {
 
     this.lastPosition = new Vector3(0, .35, 0);
 
-    // TO be used to select 
-    this.selectionPlayer = 1; 
-    this.selectionPenguin = 1; 
+    // TO be used to select
+    this.selectionPlayer = 1;
+    this.selectionPenguin = 1;
 
 
     // to determine if all selections were made
@@ -39,7 +41,26 @@ class SeedScene extends Scene {
 
     const lights = new BasicLights();
     this.ice = new Ice(this.iceScale);
-    this.water = new Water();
+    // load water
+    var waterGeometry = new PlaneBufferGeometry( 10000, 10000 );
+    this.water = new Water(
+      waterGeometry,
+      {
+        textureWidth: 512,
+        textureHeight: 512,
+        waterNormals: new TextureLoader().load( WaterNormals, function ( texture ) {
+          texture.wrapS = texture.wrapT = RepeatWrapping;
+        } ),
+        alpha: 1.0,
+        //sunDirection: lights[0].position.clone().normalize(),
+        sunColor: 0xffffff,
+        waterColor: 0x001e0f,
+        distortionScale: 3.7,
+        //fog: scene.fog !== undefined
+      }
+    );
+    this.water.rotation.x = - Math.PI / 2;
+    this.water.position.y -= 10;
     this.add(this.ice, this.water, lights);
 
     // Array of penguins in scene
@@ -186,7 +207,7 @@ class SeedScene extends Scene {
     console.log("-------------");
     if (this.selectionOver == false) {
       let translatex = window.innerWidth / 2;
-      let translatey = window.innerHeight / 2; 
+      let translatey = window.innerHeight / 2;
       let x = event.screenX - translatex;
       let y = event.screenY - translatey;
       let currentClick = new Vector3(x, 0.35, y);
@@ -194,9 +215,9 @@ class SeedScene extends Scene {
       let currPenguin;
       for (let p of this.penguinsArray) {
         if (p.player == this.selectionPlayer) {
-          counter++; 
+          counter++;
           if (counter == this.selectionPenguin) {
-            currPenguin = p; 
+            currPenguin = p;
             break;
           }
         }
@@ -242,7 +263,7 @@ class SeedScene extends Scene {
             window.alert("Click Enter to move to next Penguin!");
             this.drawArrow(this.lastPosition);
             break;
-          } 
+          }
         }
         if (oldSelection == this.selectionPlayer) {
           this.selectionOver = true;  
@@ -282,9 +303,9 @@ class SeedScene extends Scene {
       let currPenguin;
       for (let p of this.penguinsArray) {
         if (p.player == this.selectionPlayer) {
-          counter++; 
+          counter++;
           if (counter == this.selectionPenguin) {
-            currPenguin = p; 
+            currPenguin = p;
             break;
           }
         }
@@ -360,7 +381,7 @@ class SeedScene extends Scene {
         return false;
       }
 
-      
+
       // Rescales ice
       if (this.round <= 5) {
         this.iceScale = 1.0 - (0.15 * (this.round));
@@ -376,7 +397,7 @@ class SeedScene extends Scene {
       this.add(this.ice);
       // console.log(this.ice);
 
-      
+
       // Also have to move penguins with ice
       for (let p of this.penguinsArray) {
         let oldCoords = p.coordinates.clone();
@@ -384,8 +405,8 @@ class SeedScene extends Scene {
         let difference = p.coordinates.clone().sub(oldCoords);
         p.position.add(difference);
       }
-      
-    
+
+
       for (let i = 1; i <= this.numPlayers; i++) {
         if (this.remaining[i] == 0) continue;
         this.selectionPlayer = i;
@@ -396,8 +417,8 @@ class SeedScene extends Scene {
         break;
       }
       this.selectionOver = false;
-    }    
-     
+    }
+
   }
 
 
