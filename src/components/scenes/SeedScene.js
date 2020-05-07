@@ -297,6 +297,7 @@ class SeedScene extends Scene {
     for (let p of this.penguinsArray) {
       if (p.player == playerId) {
         this.remove(p.arrow);
+        p.arrow = null; 
       }
     }
   }
@@ -315,9 +316,13 @@ class SeedScene extends Scene {
       }
       let penguinPos = currPenguin.coordinates;
       let direction = currentClick.clone().sub(penguinPos).normalize();
-      let color = 0xFF0000;
+      let colorArray = [];
+      colorArray[1] = 0x000000;
+      colorArray[2] = 0xFF4500;
+      colorArray[3] = 0x00FF00;
+      colorArray[4] = 0x9400D3;
       let length = penguinPos.distanceTo(currentClick)
-      let arrow = new ArrowHelper(direction, penguinPos, length, color);
+      let arrow = new ArrowHelper(direction, penguinPos, length, colorArray[this.selectionPlayer]);
       let newForce = direction.clone().multiplyScalar(length * 2.0);
       currPenguin.nextVelocity = newForce;
       if (currPenguin.arrow != null) {
@@ -413,6 +418,7 @@ class SeedScene extends Scene {
       for (let i = 1; i <= this.numPlayers; i++) {
         if (this.remaining[i] == 0) continue;
         this.selectionPlayer = i;
+        this.selectionPenguin = 1;
         window.alert("Player " + i + "'s Turn!");
         window.alert("Use the arrow keys to adjust the arrow");
         window.alert("Click Enter to move to next Penguin!");
