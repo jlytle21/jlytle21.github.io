@@ -1,9 +1,11 @@
 import * as Dat from 'dat.gui';
-import { Scene, Color, ArrowHelper, Vector3, DodecahedronBufferGeometry, RepeatWrapping, TextureLoader, PlaneBufferGeometry, GLTFLoader, AnimationMixer, GLBLoader } from 'three';
-import { Ice, Penguin, Flamingo } from 'objects';
+import { Scene, Color, Clock, ArrowHelper, Vector3, Vector2, DodecahedronBufferGeometry, RepeatWrapping, TextureLoader, PlaneBufferGeometry, AnimationMixer } from 'three';
+import { Ice, Penguin } from 'objects';
 import { Water } from 'three/examples/jsm/objects/Water.js';
 import WaterNormals from './textures/waternormals.jpg';
+import Flamingo from './flamingo/Flamingo.glb';
 import { BasicLights } from 'lights';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 class Score { // class to create scoreboard
   constructor(remaining) {
@@ -109,6 +111,8 @@ class SeedScene extends Scene {
 
     this.lastPosition = new Vector3(0, .35, 0);
 
+    this.clock = new Clock();
+
     this.initial = true;
     // TO be used to select
     this.selectionPlayer = 1;
@@ -155,7 +159,54 @@ class SeedScene extends Scene {
     );
     this.water.rotation.x = - Math.PI / 2;
     this.water.position.y -= 10;
-    //this.flamingo = new Flamingo();
+    // flamingo from https://github.com/mrdoob/three.js/blob/master/examples/webgl_lights_hemisphere.html
+    this.mixers = [];
+    this.flamingos = [];
+    const loader1 = new GLTFLoader();
+    loader1.load(Flamingo, ( gltf ) => {
+      this.flamingo1 = gltf.scene.children[ 0 ];
+      let s = 0.1;
+      this.flamingo1.scale.set( s, s, s );
+      this.flamingo1.position.y = 40;
+      this.flamingo1.rotation.y = - 1;
+      this.flamingo1.castShadow = true;
+      this.flamingo1.receiveShadow = true;
+      let mixer1 = new AnimationMixer( this.flamingo1 );
+      mixer1.clipAction( gltf.animations[ 0 ] ).setDuration( 1 ).play();
+      this.mixers.push(mixer1);
+      this.add(this.flamingo1);
+      this.flamingos.push(this.flamingo1);
+    });
+    const loader2 = new GLTFLoader();
+    loader2.load(Flamingo, ( gltf ) => {
+      this.flamingo2 = gltf.scene.children[ 0 ];
+      let s = 0.1;
+      this.flamingo2.scale.set( s, s, s );
+      this.flamingo2.position.y = 60;
+      this.flamingo2.rotation.y = - 1;
+      this.flamingo2.castShadow = true;
+      this.flamingo2.receiveShadow = true;
+      let mixer2 = new AnimationMixer( this.flamingo2 );
+      mixer2.clipAction( gltf.animations[ 0 ] ).setDuration( 1 ).play();
+      this.mixers.push(mixer2);
+      this.add(this.flamingo2);
+      this.flamingos.push(this.flamingo2);
+    });
+    const loader3 = new GLTFLoader();
+    loader3.load(Flamingo, ( gltf ) => {
+      this.flamingo3 = gltf.scene.children[ 0 ];
+      let s = 0.1;
+      this.flamingo3.scale.set( s, s, s );
+      this.flamingo3.position.y = 80;
+      this.flamingo3.rotation.y = - 1;
+      this.flamingo3.castShadow = true;
+      this.flamingo3.receiveShadow = true;
+      let mixer3 = new AnimationMixer( this.flamingo3 );
+      mixer3.clipAction( gltf.animations[ 0 ] ).setDuration( 1 ).play();
+      this.mixers.push(mixer3);
+      this.add(this.flamingo3);
+      this.flamingos.push(this.flamingo3);
+    });
     this.add(this.ice, this.water, lights);
     // Array of penguins in scene
     this.penguinsArray = [];
@@ -543,6 +594,29 @@ class SeedScene extends Scene {
     }
     const { rotationSpeed, updateList } = this.state;
     this.rotation.y = (rotationSpeed * timeStamp) / 10000;
+
+    let delta = this.clock.getDelta(); // motion of flamingos
+    for (let count = 0; count < this.flamingos.length; count++) {
+      if (count == 0) {
+        let oldLocation = new Vector2(this.flamingos[count].position.x, this.flamingos[count].position.z);
+        let newLocation = new Vector2(100*Math.cos(timeStamp/10000) + 40, 100*Math.sin(timeStamp/5000) + 10);
+        let angle = oldLocation.angle() - newLocation.angle();
+        //this.flamingos[count].rotation.y = angle;
+        this.flamingos[count].position.x = 100*Math.cos(timeStamp/10000) + 40;
+        this.flamingos[count].position.z = 100*Math.sin(timeStamp/5000) + 10 ;
+      }
+      if (count == 1) {
+        this.flamingos[count].position.x = -100*Math.sin(timeStamp/5000);
+        this.flamingos[count].position.z = -100*Math.cos(timeStamp/10000) + 60;
+      }
+      if (count == 2) {
+        this.flamingos[count].position.x = -100*Math.cos(timeStamp/10000);
+        this.flamingos[count].position.z = 100*Math.sin(timeStamp/5000);
+      }
+    }
+    for (let m of this.mixers) {
+      m.update( delta );
+    }
 
     this.water.material.uniforms[ 'time' ].value += 1.0 / 60.0; // animate water
 
