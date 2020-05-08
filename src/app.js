@@ -9,6 +9,7 @@
 import { WebGLRenderer, PerspectiveCamera, Vector3, Texture, Scene, MeshBasicMaterial, PlaneGeometry, Mesh, OrthographicCamera } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { SeedScene } from 'scenes';
+import Penguins from './bgimage/penguins.jpg' //  potential background image
 import * as Dat from 'dat.gui';
 
 class Welcome { // class to create popup welcome message
@@ -59,7 +60,7 @@ class Welcome { // class to create popup welcome message
     this.message.style = "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;"
     this.divide.style = "margin: auto; width: 40%;";
     this.credits.style = "position: absolute; bottom: 0; left: 16px; font-size: 10px;"
-    this.backgroundImage.style = "height: 100%; width: 100%; z-index: -1; opacity: 1; background-color: black; background-position: center; background-size: cover; position: fixed; color: white; font-family: 'Courier New', Courier, monospace; font-size: 25px;"
+    this.backgroundImage.style = "background-color: black; height: 100%; width: 100%; z-index: -1; opacity: 1; background-position: center; background-size: cover; position: fixed; color: white; font-family: 'Courier New', Courier, monospace; font-size: 25px;"
   }
   remove() {
     document.getElementById("bgimage").remove();
