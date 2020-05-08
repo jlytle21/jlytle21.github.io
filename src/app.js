@@ -45,94 +45,88 @@ class Welcome { // class to create popup welcome message
     this.four.innerHTML = "4 Players";
     document.getElementById("message").appendChild(this.four);
 
+    this.credits = document.createElement("DIV");
+    this.credits.setAttribute("id", "credits");
+    document.getElementById("bgimage").appendChild(this.credits);
+    this.names = document.createElement("p");
+    this.names.innerHTML = "Created by Jonah Lytle, Jacob Schachner & Richard Wolf";
+    this.credits.appendChild(this.names);
 
-    this.two.style = "background-color: purple; border: none; color: white; padding: 16px 32px; text-align: center; display: inline-block; font-size: 16px; margin: 4px 2px; transition-duration: 0.4s; cursor: pointer;";
-    this.three.style = "background-color: green; border: none; color: white; padding: 16px 32px; text-align: center; display: inline-block; font-size: 16px; margin: 4px 2px; transition-duration: 0.4s; cursor: pointer;";
-    this.four.style = "background-color: blue; border: none; color: white; padding: 16px 32px; text-align: center; display: inline-block; font-size: 16px; margin: 4px 2px; transition-duration: 0.4s; cursor: pointer;";
+    this.two.style = "background-color: purple; border: none; color: white; padding: 16px 32px; text-align: center; display: inline-block; font-size: 16px; margin: 4px 2px; transition-duration: 0.4s; cursor: pointer; font-family: 'Courier New', Courier, monospace;";
+    this.three.style = "background-color: green; border: none; color: white; padding: 16px 32px; text-align: center; display: inline-block; font-size: 16px; margin: 4px 2px; transition-duration: 0.4s; cursor: pointer; font-family: 'Courier New', Courier, monospace;";
+    this.four.style = "background-color: blue; border: none; color: white; padding: 16px 32px; text-align: center; display: inline-block; font-size: 16px; margin: 4px 2px; transition-duration: 0.4s; cursor: pointer; font-family: 'Courier New', Courier, monospace;";
 
     this.message.style = "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;"
     this.divide.style = "margin: auto; width: 40%;";
+    this.credits.style = "position: absolute; bottom: 0; left: 16px; font-size: 10px;"
     this.backgroundImage.style = "height: 100%; width: 100%; z-index: -1; opacity: 1; background-color: black; background-position: center; background-size: cover; position: fixed; color: white; font-family: 'Courier New', Courier, monospace; font-size: 25px;"
   }
-
+  remove() {
+    document.getElementById("bgimage").remove();
+  }
 }
 
-let numPlayers = 4;
 // Initialize core ThreeJS components
 let welcomeMessage = new Welcome();
-//let numPlayers = window.prompt('Enter Number of Players: [2,3,4]', 2);
-//while (numPlayers != 2 && numPlayers != 3 && numPlayers != 4) {
-//window.alert("Enter a number between 2 and 4")
-//numPlayers = window.prompt('Enter Number of Players');
-//}
+
+function startGame(numPlayers) {
 
 
-function twoplayers() {
-  numPlayers = 2;
+  const camera = new PerspectiveCamera();
   const scene = new SeedScene(numPlayers, camera);
-}
-function threeplayers() {
-  numPlayers = 3;
-  const scene = new SeedScene(numPlayers, camera);
-}
-function fourplayers() {
-  numPlayers = 4;
-  const scene = new SeedScene(numPlayers, camera);
-}
-document.getElementById("two").addEventListener("click", twoplayers);
-document.getElementById("three").addEventListener("click", threeplayers);
-document.getElementById("four").addEventListener("click", fourplayers);
+  const renderer = new WebGLRenderer({ antialias: true });
 
-function sleep(ms) {
-  let date = Date.now()
-  let cur = null;
-  do {
-    cur = Date.now();
-  } while (cur-date < ms);
-}
+  // Set up camera
+  camera.position.set(70, 50, 70);
+  camera.lookAt(new Vector3(0, 0, 0));
 
-debugger;
+  // Set up renderer, canvas, and minor CSS adjustments
+  renderer.setPixelRatio(window.devicePixelRatio);
+  const canvas = renderer.domElement;
+  canvas.style.display = 'block'; // Removes padding below canvas
+  document.body.style.margin = 0; // Removes margin around page
+  document.body.style.overflow = 'hidden'; // Fix scrolling
+  document.body.appendChild(canvas);
 
-const camera = new PerspectiveCamera();
-const scene = new SeedScene(numPlayers, camera);
-const renderer = new WebGLRenderer({ antialias: true });
-
-// Set up camera
-camera.position.set(70, 50, 70);
-camera.lookAt(new Vector3(0, 0, 0));
-
-// Set up renderer, canvas, and minor CSS adjustments
-renderer.setPixelRatio(window.devicePixelRatio);
-const canvas = renderer.domElement;
-canvas.style.display = 'block'; // Removes padding below canvas
-document.body.style.margin = 0; // Removes margin around page
-document.body.style.overflow = 'hidden'; // Fix scrolling
-document.body.appendChild(canvas);
-
-// Set up controls
-const controls = new OrbitControls(camera, canvas);
-controls.enableDamping = true;
-controls.enablePan = false;
-controls.minDistance = 4;
-controls.maxDistance = 400;
-controls.maxPolarAngle = Math.PI/2; // don't let go below ground
-controls.update();
-
-// Render loop
-const onAnimationFrameHandler = (timeStamp) => {
+  // Set up controls
+  const controls = new OrbitControls(camera, canvas);
+  controls.enableDamping = true;
+  controls.enablePan = false;
+  controls.minDistance = 4;
+  controls.maxDistance = 400;
+  controls.maxPolarAngle = Math.PI/2; // don't let go below ground
   controls.update();
-  renderer.render(scene, camera);
-  scene.update && scene.update(timeStamp, camera);
-  window.requestAnimationFrame(onAnimationFrameHandler);
-};
-window.requestAnimationFrame(onAnimationFrameHandler);
 
-// Resize Handler
-const windowResizeHandler = () => {
-  const { innerHeight, innerWidth } = window;
-  renderer.setSize(innerWidth, innerHeight);
-  camera.aspect = innerWidth / innerHeight;
-  camera.updateProjectionMatrix();
-};
-windowResizeHandler();
-window.addEventListener('resize', windowResizeHandler, false);
+  // Render loop
+  const onAnimationFrameHandler = (timeStamp) => {
+    controls.update();
+    renderer.render(scene, camera);
+    scene.update && scene.update(timeStamp, camera);
+    window.requestAnimationFrame(onAnimationFrameHandler);
+  };
+
+  window.requestAnimationFrame(onAnimationFrameHandler);
+
+  // Resize Handler
+  const windowResizeHandler = () => {
+    const { innerHeight, innerWidth } = window;
+    renderer.setSize(innerWidth, innerHeight);
+    camera.aspect = innerWidth / innerHeight;
+    camera.updateProjectionMatrix();
+  };
+  windowResizeHandler();
+  window.addEventListener('resize', windowResizeHandler, false);
+}
+
+document.getElementById("two").addEventListener("mousedown", function() {
+  startGame(2)
+  welcomeMessage.remove();
+});
+document.getElementById("three").addEventListener("mousedown", function() {
+  startGame(3)
+  welcomeMessage.remove();
+});
+document.getElementById("four").addEventListener("mousedown", function() {
+  startGame(4)
+  welcomeMessage.remove();
+});

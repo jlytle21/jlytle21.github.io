@@ -56,6 +56,40 @@ class Score { // class to create scoreboard
   }
 }
 
+class Popup { // class for popup messages
+  constructor(message) {
+    this.modal = document.createElement("DIV");
+    this.modal.setAttribute("id", "modal");
+    document.body.appendChild(this.modal);
+
+    this.modalcontent = document.createElement("DIV");
+    this.modalcontent.setAttribute("id", "modalcontent");
+    this.modal.appendChild(this.modalcontent);
+
+    this.button = document.createElement("BTN");
+    this.button.setAttribute("id", "close");
+    this.button.appendChild(document.createTextNode("X"));
+    this.modalcontent.appendChild(this.button);
+
+    this.text = document.createElement("p");
+    this.text.innerHTML = message;
+    this.modalcontent.appendChild(this.text);
+
+    this.modal.style = "display: none: position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0,0.4);";
+    this.modalcontent.style = "background-color: blue; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;";
+    this.button.style = "color: red; float: right; font-size: 28px; font-weight: bold;";
+
+  }
+
+  remove(instructions) {
+    document.getElementById("modal").remove();
+    instructions = true;
+  }
+
+
+}
+
+
 class SeedScene extends Scene {
   constructor(numPlayers, camera) {
     // Call parent Scene() constructor
@@ -65,8 +99,6 @@ class SeedScene extends Scene {
     this.state = {
       //gui: new Dat.GUI(), // Create GUI for scene
       rotationSpeed: 0.0,
-      updateList: [],
-      sentInstructions: false,
     };
 
     // event listeners for mouse and keys
@@ -75,12 +107,12 @@ class SeedScene extends Scene {
 
     this.lastPosition = new Vector3(0, .35, 0);
 
+    this.initial = true;
     // TO be used to select
     this.selectionPlayer = 1;
     this.selectionPenguin = 1;
 
     this.sendMessage = true;
-
 
     this.camera = camera; // save camera
 
@@ -116,25 +148,19 @@ class SeedScene extends Scene {
     );
     this.water.rotation.x = - Math.PI / 2;
     this.water.position.y -= 10;
-
     //this.flamingo = new Flamingo();
-
     this.add(this.ice, this.water, lights);
-
     // Array of penguins in scene
     this.penguinsArray = [];
-
     // Round number
     this.round = 1;
-
     // Number of players + number of penguins remaining per player
     this.numPlayers = numPlayers;
     const remaining = {};
     for (let i = 1; i <= numPlayers; i++) remaining[i] = 4;
     this.remaining = remaining;
     // initialize scoreboard
-    this.score = new Score(remaining);
-
+    this.score = new Score(remaining)
     // set number of players UP TO 4
     let minimum = -30;
     let maximum = 30;
@@ -145,8 +171,6 @@ class SeedScene extends Scene {
           this.penguin = new Penguin(this, minimum+j*increment, minimum, 0);
           this.add(this.penguin);
           this.penguinsArray.push(this.penguin);
-          //let initialVelocity = new Vector3(0, 0, 40);
-          //this.penguin.launch(initialVelocity);
         }
       }
       if (i == 1) {
@@ -154,8 +178,6 @@ class SeedScene extends Scene {
           this.penguin = new Penguin(this, minimum+j*increment, maximum, 180)
           this.add(this.penguin);
           this.penguinsArray.push(this.penguin);
-          //let initialVelocity = new Vector3(0, 0, 0);
-          //this.penguin.launch(initialVelocity)
         }
       }
       if (i == 2) {
@@ -163,8 +185,6 @@ class SeedScene extends Scene {
           this.penguin = new Penguin(this, minimum, minimum+j*increment, 90)
           this.add(this.penguin);
           this.penguinsArray.push(this.penguin);
-          //let initialVelocity = new Vector3(80, 0, 40);
-          //this.penguin.launch(initialVelocity);
         }
       }
       if (i == 3) {
@@ -172,19 +192,9 @@ class SeedScene extends Scene {
           this.penguin = new Penguin(this, maximum, minimum+j*increment, 270)
           this.add(this.penguin);
           this.penguinsArray.push(this.penguin);
-          //let initialVelocity = new Vector3(-80, 0, 40);
-          //this.penguin.launch(initialVelocity);
         }
       }
     }
-    /*
-    for (let p of this.penguinsArray) {
-      console.log(p.coordinates);
-    }
-    */
-
-
-
     // Populate GUI
     //this.state.gui.add(this.state, 'rotationSpeed', -5, 5);
   }
@@ -192,28 +202,16 @@ class SeedScene extends Scene {
   addToUpdateList(object) {
     this.state.updateList.push(object);
   }
-
-
-
   // Check if penguin centers are within bounds of ice. If not, apply downward force on penguin. Else do nothing.
   handlePenguinsOffIce() {
     let edge = 34 * this.iceScale;
     for (let p of this.penguinsArray) {
-      // console.log(p.position.y);
-      //console.log(p.coordinates.x);
       if ((Math.abs(p.coordinates.x) > edge || Math.abs(p.coordinates.z) > edge) && !p.isFalling) {
-        //console.log(p.position.x);
-        //console.log(p.position.z);
-        //console.log(this.penguinsArray);
         p.isFalling = true;
         p.applyGravity();
-        //console.log(Math.abs(p.location().x));
-        //console.log(Math.abs(p.location().y));
-
       }
     }
   }
-
   // Check if penguins are currently within eps of one another, calls penguin launch method to update force of
   // colliding penguins
   handlePenguinCollisions() {
@@ -225,14 +223,12 @@ class SeedScene extends Scene {
       }
     }
   }
-
   // Apply friction to each penguin by decreasing acceleration
   handleFriction() {
     for (let p of this.penguinsArray) {
       p.applyFriction();
     }
   }
-
   // Update velocities of each penguin based on accerlations
   updateVelocities(deltaT) {
     for (let p of this.penguinsArray) {
@@ -242,7 +238,6 @@ class SeedScene extends Scene {
       p.velocity.add(acc.multiplyScalar(deltaT));
     }
   }
-
   // Update positions of each penguin based on displacement
   updatePenguinPositions(deltaT) {
     //console.log(this.penguinsArray);
@@ -259,7 +254,6 @@ class SeedScene extends Scene {
       //p.update(displacement.x, displacement.y, displacement.z);
     }
   }
-
   onMouseClick(event) {
     /*
     console.log("===========");
@@ -373,7 +367,7 @@ class SeedScene extends Scene {
       let penguinPos = currPenguin.coordinates;
       let direction = currentClick.clone().sub(penguinPos).normalize();
       let colorArray = [];
-      colorArray[1] = 0x000000;
+      colorArray[1] = 0x808080;
       colorArray[2] = 0xFF4500;
       colorArray[3] = 0x00FF00;
       colorArray[4] = 0x0000FF;
@@ -550,11 +544,9 @@ class SeedScene extends Scene {
   }
 
   update(timeStamp, camera) {
-    if (timeStamp < 5000) return; // wait for everything to load
-    if (this.state.sentInstructions == false) {
-      window.alert("INSTRUCTIONS: Be the last man standing!\nTIPS: Click '1' to view from above");
-      this.state.sentInstructions = true;
-      camera.position.set(0, 150, 0); // set camera position to above
+    if (this.initial) {
+      camera.position.set(0, 150, 0);
+      this.initial = false
     }
     const { rotationSpeed, updateList } = this.state;
     this.rotation.y = (rotationSpeed * timeStamp) / 10000;
