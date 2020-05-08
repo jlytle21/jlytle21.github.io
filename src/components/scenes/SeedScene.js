@@ -1,11 +1,11 @@
 import * as Dat from 'dat.gui';
-import { Scene, Color, ArrowHelper, Vector3, DodecahedronBufferGeometry, RepeatWrapping, TextureLoader, PlaneBufferGeometry } from 'three';
-import { Ice, Penguin } from 'objects';
+import { Scene, Color, ArrowHelper, Vector3, DodecahedronBufferGeometry, RepeatWrapping, TextureLoader, PlaneBufferGeometry, GLTFLoader, AnimationMixer, GLBLoader } from 'three';
+import { Ice, Penguin, Flamingo } from 'objects';
 import { Water } from 'three/examples/jsm/objects/Water.js';
 import WaterNormals from './textures/waternormals.jpg';
 import { BasicLights } from 'lights';
 
-class Score {
+class Score { // class to create scoreboard
   constructor(remaining) {
     this.table = document.createElement("TABLE"); // create table
     this.table.setAttribute("id", "scoring");
@@ -116,6 +116,8 @@ class SeedScene extends Scene {
     );
     this.water.rotation.x = - Math.PI / 2;
     this.water.position.y -= 10;
+
+    //this.flamingo = new Flamingo();
 
     this.add(this.ice, this.water, lights);
 
@@ -374,7 +376,7 @@ class SeedScene extends Scene {
       colorArray[1] = 0x000000;
       colorArray[2] = 0xFF4500;
       colorArray[3] = 0x00FF00;
-      colorArray[4] = 0x9400D3;
+      colorArray[4] = 0x0000FF;
       let length = penguinPos.distanceTo(currentClick)
       let arrow = new ArrowHelper(direction, penguinPos, length, colorArray[this.selectionPlayer]);
       let newForce = direction.clone().multiplyScalar(length * 2.0);

@@ -1,22 +1,97 @@
 /**
- * app.js
- *
- * This is the first file loaded. It sets up the Renderer,
- * Scene and Camera. It also starts the render loop and
- * handles window resizes.
- *
- */
+* app.js
+*
+* This is the first file loaded. It sets up the Renderer,
+* Scene and Camera. It also starts the render loop and
+* handles window resizes.
+*
+*/
 import { WebGLRenderer, PerspectiveCamera, Vector3, Texture, Scene, MeshBasicMaterial, PlaneGeometry, Mesh, OrthographicCamera } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { SeedScene } from 'scenes';
 import * as Dat from 'dat.gui';
 
-// Initialize core ThreeJS components
-let numPlayers = window.prompt('Enter Number of Players: [2,3,4]', 2);
-while (numPlayers != 2 && numPlayers != 3 && numPlayers != 4) {
-  window.alert("Enter a number between 2 and 4")
-  numPlayers = window.prompt('Enter Number of Players');
+class Welcome { // class to create popup welcome message
+  constructor() { // with help from https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_coming_soon
+    this.backgroundImage = document.createElement("DIV");
+    this.backgroundImage.setAttribute("id", "bgimage");
+    document.body.appendChild(this.backgroundImage);
+    this.message = document.createElement("DIV");
+    this.message.setAttribute("id", "message");
+    document.getElementById("bgimage").appendChild(this.message);
+    this.name = document.createElement("h1");
+    this.name.appendChild(document.createTextNode("Knockout"));
+    document.getElementById("message").appendChild(this.name);
+    this.divide = document.createElement("hr");
+    document.getElementById("message").appendChild(this.divide);
+    this.instructions = document.createElement("p");
+    this.instructions.appendChild(document.createTextNode("How To Play: Knock off all your opponent's penguins"));
+    document.getElementById("message").appendChild(this.instructions);
+
+    this.numPlayers = document.createElement("p");
+    this.numPlayers.appendChild(document.createTextNode("Select Number of Players"));
+    document.getElementById("message").appendChild(this.numPlayers);
+
+    this.two = document.createElement("BUTTON");
+    this.two.setAttribute("id", "two");
+    this.two.innerHTML = "2 Players";
+    document.getElementById("message").appendChild(this.two);
+    this.three = document.createElement("BUTTON");
+    this.three.setAttribute("id", "three");
+    this.three.innerHTML = "3 Players";
+    document.getElementById("message").appendChild(this.three);
+    this.four = document.createElement("BUTTON");
+    this.four.setAttribute("id", "four");
+    this.four.innerHTML = "4 Players";
+    document.getElementById("message").appendChild(this.four);
+
+
+    this.two.style = "background-color: purple; border: none; color: white; padding: 16px 32px; text-align: center; display: inline-block; font-size: 16px; margin: 4px 2px; transition-duration: 0.4s; cursor: pointer;";
+    this.three.style = "background-color: green; border: none; color: white; padding: 16px 32px; text-align: center; display: inline-block; font-size: 16px; margin: 4px 2px; transition-duration: 0.4s; cursor: pointer;";
+    this.four.style = "background-color: blue; border: none; color: white; padding: 16px 32px; text-align: center; display: inline-block; font-size: 16px; margin: 4px 2px; transition-duration: 0.4s; cursor: pointer;";
+
+    this.message.style = "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;"
+    this.divide.style = "margin: auto; width: 40%;";
+    this.backgroundImage.style = "height: 100%; width: 100%; z-index: -1; opacity: 1; background-color: black; background-position: center; background-size: cover; position: fixed; color: white; font-family: 'Courier New', Courier, monospace; font-size: 25px;"
   }
+
+}
+
+let numPlayers = 4;
+// Initialize core ThreeJS components
+let welcomeMessage = new Welcome();
+//let numPlayers = window.prompt('Enter Number of Players: [2,3,4]', 2);
+//while (numPlayers != 2 && numPlayers != 3 && numPlayers != 4) {
+//window.alert("Enter a number between 2 and 4")
+//numPlayers = window.prompt('Enter Number of Players');
+//}
+
+
+function twoplayers() {
+  numPlayers = 2;
+  const scene = new SeedScene(numPlayers, camera);
+}
+function threeplayers() {
+  numPlayers = 3;
+  const scene = new SeedScene(numPlayers, camera);
+}
+function fourplayers() {
+  numPlayers = 4;
+  const scene = new SeedScene(numPlayers, camera);
+}
+document.getElementById("two").addEventListener("click", twoplayers);
+document.getElementById("three").addEventListener("click", threeplayers);
+document.getElementById("four").addEventListener("click", fourplayers);
+
+function sleep(ms) {
+  let date = Date.now()
+  let cur = null;
+  do {
+    cur = Date.now();
+  } while (cur-date < ms);
+}
+
+debugger;
 
 const camera = new PerspectiveCamera();
 const scene = new SeedScene(numPlayers, camera);
@@ -45,19 +120,19 @@ controls.update();
 
 // Render loop
 const onAnimationFrameHandler = (timeStamp) => {
-    controls.update();
-    renderer.render(scene, camera);
-    scene.update && scene.update(timeStamp, camera);
-    window.requestAnimationFrame(onAnimationFrameHandler);
+  controls.update();
+  renderer.render(scene, camera);
+  scene.update && scene.update(timeStamp, camera);
+  window.requestAnimationFrame(onAnimationFrameHandler);
 };
 window.requestAnimationFrame(onAnimationFrameHandler);
 
 // Resize Handler
 const windowResizeHandler = () => {
-    const { innerHeight, innerWidth } = window;
-    renderer.setSize(innerWidth, innerHeight);
-    camera.aspect = innerWidth / innerHeight;
-    camera.updateProjectionMatrix();
+  const { innerHeight, innerWidth } = window;
+  renderer.setSize(innerWidth, innerHeight);
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
 };
 windowResizeHandler();
 window.addEventListener('resize', windowResizeHandler, false);
