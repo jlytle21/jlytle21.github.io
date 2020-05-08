@@ -5,6 +5,56 @@ import { Water } from 'three/examples/jsm/objects/Water.js';
 import WaterNormals from './textures/waternormals.jpg';
 import { BasicLights } from 'lights';
 
+class Score {
+  constructor(remaining) {
+    this.table = document.createElement("TABLE"); // create table
+    this.table.setAttribute("id", "scoring");
+    document.body.appendChild(this.table);
+    this.row = document.createElement("TR"); // create row
+    this.row.setAttribute("id", "headerRow");
+    document.getElementById("scoring").appendChild(this.row);
+    this.column = document.createElement("TH");
+    let t = document.createTextNode("Round");
+    this.column.appendChild(t);
+    this.column.style = "color: pink;";
+    document.getElementById("headerRow").appendChild(this.column);
+    for (let r in remaining) {
+      this.column = document.createElement("TH");
+      let t = document.createTextNode("Player " + r);
+      this.column.appendChild(t);
+      if (r == 1) this.column.style = "color: grey;";
+      if (r == 2) this.column.style = "color: red;";
+      if (r == 3) this.column.style = "color: green;";
+      if (r == 4) this.column.style = "color: blue;";
+
+      document.getElementById("headerRow").appendChild(this.column);
+    }
+    this.row2 = document.createElement("TR"); // create row
+    this.row2.setAttribute("id", "scoreRow");
+    document.getElementById("scoring").appendChild(this.row2);
+    this.column = document.createElement("TD");
+    let t2 = document.createTextNode("1");
+    this.column.appendChild(t2);
+    this.column.setAttribute("id", "round");
+    this.column.style = "color: pink;"
+    document.getElementById("scoreRow").appendChild(this.column);
+    for (let r in remaining) {
+      this.column = document.createElement("TD");
+      let t2 = document.createTextNode(remaining[r]);
+      this.column.appendChild(t2);
+      this.column.setAttribute("id", "player" + r);
+      this.column.style = "color: white;"
+      document.getElementById("scoreRow").appendChild(this.column);
+    }
+    this.table.style = "border-spacing: 0.5rem; border: 1px solid black; text-align: center; width: 100%; background: black; position: fixed; font-family: 'Monaco'";
+  }
+  updateScore(remaining, round) {
+    document.getElementById("round").textContent = round;
+    for (let r in remaining) {
+      document.getElementById("player" + r).textContent = remaining[r];
+    }
+  }
+}
 
 class SeedScene extends Scene {
   constructor(numPlayers, camera) {
@@ -13,7 +63,7 @@ class SeedScene extends Scene {
 
     // Init state
     this.state = {
-      gui: new Dat.GUI(), // Create GUI for scene
+      //gui: new Dat.GUI(), // Create GUI for scene
       rotationSpeed: 0.0,
       updateList: [],
       sentInstructions: false,
@@ -30,6 +80,7 @@ class SeedScene extends Scene {
     this.selectionPenguin = 1;
 
     this.sendMessage = true;
+
 
     this.camera = camera; // save camera
 
@@ -79,6 +130,8 @@ class SeedScene extends Scene {
     const remaining = {};
     for (let i = 1; i <= numPlayers; i++) remaining[i] = 4;
     this.remaining = remaining;
+    // initialize scoreboard
+    this.score = new Score(remaining);
 
     // set number of players UP TO 4
     let minimum = -30;
@@ -430,6 +483,10 @@ class SeedScene extends Scene {
           player = i;
         }
       }
+      // update scores
+
+      this.score.updateScore(this.remaining, this.round);
+      // check if game is over
       if (playersLeft == 1) {
         window.alert("Player " + player + " wins!");
         return false;
