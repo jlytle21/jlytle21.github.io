@@ -600,8 +600,11 @@ class SeedScene extends Scene {
       if (count == 0) {
         let oldLocation = new Vector2(this.flamingos[count].position.x, this.flamingos[count].position.z);
         let newLocation = new Vector2(100*Math.cos(timeStamp/10000) + 40, 100*Math.sin(timeStamp/5000) + 10);
-        let angle = oldLocation.angle() - newLocation.angle();
-        //this.flamingos[count].rotation.y = angle;
+        let difference = newLocation.clone().sub(oldLocation);
+        let ang = Math.atan(difference.y / difference.x);
+        // let angle = oldLocation.angle() - newLocation.angle();
+        this.flamingos[count].rotation.y = ang;
+        //console.log(this.flamingos);
         this.flamingos[count].position.x = 100*Math.cos(timeStamp/10000) + 40;
         this.flamingos[count].position.z = 100*Math.sin(timeStamp/5000) + 10 ;
       }
