@@ -72,17 +72,21 @@ class Popup { // class for popup messages
     this.modalcontent.appendChild(this.button);
 
     this.text = document.createElement("p");
+    this.text.setAttribute("id", "text");
     this.text.innerHTML = message;
     this.modalcontent.appendChild(this.text);
 
-    this.modal.style = "display: none: position: fixed; z-index: 1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0,0.4);";
+    this.modal.style = "display: inline: position: fixed; z-index: -1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0,0.4);";
     this.modalcontent.style = "background-color: blue; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;";
     this.button.style = "color: red; float: right; font-size: 28px; font-weight: bold;";
 
   }
-
+  update(message) {
+    document.getElementById("text").innerHTML = message;
+    document.getElementById("modal").style.display = "block";
+  }
   remove(instructions) {
-    document.getElementById("modal").remove();
+    document.getElementById("modal").style.display = "none";
     instructions = true;
   }
 }
@@ -92,7 +96,7 @@ class SeedScene extends Scene {
   constructor(numPlayers, camera) {
     // Call parent Scene() constructor
     super();
-    
+
     // Init state
     this.state = {
       //gui: new Dat.GUI(), // Create GUI for scene
@@ -200,10 +204,8 @@ class SeedScene extends Scene {
     }
     // Populate GUI
     //this.state.gui.add(this.state, 'rotationSpeed', -5, 5);
+    this.popup = new Popup('message');
 
-    let turn = "Player 1's Turn!\nUse the arrow keys to adjust the arrow\nClick Enter to move to next Penguin!";
-    this.Popup = new Popup(turn);
-    this.isPopup = true;
   }
 
   addToUpdateList(object) {
@@ -304,19 +306,19 @@ class SeedScene extends Scene {
 
     // Removes popup when user clicks enter
     if (event.key == "Enter" && this.isPopup && this.gameOn) {
+      this.popup.remove(this.isPopup);
       this.isPopup = false;
-      this.Popup.remove();
       return;
-    } 
+    }
 
     // Reloads page if final pop up declaring winner is shown and user clicks enter
     if (event.key == "Enter" && this.isPopup && !this.gameOn) {
       this.isPopup = false;
       location.reload();
       return;
-    } 
+    }
 
-    if (event.key == "Enter" && this.selectionOver == false) {
+    if (event.key == "Enter" && this.selectionOver == false && !this.isPopup) {
       let oldSelection = this.selectionPlayer;
       this.lastPosition = new Vector3(0, .35, 0);
       if (this.selectionPenguin + 1 <= this.remaining[this.selectionPlayer]) {
@@ -443,12 +445,12 @@ class SeedScene extends Scene {
     // Check if Game is over
     //console.log(this.remaining);
     if (this.sendMessage == false) {
-      
+
       console.log(this);
       // window.alert("Player " + this.selectionPlayer + "'s Turn!\nUse the arrow keys to adjust the arrow\nClick Enter to move to next Penguin!");
       this.isPopup = true;
       let turn = "Player " + this.selectionPlayer + "'s Turn!\nUse the arrow keys to adjust the arrow\nClick Enter to move to next Penguin!\n\nPress enter to begin your turn!";
-      this.Popup = new Popup(turn);
+      this.popup.update(turn);
       this.drawArrow(this.lastPosition);
       this.sendMessage = true;
     }
@@ -471,11 +473,15 @@ class SeedScene extends Scene {
         this.isPopup = true;
         this.gameOn = false;
         let mes = "Player " + player + " wins!\nPress enter to play again!";
-        this.Popup = new Popup(mes);
+        if (!this.isPopup) this.popup.update(mes);
         return false;
       }
       if (playersLeft == 0) {
-        window.alert("Game ends in a tie!");
+        //window.alert("Game ends in a tie!");
+        this.isPopup = true;
+        this.gameOn = false;
+        let mes = "TIE!\nPress enter to play again!";
+        if (!this.isPopup) this.popup.update(mes);
         return false;
       }
 
@@ -532,6 +538,7 @@ class SeedScene extends Scene {
   }
 
   update(timeStamp, camera) {
+    if (!this.gameOn) return;
     if (this.initial) {
       camera.position.set(0, 150, 0);
       this.initial = false
@@ -540,7 +547,6 @@ class SeedScene extends Scene {
     this.rotation.y = (rotationSpeed * timeStamp) / 10000;
 
     this.water.material.uniforms[ 'time' ].value += 1.0 / 60.0; // animate water
-
 
     let still = this.arePenguinsStill();
     //console.log("Number of penguins left: " + this.penguinsArray.length);
