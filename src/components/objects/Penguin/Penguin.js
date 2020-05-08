@@ -105,12 +105,14 @@ class Penguin extends Group {
         temp2.multiplyScalar(temp1);
         temp2.multiplyScalar((2*penguin.mass) / (penguin.mass + this.mass));
         this.velocity.sub(temp2);
+        this.velocity.y = 0;
 
         let temp3 = v2_v1.dot(x2_x1) / (x2_x1.length() * x2_x1.length());
         let temp4 = x2_x1.clone();
         temp4.multiplyScalar(temp3);
         temp4.multiplyScalar((2*penguin.mass) / (penguin.mass + this.mass));
         penguin.velocity.sub(temp4);
+        penguin.velocity.y = 0;
 
         return true;
       }
