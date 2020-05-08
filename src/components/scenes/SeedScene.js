@@ -94,7 +94,7 @@ class SeedScene extends Scene {
   constructor(numPlayers, camera) {
     // Call parent Scene() constructor
     super();
-
+    
     // Init state
     this.state = {
       //gui: new Dat.GUI(), // Create GUI for scene
