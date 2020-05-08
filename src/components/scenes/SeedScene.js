@@ -85,8 +85,6 @@ class Popup { // class for popup messages
     document.getElementById("modal").remove();
     instructions = true;
   }
-
-
 }
 
 
@@ -111,6 +109,11 @@ class SeedScene extends Scene {
     // TO be used to select
     this.selectionPlayer = 1;
     this.selectionPenguin = 1;
+
+    // If game is not over this is true
+    this.gameOn = true;
+
+    this.isPopup = false;
 
     this.sendMessage = true;
 
@@ -197,6 +200,10 @@ class SeedScene extends Scene {
     }
     // Populate GUI
     //this.state.gui.add(this.state, 'rotationSpeed', -5, 5);
+
+    let turn = "Player 1's Turn!\nUse the arrow keys to adjust the arrow\nClick Enter to move to next Penguin!";
+    this.Popup = new Popup(turn);
+    this.isPopup = true;
   }
 
   addToUpdateList(object) {
@@ -294,6 +301,20 @@ class SeedScene extends Scene {
 
   handleImpactEvents(event) {
     if (event.key == "1") this.camera.position.set(0, 150, 0);
+
+    // Removes popup when user clicks enter
+    if (event.key == "Enter" && this.isPopup && this.gameOn) {
+      this.isPopup = false;
+      this.Popup.remove();
+      return;
+    } 
+
+    // Reloads page if final pop up declaring winner is shown and user clicks enter
+    if (event.key == "Enter" && this.isPopup && !this.gameOn) {
+      this.isPopup = false;
+      location.reload();
+      return;
+    } 
 
     if (event.key == "Enter" && this.selectionOver == false) {
       let oldSelection = this.selectionPlayer;
@@ -422,50 +443,12 @@ class SeedScene extends Scene {
     // Check if Game is over
     //console.log(this.remaining);
     if (this.sendMessage == false) {
-      /*
-      this.element = document.createElement("DIV");
-      this.element.style.width = "100px";
-      this.element.style.height = "100px";
-      this.element.style.background = "red";
-      this.element.style.color = "white";
-      this.element.innerHTML = "Hello";
-		  this.element.innerText = "test";
-      document.body.appendChild(this.element);
-      */
-
-
-      /*
-      // Creating a div element
-      var divElement = document.createElement("Div");
-      divElement.id = "divID";
-
-      // Styling it
-      divElement.style.textAlign = "center";
-      divElement.style.fontWeight = "bold";
-      divElement.style.fontSize = "smaller";
-      divElement.style.paddingTop = "15px";
-
-      // Adding a paragraph to it
-      var paragraph = document.createElement("P");
-      var text = document.createTextNode("Another paragraph, yay! This one will be styled different from the rest since we styled the DIV we specifically created.");
-      paragraph.appendChild(text);
-      divElement.appendChild(paragraph);
-
-      // Adding a button, cause why not!
-      var button = document.createElement("Button");
-      var textForButton = document.createTextNode("Release the alert");
-      button.appendChild(textForButton);
-      button.addEventListener("click", function(){
-          alert("Hi!");
-      });
-      divElement.appendChild(button);
-
-      // Appending the div element to body
-      document.getElementsByTagName("body")[0].appendChild(divElement);
-
-*/
+      
       console.log(this);
-      window.alert("Player " + this.selectionPlayer + "'s Turn!\nUse the arrow keys to adjust the arrow\nClick Enter to move to next Penguin!");
+      // window.alert("Player " + this.selectionPlayer + "'s Turn!\nUse the arrow keys to adjust the arrow\nClick Enter to move to next Penguin!");
+      this.isPopup = true;
+      let turn = "Player " + this.selectionPlayer + "'s Turn!\nUse the arrow keys to adjust the arrow\nClick Enter to move to next Penguin!\n\nPress enter to begin your turn!";
+      this.Popup = new Popup(turn);
       this.drawArrow(this.lastPosition);
       this.sendMessage = true;
     }
@@ -484,7 +467,11 @@ class SeedScene extends Scene {
       this.score.updateScore(this.remaining, this.round);
       // check if game is over
       if (playersLeft == 1) {
-        window.alert("Player " + player + " wins!");
+        // window.alert("Player " + player + " wins!");
+        this.isPopup = true;
+        this.gameOn = false;
+        let mes = "Player " + player + " wins!\nPress enter to play again!";
+        this.Popup = new Popup(mes);
         return false;
       }
       if (playersLeft == 0) {
@@ -530,6 +517,7 @@ class SeedScene extends Scene {
       this.selectionOver = false;
     }
 
+    return true;
   }
 
 
@@ -557,7 +545,7 @@ class SeedScene extends Scene {
     let still = this.arePenguinsStill();
     //console.log("Number of penguins left: " + this.penguinsArray.length);
     if (still) {
-      let gameOver = this.performRound(camera); // returns false if game is over
+      this.gameOn = this.performRound(camera); // returns false if game is over
     }
 
     this.handlePenguinsOffIce();
@@ -565,12 +553,6 @@ class SeedScene extends Scene {
     this.handleFriction();
     this.updateVelocities(0.01);
     this.updatePenguinPositions(0.01);
-
-
-    // Call update for each object in the updateList
-    //for (const obj of updateList) {
-    //obj.update(0, 0); // moves penguins 0 in x and 0 in z direction
-    //}
   }
 }
 
