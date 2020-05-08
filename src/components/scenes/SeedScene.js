@@ -600,19 +600,27 @@ class SeedScene extends Scene {
       if (count == 0) {
         let oldLocation = new Vector2(this.flamingos[count].position.x, this.flamingos[count].position.z);
         let newLocation = new Vector2(100*Math.cos(timeStamp/10000) + 40, 100*Math.sin(timeStamp/5000) + 10);
-        let difference = newLocation.clone().sub(oldLocation);
-        let ang = Math.atan(difference.y / difference.x);
-        // let angle = oldLocation.angle() - newLocation.angle();
-        this.flamingos[count].rotation.y = ang;
-        //console.log(this.flamingos);
+        let difference = oldLocation.clone().sub(newLocation);
+        let ang = difference.angle();
+        this.flamingos[count].rotation.y = -1 * (ang -  6 * Math.PI / 4);
         this.flamingos[count].position.x = 100*Math.cos(timeStamp/10000) + 40;
         this.flamingos[count].position.z = 100*Math.sin(timeStamp/5000) + 10 ;
       }
       if (count == 1) {
+        let oldLocation = new Vector2(this.flamingos[count].position.x, this.flamingos[count].position.z);
+        let newLocation = new Vector2(-100*Math.sin(timeStamp/5000), -100*Math.cos(timeStamp/10000) + 60);
+        let difference = oldLocation.clone().sub(newLocation);
+        let ang = difference.angle();
+        this.flamingos[count].rotation.y = -1 * (ang -  6 * Math.PI / 4);
         this.flamingos[count].position.x = -100*Math.sin(timeStamp/5000);
         this.flamingos[count].position.z = -100*Math.cos(timeStamp/10000) + 60;
       }
       if (count == 2) {
+        let oldLocation = new Vector2(this.flamingos[count].position.x, this.flamingos[count].position.z);
+        let newLocation = new Vector2(-100*Math.cos(timeStamp/10000), 100*Math.sin(timeStamp/5000));
+        let difference = oldLocation.clone().sub(newLocation);
+        let ang = difference.angle();
+        this.flamingos[count].rotation.y = -1 * (ang -  6 * Math.PI / 4);
         this.flamingos[count].position.x = -100*Math.cos(timeStamp/10000);
         this.flamingos[count].position.z = 100*Math.sin(timeStamp/5000);
       }
