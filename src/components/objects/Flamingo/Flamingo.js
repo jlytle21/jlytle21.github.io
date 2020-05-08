@@ -10,7 +10,7 @@ class Flamingo extends Group {
 
         // flamingo from https://github.com/mrdoob/three.js/blob/master/examples/webgl_lights_hemisphere.html
         const loader = new GLTFLoader();
-        loader.load(MODEL, function ( gltf ) {
+        loader.load(MODEL, ( gltf ) => {
           flamingo = gltf.scene.children[ 0 ];
           let s = 0.35;
           flamingo.scale.set( s, s, s );
