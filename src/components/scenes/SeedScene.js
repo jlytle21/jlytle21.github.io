@@ -85,8 +85,6 @@ class Popup { // class for popup messages
     document.getElementById("modal").remove();
     instructions = true;
   }
-
-
 }
 
 
