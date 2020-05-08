@@ -469,19 +469,17 @@ class SeedScene extends Scene {
       this.score.updateScore(this.remaining, this.round);
       // check if game is over
       if (playersLeft == 1) {
-        // window.alert("Player " + player + " wins!");
         this.isPopup = true;
         this.gameOn = false;
         let mes = "Player " + player + " wins!\nPress enter to play again!";
-        if (!this.isPopup) this.popup.update(mes);
+        this.popup.update(mes);
         return false;
       }
       if (playersLeft == 0) {
-        //window.alert("Game ends in a tie!");
         this.isPopup = true;
         this.gameOn = false;
         let mes = "TIE!\nPress enter to play again!";
-        if (!this.isPopup) this.popup.update(mes);
+        this.popup.update(mes);
         return false;
       }
 
