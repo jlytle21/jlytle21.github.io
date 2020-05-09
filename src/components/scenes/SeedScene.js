@@ -650,13 +650,13 @@ performRoundEnding() {
 
 update(timeStamp, camera) {
   if (!this.gameOn) return;
-  if (timeStamp < 7000) return;
+  if (timeStamp < 6000) return;
 
   // Initial camera sweep to showcase scene
   if (this.initial) {
-    if (timeStamp < 17000) {
-      camera.position.x = -500*Math.cos((timeStamp-7000)/4000 - 0.93);
-      camera.position.z = 500*Math.sin((timeStamp- 7000)/4000 - 0.93);
+    if (timeStamp < 16000) {
+      camera.position.x = -500*Math.cos((timeStamp-6000)/4000 - 0.93);
+      camera.position.z = 500*Math.sin((timeStamp- 6000)/4000 - 0.93);
       camera.position.y = 100;
     }
     else {
