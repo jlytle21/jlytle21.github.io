@@ -281,7 +281,11 @@ class SeedScene extends Scene {
     }
     // Populate GUI
     //this.state.gui.add(this.state, 'rotationSpeed', -5, 5);
+
+    // Initialize popup of scene
     this.popup = new Popup('message');
+    this.popup.remove(this.isPopup);
+    this.isPopup = false;
 
   }
 
@@ -635,19 +639,21 @@ performRoundEnding() {
 
 update(timeStamp, camera) {
   if (!this.gameOn) return;
+
+  // Initial camera sweep to showcase scene
   if (this.initial) {
     if (timeStamp < 10000) {
-      camera.position.x = -500*Math.cos(timeStamp/4000 + 10);
-      camera.position.z = 500*Math.sin(timeStamp/4000 + 10);
+      camera.position.x = -500*Math.cos(timeStamp/4000 - 0.93);
+      camera.position.z = 500*Math.sin(timeStamp/4000 - 0.93);
       camera.position.y = 100;
     }
     else {
       camera.position.x += -camera.position.x/100;
       camera.position.z += -camera.position.z/100;
-      camera.position.y += 1;
+      camera.position.y += 0.25;
     }
   }
-  if (camera.position.x == 0 && camera.position.z == 0 && this.initial) {
+  if (Math.abs(camera.position.x) < 5 && Math.abs(camera.position.z) < 5 && this.initial) {
     this.initial = false;
   }
 
@@ -707,8 +713,9 @@ update(timeStamp, camera) {
   this.water.material.uniforms[ 'time' ].value += 1.0 / 60.0; // animate water
 
   let still = this.arePenguinsStill();
-  //console.log("Number of penguins left: " + this.penguinsArray.length);
-  if (still) {
+  
+  // Only perform round if not in intro and penguins are still
+  if (still && !this.initial) {
     this.gameOn = this.performRound(camera); // returns false if game is over
   }
 
