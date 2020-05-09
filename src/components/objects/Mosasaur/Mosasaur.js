@@ -23,7 +23,10 @@ class Mosasaur extends Group {
       loader.setMaterials(materials);
 
       loader.load(MODEL, (object) => {
-        object.position.y = 50;
+        object.position.y = -20;
+        object.position.z = 140;
+        object.position.x = 80;
+        object.rotation.y = -2;
         object.scale.multiplyScalar(50);
         this.add(object);
       });

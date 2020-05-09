@@ -641,6 +641,7 @@ class SeedScene extends Scene {
     this.shark.position.x = 100*Math.cos(timeStamp/2000);
     this.shark.position.z = 100*Math.sin(timeStamp/2000);
 
+    // the mosasaur appears
     this.water.material.uniforms[ 'time' ].value += 1.0 / 60.0; // animate water
 
     let still = this.arePenguinsStill();
