@@ -632,8 +632,13 @@ class SeedScene extends Scene {
     }
 
     // move Shark
-    this.shark.position.x = 100*Math.cos(timeStamp/1000);
-    this.shark.position.z = 100*Math.sin(timeStamp/1000);
+    let oldSharkLocation = new Vector2(this.shark.position.x, this.shark.position.z);
+    let newSharkLocation = new Vector2(100*Math.cos(timeStamp/2000), 100*Math.sin(timeStamp/2000));
+    let sharkDifference = oldSharkLocation.clone().sub(newSharkLocation);
+    let sharkAng = sharkDifference.angle();
+    this.shark.rotation.y = -1 * (sharkAng -  6 * Math.PI / 4);
+    this.shark.position.x = 100*Math.cos(timeStamp/2000);
+    this.shark.position.z = 100*Math.sin(timeStamp/2000);
 
     this.water.material.uniforms[ 'time' ].value += 1.0 / 60.0; // animate water
 
