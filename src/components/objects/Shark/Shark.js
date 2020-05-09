@@ -22,10 +22,7 @@ class Shark extends Group {
         }
       });
       object.scale.multiplyScalar(0.5);
-      object.position.x = 60;
       object.position.y = -23.7;
-      object.position.z = 60;
-      object.rotation.y = -0.75;
       this.add(object);
     });
   }

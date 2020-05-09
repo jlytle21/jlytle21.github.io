@@ -631,6 +631,10 @@ class SeedScene extends Scene {
       m.update( delta );
     }
 
+    // move Shark
+    this.shark.position.x = 100*Math.cos(timeStamp/1000);
+    this.shark.position.z = 100*Math.sin(timeStamp/1000);
+
     this.water.material.uniforms[ 'time' ].value += 1.0 / 60.0; // animate water
 
     let still = this.arePenguinsStill();
