@@ -6,8 +6,8 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 import { TextureLoader } from 'three/src/loaders/TextureLoader.js';
 
 class Shark extends Group {
-  constructor(scalar) {
-    // Call parent Group() constructor
+  constructor() {
+    // from https://poly.google.com/view/1mVWW4RFVHc
     super();
 
     const loader = new OBJLoader();
