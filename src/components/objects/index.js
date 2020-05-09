@@ -4,3 +4,5 @@ export * from './Penguin';
 export * from './Water';
 export * from './Shark';
 export * from './Mosasaur';
+export * from './Mountain';
+export * from './Island';

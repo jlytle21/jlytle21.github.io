@@ -1,10 +1,8 @@
 import { Group, Vector3 } from 'three';
 import MODEL from './model.obj';
 import MATERIAL from './materials.mtl';
-//import IMAGE from './Tex_Shark.png';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
-//import { TextureLoader } from 'three/src/loaders/TextureLoader.js';
 
 class Mosasaur extends Group {
   constructor() {
