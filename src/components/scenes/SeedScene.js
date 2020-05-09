@@ -1,6 +1,6 @@
 import * as Dat from 'dat.gui';
 import { Scene, Color, Clock, ArrowHelper, Vector3, Vector2, DodecahedronBufferGeometry, RepeatWrapping, TextureLoader, PlaneBufferGeometry, AnimationMixer } from 'three';
-import { Ice, Penguin } from 'objects';
+import { Ice, Penguin, Shark } from 'objects';
 import { Water } from 'three/examples/jsm/objects/Water.js';
 import WaterNormals from './textures/waternormals.jpg';
 import Flamingo from './flamingo/Flamingo.glb';
@@ -207,7 +207,9 @@ class SeedScene extends Scene {
       this.add(this.flamingo3);
       this.flamingos.push(this.flamingo3);
     });
-    this.add(this.ice, this.water, lights);
+
+    this.shark = new Shark();
+    this.add(this.ice, this.water, this.shark, lights);
     // Array of penguins in scene
     this.penguinsArray = [];
     // Round number
