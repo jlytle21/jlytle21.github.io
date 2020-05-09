@@ -1,9 +1,10 @@
 import * as Dat from 'dat.gui';
-import { Scene, Color, Clock, ArrowHelper, Vector3, Vector2, DodecahedronBufferGeometry, RepeatWrapping, TextureLoader, PlaneBufferGeometry, AnimationMixer } from 'three';
+import { Scene, Color, Clock, AudioLoader, AudioListener, Audio, ArrowHelper, Vector3, Vector2, DodecahedronBufferGeometry, RepeatWrapping, TextureLoader, PlaneBufferGeometry, AnimationMixer } from 'three';
 import { Ice, Penguin, Shark, Mosasaur } from 'objects';
 import { Water } from 'three/examples/jsm/objects/Water.js';
 import WaterNormals from './textures/waternormals.jpg';
 import Flamingo from './flamingo/Flamingo.glb';
+import Splash from './sounds/bigSplash.ogg';
 import { BasicLights } from 'lights';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
@@ -126,6 +127,14 @@ class SeedScene extends Scene {
     this.sendMessage = true;
 
     this.camera = camera; // save camera
+
+    // Set up audio listener and global audio source
+    // create an AudioListener and add it to the camera
+    this.listener = new AudioListener();
+    this.camera.add( this.listener );
+
+    // create a global audio source
+    this.sound = new Audio( this.listener );
 
     // to determine if all selections were made
     this.selectionOver = true;
@@ -282,7 +291,19 @@ class SeedScene extends Scene {
       let currentPenguin = this.penguinsArray[i];
 
       for (let j = i + 1; j < this.penguinsArray.length; j++) {
-        currentPenguin.collide(this.penguinsArray[j]);
+        let isColiision = currentPenguin.collide(this.penguinsArray[j]);
+        // Play noise if there is a collision
+        if (isColiision) {
+          // load a sound and set it as the Audio object's buffer
+          // Sound obtained from royalty free site https://bigsoundbank.com
+          let audioLoader = new AudioLoader();
+          audioLoader.load(Splash, function( buffer )  {
+	          this.sound.setBuffer( buffer );
+	          this.sound.setLoop(true);
+	          this.sound.setVolume(0.5);
+	          this.sound.play();
+          });
+        }
       }
     }
   }
