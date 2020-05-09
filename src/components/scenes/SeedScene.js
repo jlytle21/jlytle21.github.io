@@ -7,6 +7,7 @@ import Flamingo from './birds/Flamingo.glb';
 import Stork from './birds/Stork.glb';
 import Parrot from './birds/Parrot.glb';
 import Splash from './sounds/bigSplash.ogg';
+import Squawk from './sounds/squawk.mp3';
 import { BasicLights } from 'lights';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
@@ -146,9 +147,6 @@ class SeedScene extends Scene {
     // create an AudioListener and add it to the camera
     this.listener = new AudioListener();
     this.camera.add( this.listener );
-
-    // create a global audio source
-    this.sound = new Audio( this.listener );
 
     // to determine if all selections were made
     this.selectionOver = true;
@@ -313,13 +311,14 @@ class SeedScene extends Scene {
         // Play noise if there is a collision
         if (isColiision) {
           // load a sound and set it as the Audio object's buffer
-          // Sound obtained from royalty free site https://bigsoundbank.com
+          // Sound obtained from royalty free site https://sounddogs.com
           let audioLoader = new AudioLoader();
-          audioLoader.load(Splash, function( buffer )  {
-            this.sound.setBuffer( buffer );
-            this.sound.setLoop(true);
-            this.sound.setVolume(0.5);
-            this.sound.play();
+          let sound = new Audio(this.listener);
+          audioLoader.load(Squawk, function( buffer )  {
+            sound.setBuffer( buffer );
+            sound.setLoop(false);
+            sound.setVolume(0.6);
+            sound.play();
           });
         }
       }
@@ -342,18 +341,28 @@ class SeedScene extends Scene {
   }
   // Update positions of each penguin based on displacement
   updatePenguinPositions(deltaT) {
-    //console.log(this.penguinsArray);
     for (let p of this.penguinsArray) {
-      //console.log(p.position.x);
-      let acc = p.netForce.clone();
+      // Store original y coordinate
+      let originalY = p.coordinates.y;
+
       let v = p.velocity.clone();
-      //let displacement = v.multiplyScalar(deltaT).add(acc.multiplyScalar(0.5 * deltaT * deltaT));
-      // displacement.x = displacement.x + 0.03
       v.multiplyScalar(deltaT);
       p.position.add(v);
       p.coordinates.add(v);
-      // console.log(displacement.y);
-      //p.update(displacement.x, displacement.y, displacement.z);
+      
+      // Make splash sound if penguins enter water
+      // load a sound and set it as the Audio object's buffer
+      // Sound obtained from royalty free site https://bigsoundbank.com
+      if (p.coordinates.y < -5.5 && originalY >= -5.5) {
+        let audioLoader = new AudioLoader();
+        let sound = new Audio(this.listener);
+        audioLoader.load(Splash, function( buffer )  {
+          sound.setBuffer( buffer );
+          sound.setLoop(false);
+          sound.setVolume(0.5);
+          sound.play();
+        });
+      }
     }
   }
   onMouseClick(event) {
