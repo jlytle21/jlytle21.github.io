@@ -51,7 +51,7 @@ class Score { // class to create scoreboard
       this.column.style = "color: white;"
       document.getElementById("scoreRow").appendChild(this.column);
     }
-    this.table.style = "border-spacing: 0.5rem; border: 1px solid black; text-align: center; width: 100%; background: black; position: fixed; font-family: 'Monaco'";
+    this.table.style = "border-spacing: 0.5rem; border-radius: 10px; border: 1px solid black; text-align: center; width: 100%; background: black; position: fixed; font-family: 'Monaco'";
   }
   updateScore(remaining, round) {
     document.getElementById("round").textContent = round;
@@ -71,22 +71,34 @@ class Popup { // class for popup messages
     this.modalcontent.setAttribute("id", "modalcontent");
     this.modal.appendChild(this.modalcontent);
 
-    this.button = document.createElement("BTN");
-    this.button.setAttribute("id", "close");
-    this.button.appendChild(document.createTextNode("X"));
-    this.modalcontent.appendChild(this.button);
 
     this.text = document.createElement("p");
     this.text.setAttribute("id", "text");
     this.text.innerHTML = message;
     this.modalcontent.appendChild(this.text);
 
-    this.modal.style = "display: inline: position: fixed; z-index: -1; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgb(0,0,0,0.4);";
-    this.modalcontent.style = "background-color: blue; margin: 15% auto; padding: 20px; border: 1px solid #888; width: 80%;";
-    this.button.style = "color: red; float: right; font-size: 28px; font-weight: bold;";
+    this.modal.style = "display: none: position: absolute; z-index: 1; left: 0; top: 0; width: 100%; min-height: 100vh; overflow: auto; background-color: blue;";
+    this.modalcontent.style = "background-color: blue; margin: 15% auto; padding: 20px; border: 0px; width: 80%;";
+
 
   }
   update(message) {
+    if (message.includes("1")) {
+      document.getElementById("modal").style['background-color'] = 'grey';
+      document.getElementById("modalcontent").style['background-color'] = 'grey';
+    }
+    if (message.includes("2")) {
+      document.getElementById("modal").style['background-color'] = 'red';
+      document.getElementById("modalcontent").style['background-color'] = 'red';
+    }
+    if (message.includes("3")) {
+      document.getElementById("modal").style['background-color'] = 'green';
+      document.getElementById("modalcontent").style['background-color'] = 'green';
+    }
+    if (message.includes("4")) {
+      document.getElementById("modal").style['background-color'] = 'blue';
+      document.getElementById("modalcontent").style['background-color'] = 'blue';
+    }
     document.getElementById("text").innerHTML = message;
     document.getElementById("modal").style.display = "block";
   }
