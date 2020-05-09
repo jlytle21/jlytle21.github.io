@@ -641,7 +641,16 @@ class SeedScene extends Scene {
     this.shark.position.x = 100*Math.cos(timeStamp/2000);
     this.shark.position.z = 100*Math.sin(timeStamp/2000);
 
-    // the mosasaur appears
+    // Cause the mosasaur to jump infrequently with varying height
+    // max height of 40
+    let jumpFactor = 70 * (this.round / 5.0) + 10;
+    if (jumpFactor > 80) {
+      jumpFactor = 80;
+    }
+    let newHeight = -1 * jumpFactor * Math.cos((timeStamp) / 5000) + -60;
+    this.mosasaur.position.y = newHeight;
+
+
     this.water.material.uniforms[ 'time' ].value += 1.0 / 60.0; // animate water
 
     let still = this.arePenguinsStill();
