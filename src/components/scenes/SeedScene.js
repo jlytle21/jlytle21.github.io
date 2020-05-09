@@ -172,51 +172,51 @@ class SeedScene extends Scene {
     this.water.position.y -= 10;
     // flamingo from https://github.com/mrdoob/three.js/blob/master/examples/webgl_lights_hemisphere.html
     this.mixers = [];
-    this.flamingos = [];
+    this.birds = [];
     const loader1 = new GLTFLoader();
     loader1.load(Flamingo, ( gltf ) => {
-      this.flamingo1 = gltf.scene.children[ 0 ];
+      this.flamingo = gltf.scene.children[ 0 ];
       let s = 0.1;
-      this.flamingo1.scale.set( s, s, s );
-      this.flamingo1.position.y = 40;
-      this.flamingo1.rotation.y = - 1;
-      this.flamingo1.castShadow = true;
-      this.flamingo1.receiveShadow = true;
-      let mixer1 = new AnimationMixer( this.flamingo1 );
+      this.flamingo.scale.set( s, s, s );
+      this.flamingo.position.y = 40;
+      this.flamingo.rotation.y = - 1;
+      this.flamingo.castShadow = true;
+      this.flamingo.receiveShadow = true;
+      let mixer1 = new AnimationMixer( this.flamingo );
       mixer1.clipAction( gltf.animations[ 0 ] ).setDuration( 1 ).play();
       this.mixers.push(mixer1);
-      this.add(this.flamingo1);
-      this.flamingos.push(this.flamingo1);
+      this.add(this.flamingo);
+      this.birds.push(this.flamingo);
     });
     const loader2 = new GLTFLoader();
     loader2.load(Parrot, ( gltf ) => {
-      this.flamingo2 = gltf.scene.children[ 0 ];
+      this.parrot = gltf.scene.children[ 0 ];
       let s = 0.1;
-      this.flamingo2.scale.set( s, s, s );
-      this.flamingo2.position.y = 60;
-      this.flamingo2.rotation.y = - 1;
-      this.flamingo2.castShadow = true;
-      this.flamingo2.receiveShadow = true;
-      let mixer2 = new AnimationMixer( this.flamingo2 );
+      this.parrot.scale.set( s, s, s );
+      this.parrot.position.y = 60;
+      this.parrot.rotation.y = - 1;
+      this.parrot.castShadow = true;
+      this.parrot.receiveShadow = true;
+      let mixer2 = new AnimationMixer( this.parrot );
       mixer2.clipAction( gltf.animations[ 0 ] ).setDuration( 1 ).play();
       this.mixers.push(mixer2);
-      this.add(this.flamingo2);
-      this.flamingos.push(this.flamingo2);
+      this.add(this.parrot);
+      this.birds.push(this.parrot);
     });
     const loader3 = new GLTFLoader();
     loader3.load(Stork, ( gltf ) => {
-      this.flamingo3 = gltf.scene.children[ 0 ];
+      this.stork= gltf.scene.children[ 0 ];
       let s = 0.1;
-      this.flamingo3.scale.set( s, s, s );
-      this.flamingo3.position.y = 80;
-      this.flamingo3.rotation.y = - 1;
-      this.flamingo3.castShadow = true;
-      this.flamingo3.receiveShadow = true;
-      let mixer3 = new AnimationMixer( this.flamingo3 );
+      this.stork.scale.set( s, s, s );
+      this.stork.position.y = 80;
+      this.stork.rotation.y = - 1;
+      this.stork.castShadow = true;
+      this.stork.receiveShadow = true;
+      let mixer3 = new AnimationMixer( this.stork );
       mixer3.clipAction( gltf.animations[ 0 ] ).setDuration( 1 ).play();
       this.mixers.push(mixer3);
-      this.add(this.flamingo3);
-      this.flamingos.push(this.flamingo3);
+      this.add(this.stork);
+      this.birds.push(this.stork);
     });
 
     this.shark = new Shark();
@@ -622,33 +622,33 @@ class SeedScene extends Scene {
     this.rotation.y = (rotationSpeed * timeStamp) / 10000;
 
     let delta = this.clock.getDelta(); // motion of flamingos
-    for (let count = 0; count < this.flamingos.length; count++) {
+    for (let count = 0; count < this.birds.length; count++) {
       if (count == 0) {
-        let oldLocation = new Vector2(this.flamingos[count].position.x, this.flamingos[count].position.z);
+        let oldLocation = new Vector2(this.birds[count].position.x, this.birds[count].position.z);
         let newLocation = new Vector2(100*Math.cos(timeStamp/10000) + 40, 100*Math.sin(timeStamp/5000) + 10);
         let difference = oldLocation.clone().sub(newLocation);
         let ang = difference.angle();
-        this.flamingos[count].rotation.y = -1 * (ang -  6 * Math.PI / 4);
-        this.flamingos[count].position.x = 100*Math.cos(timeStamp/10000) + 40;
-        this.flamingos[count].position.z = 100*Math.sin(timeStamp/5000) + 10 ;
+        this.birds[count].rotation.y = -1 * (ang -  6 * Math.PI / 4);
+        this.birds[count].position.x = 100*Math.cos(timeStamp/10000) + 40;
+        this.birds[count].position.z = 100*Math.sin(timeStamp/5000) + 10 ;
       }
       if (count == 1) {
-        let oldLocation = new Vector2(this.flamingos[count].position.x, this.flamingos[count].position.z);
+        let oldLocation = new Vector2(this.birds[count].position.x, this.birds[count].position.z);
         let newLocation = new Vector2(-100*Math.sin(timeStamp/5000), -100*Math.cos(timeStamp/10000) + 60);
         let difference = oldLocation.clone().sub(newLocation);
         let ang = difference.angle();
-        this.flamingos[count].rotation.y = -1 * (ang -  6 * Math.PI / 4);
-        this.flamingos[count].position.x = -100*Math.sin(timeStamp/5000);
-        this.flamingos[count].position.z = -100*Math.cos(timeStamp/10000) + 60;
+        this.birds[count].rotation.y = -1 * (ang -  6 * Math.PI / 4);
+        this.birds[count].position.x = -100*Math.sin(timeStamp/5000);
+        this.birds[count].position.z = -100*Math.cos(timeStamp/10000) + 60;
       }
       if (count == 2) {
-        let oldLocation = new Vector2(this.flamingos[count].position.x, this.flamingos[count].position.z);
+        let oldLocation = new Vector2(this.birds[count].position.x, this.birds[count].position.z);
         let newLocation = new Vector2(-100*Math.cos(timeStamp/10000), 100*Math.sin(timeStamp/5000));
         let difference = oldLocation.clone().sub(newLocation);
         let ang = difference.angle();
-        this.flamingos[count].rotation.y = -1 * (ang -  6 * Math.PI / 4);
-        this.flamingos[count].position.x = -100*Math.cos(timeStamp/10000);
-        this.flamingos[count].position.z = 100*Math.sin(timeStamp/5000);
+        this.birds[count].rotation.y = -1 * (ang -  6 * Math.PI / 4);
+        this.birds[count].position.x = -100*Math.cos(timeStamp/10000);
+        this.birds[count].position.z = 100*Math.sin(timeStamp/5000);
       }
     }
     for (let m of this.mixers) {
