@@ -1,6 +1,6 @@
 import * as Dat from 'dat.gui';
 import { Scene, Color, Clock, AudioLoader, AudioListener, Audio, ArrowHelper, Vector3, Vector2, DodecahedronBufferGeometry, RepeatWrapping, TextureLoader, PlaneBufferGeometry, AnimationMixer } from 'three';
-import { Ice, Penguin, Shark, Mosasaur } from 'objects';
+import { Ice, Penguin, Shark, Mosasaur, Mountain, Island } from 'objects';
 import { Water } from 'three/examples/jsm/objects/Water.js';
 import WaterNormals from './textures/waternormals.jpg';
 import Flamingo from './birds/Flamingo.glb';
@@ -231,7 +231,9 @@ class SeedScene extends Scene {
 
     this.shark = new Shark();
     this.mosasaur = new Mosasaur();
-    this.add(this.ice, this.water, this.shark, this.mosasaur, lights);
+    this.mountain = new Mountain();
+    this.island = new Island();
+    this.add(this.ice, this.water, this.shark, this.mosasaur, this.mountain, this.island, lights);
     // Array of penguins in scene
     this.penguinsArray = [];
     // Round number
@@ -722,7 +724,7 @@ update(timeStamp, camera) {
   this.water.material.uniforms[ 'time' ].value += 1.0 / 60.0; // animate water
 
   let still = this.arePenguinsStill();
-  
+
   // Only perform round if not in intro and penguins are still
   if (still && !this.initial) {
     this.gameOn = this.performRound(camera); // returns false if game is over
