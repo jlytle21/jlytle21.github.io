@@ -3,7 +3,9 @@ import { Scene, Color, Clock, AudioLoader, AudioListener, Audio, ArrowHelper, Ve
 import { Ice, Penguin, Shark, Mosasaur } from 'objects';
 import { Water } from 'three/examples/jsm/objects/Water.js';
 import WaterNormals from './textures/waternormals.jpg';
-import Flamingo from './flamingo/Flamingo.glb';
+import Flamingo from './birds/Flamingo.glb';
+import Stork from './birds/Stork.glb';
+import Parrot from './birds/Parrot.glb';
 import Splash from './sounds/bigSplash.ogg';
 import { BasicLights } from 'lights';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
@@ -187,7 +189,7 @@ class SeedScene extends Scene {
       this.flamingos.push(this.flamingo1);
     });
     const loader2 = new GLTFLoader();
-    loader2.load(Flamingo, ( gltf ) => {
+    loader2.load(Parrot, ( gltf ) => {
       this.flamingo2 = gltf.scene.children[ 0 ];
       let s = 0.1;
       this.flamingo2.scale.set( s, s, s );
@@ -202,7 +204,7 @@ class SeedScene extends Scene {
       this.flamingos.push(this.flamingo2);
     });
     const loader3 = new GLTFLoader();
-    loader3.load(Flamingo, ( gltf ) => {
+    loader3.load(Stork, ( gltf ) => {
       this.flamingo3 = gltf.scene.children[ 0 ];
       let s = 0.1;
       this.flamingo3.scale.set( s, s, s );
