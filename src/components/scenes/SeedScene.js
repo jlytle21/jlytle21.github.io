@@ -353,6 +353,20 @@ class SeedScene extends Scene {
     }
   }
   onMouseClick(event) {
+    console.log(event);
+    // Removes popup when user clicks enter
+    if (event.type == "click" && this.isPopup && this.gameOn) {
+      this.popup.remove(this.isPopup);
+      this.isPopup = false;
+      return;
+    }
+
+    // Reloads page if final pop up declaring winner is shown and user clicks enter
+    if (event.type == "click" && this.isPopup && !this.gameOn) {
+      this.isPopup = false;
+      location.reload();
+      return;
+    }
     /*
     console.log("===========");
     console.log(this.selectionOver);
@@ -391,6 +405,7 @@ class SeedScene extends Scene {
   }
 
   handleImpactEvents(event) {
+    console.log(event.key);
     if (event.key == "1") this.camera.position.set(0, 150, 0);
 
     // Removes popup when user clicks enter
