@@ -319,7 +319,7 @@ class SeedScene extends Scene {
           audioLoader.load(Squawk, function( buffer )  {
             sound.setBuffer( buffer );
             sound.setLoop(false);
-            sound.setVolume(0.6);
+            sound.setVolume(0.4);
             sound.play();
           });
         }
@@ -361,7 +361,7 @@ class SeedScene extends Scene {
         audioLoader.load(Splash, function( buffer )  {
           sound.setBuffer( buffer );
           sound.setLoop(false);
-          sound.setVolume(0.5);
+          sound.setVolume(0.6);
           sound.play();
         });
       }
