@@ -14,7 +14,7 @@ class Mountain extends Group {
 
     const loader = new OBJLoader();
 
-    loader.load(MODEL, (object) => {
+    loader.load(MODEL, (object) => { // load object and add to scene
       object.traverse((child) => {
         if (child.type == "Mesh") {
           child.material.map = texture;
@@ -24,7 +24,6 @@ class Mountain extends Group {
       object.position.y -= 12;
       object.position.x = 1000;
       object.position.z = -1000;
-
       this.add(object);
     });
 

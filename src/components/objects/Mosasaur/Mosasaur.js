@@ -15,7 +15,7 @@ class Mosasaur extends Group {
 
     this.name = 'mosasaur';
 
-    mtlloader.load(MATERIAL, (materials) => {
+    mtlloader.load(MATERIAL, (materials) => { // load object + material and add to scene
       materials.preload();
       const loader = new OBJLoader();
       loader.setMaterials(materials);

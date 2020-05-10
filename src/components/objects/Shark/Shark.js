@@ -14,12 +14,10 @@ class Shark extends Group {
 
     this.name = 'shark';
 
-    loader.load(MODEL, (object) => {
+    loader.load(MODEL, (object) => { // load object and add to scene
       let texture = new TextureLoader().load(IMAGE);
       object.traverse((child) => {
-        if (child.type == "Mesh") {
-          child.material.map = texture;
-        }
+        if (child.type == "Mesh") child.material.map = texture;
       });
       object.scale.multiplyScalar(0.5);
       object.position.y = -23.7;

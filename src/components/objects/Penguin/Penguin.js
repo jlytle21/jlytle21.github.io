@@ -10,13 +10,11 @@ import IMAGE3 from './10033_Penguin_v1_Diffuse3.jpg'
 import IMAGE4 from './10033_Penguin_v1_Diffuse4.jpg'
 
 class Penguin extends Group {
-    constructor(parent, x, z, rotation) {
+    constructor(parent, x, z, rotation) { //
         // Call parent Group() constructor
         super();
-
         //used for user selecting direction
         this.arrow = null;
-
         // boolean that signifies if the penguin is alive or not
         this.alive = true;
         // set name
@@ -36,10 +34,9 @@ class Penguin extends Group {
 
         this.nextVelocity;
 
-
         const loader = new OBJLoader(); // load object loader
-        loader.load(MODEL, (object) => {
-          let texture = new TextureLoader().load(IMAGE1);
+        loader.load(MODEL, (object) => { // load object
+          let texture = new TextureLoader().load(IMAGE1); // different texture (color) depending on player
           if (rotation == 90) {
             texture = new TextureLoader().load(IMAGE3);
             this.player = 3;

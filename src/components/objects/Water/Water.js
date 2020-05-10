@@ -13,7 +13,7 @@ class Water extends Group {
 
     this.name = 'water';
 
-    loader.load(MODEL, (object) => {
+    loader.load(MODEL, (object) => { // load object and add to scenes
       let texture1 = new TextureLoader().load(IMAGE1);
       let texture2 = new TextureLoader().load(IMAGE2);
       object.traverse((child) => {
