@@ -90,21 +90,25 @@ class Popup { // class for popup messages
     this.text2.style = "text-align: center;";
   }
   update(header, message) {
-    if (message.includes("1")) {
+    if (header.includes("1")) {
       document.getElementById("modal").style['background-color'] = 'grey';
       document.getElementById("modalcontent").style['background-color'] = 'grey';
     }
-    if (message.includes("2")) {
+    if (header.includes("2")) {
       document.getElementById("modal").style['background-color'] = 'red';
       document.getElementById("modalcontent").style['background-color'] = 'red';
     }
-    if (message.includes("3")) {
+    if (header.includes("3")) {
       document.getElementById("modal").style['background-color'] = 'green';
       document.getElementById("modalcontent").style['background-color'] = 'green';
     }
-    if (message.includes("4")) {
+    if (header.includes("4")) {
       document.getElementById("modal").style['background-color'] = 'blue';
       document.getElementById("modalcontent").style['background-color'] = 'blue';
+    }
+    if (header.includes("TIE")) {
+      document.getElementById("modal").style['background-color'] = 'white';
+      document.getElementById("modalcontent").style['background-color'] = 'white';
     }
     document.getElementById("text1").innerHTML = header;
     document.getElementById("text2").innerHTML = message;
@@ -572,7 +576,7 @@ performRound(camera) { // returns false if game is over
 
     this.isPopup = true;
     let turnHeader = "Player " + this.selectionPlayer + "'s Turn!";
-    let turnMessage = "Use the arrow keys to adjust the arrow. Click Enter to move to next Penguin! Press Enter to begin your turn!";
+    let turnMessage = "Use the arrow keys to adjust the arrow. Click Enter to move to next Penguin! Press Enter or Click anywhere to begin your turn! Use the '1' button to correct the camera view.";
     this.popup.update(turnHeader, turnMessage);
     this.drawArrow(this.lastPosition);
     this.sendMessage = true;

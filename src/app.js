@@ -69,13 +69,12 @@ class Welcome { // class to create popup welcome message
 
 // Initialize core ThreeJS components
 let welcomeMessage = new Welcome();
+let camera; // set up camera and scene and renderer
+let scene;
+let renderer;
 
-function startGame(numPlayers) {
 
-
-  const camera = new PerspectiveCamera();
-  const scene = new SeedScene(numPlayers, camera);
-  const renderer = new WebGLRenderer({ antialias: true });
+function startGame() {
 
   // Set up camera
   camera.position.set(70, 100, 70);
@@ -107,7 +106,6 @@ function startGame(numPlayers) {
   };
 
   window.requestAnimationFrame(onAnimationFrameHandler);
-
   // Resize Handler
   const windowResizeHandler = () => {
     const { innerHeight, innerWidth } = window;
@@ -119,15 +117,24 @@ function startGame(numPlayers) {
   window.addEventListener('resize', windowResizeHandler, false);
 }
 
+function createScene(numPlayers) {
+    camera = new PerspectiveCamera();
+    scene = new SeedScene(numPlayers, camera);
+    renderer = new WebGLRenderer({ antialias: true });
+    setTimeout(()=> {
+      startGame();
+    }, 2000);
+}
+
 document.getElementById("two").addEventListener("mousedown", function() {
-  startGame(2)
+  createScene(2);
   welcomeMessage.remove();
 });
 document.getElementById("three").addEventListener("mousedown", function() {
-  startGame(3)
+  createScene(3);
   welcomeMessage.remove();
 });
 document.getElementById("four").addEventListener("mousedown", function() {
-  startGame(4)
+  createScene(4);
   welcomeMessage.remove();
 });
