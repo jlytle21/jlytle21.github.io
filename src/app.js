@@ -9,7 +9,6 @@
 import { WebGLRenderer, PerspectiveCamera, Vector3, Texture, Scene, MeshBasicMaterial, PlaneGeometry, Mesh, OrthographicCamera } from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { SeedScene } from 'scenes';
-import Penguins from './bgimage/penguins.jpg' //  potential background image
 import * as Dat from 'dat.gui';
 
 class Welcome { // class to create popup welcome message
@@ -53,6 +52,7 @@ class Welcome { // class to create popup welcome message
     this.names.innerHTML = "Created by Jonah Lytle, Jacob Schachner & Richard Wolf";
     this.credits.appendChild(this.names);
 
+    // style the page
     this.two.style = "background-color: purple; border: none; color: white; padding: 16px 32px; text-align: center; display: inline-block; font-size: 16px; margin: 4px 2px; transition-duration: 0.4s; cursor: pointer; font-family: 'Courier New', Courier, monospace;";
     this.three.style = "background-color: green; border: none; color: white; padding: 16px 32px; text-align: center; display: inline-block; font-size: 16px; margin: 4px 2px; transition-duration: 0.4s; cursor: pointer; font-family: 'Courier New', Courier, monospace;";
     this.four.style = "background-color: blue; border: none; color: white; padding: 16px 32px; text-align: center; display: inline-block; font-size: 16px; margin: 4px 2px; transition-duration: 0.4s; cursor: pointer; font-family: 'Courier New', Courier, monospace;";
@@ -62,18 +62,19 @@ class Welcome { // class to create popup welcome message
     this.credits.style = "position: absolute; bottom: 0; left: 16px; font-size: 10px;"
     this.backgroundImage.style = "background-color: black; height: 100%; width: 100%; z-index: -1; opacity: 1; background-position: center; background-size: cover; position: fixed; color: white; font-family: 'Courier New', Courier, monospace; font-size: 25px;"
   }
-  remove() {
+  remove() { // remove the welcome page
     document.getElementById("bgimage").remove();
   }
 }
 
 // Initialize core ThreeJS components
-let welcomeMessage = new Welcome();
-let camera; // set up camera and scene and renderer
-let scene;
-let renderer;
+let welcomeMessage = new Welcome(); // welcome page
+let camera; // initialize camera
+let scene; // initialize scene
+let renderer; // initialize renderer
 
 
+// function to start game
 function startGame() {
 
   // Set up camera
@@ -117,15 +118,17 @@ function startGame() {
   window.addEventListener('resize', windowResizeHandler, false);
 }
 
+// create the scene
 function createScene(numPlayers) {
-    camera = new PerspectiveCamera();
-    scene = new SeedScene(numPlayers, camera);
-    renderer = new WebGLRenderer({ antialias: true });
-    setTimeout(()=> {
+    camera = new PerspectiveCamera(); // create camera
+    scene = new SeedScene(numPlayers, camera); // create scene
+    renderer = new WebGLRenderer({ antialias: true }); // create renderer
+    setTimeout(()=> { // start game after timeout
       startGame();
     }, 2000);
 }
 
+// determine which button was clicked -- how many players to initialize game with
 document.getElementById("two").addEventListener("mousedown", function() {
   createScene(2);
   welcomeMessage.remove();
@@ -137,4 +140,19 @@ document.getElementById("three").addEventListener("mousedown", function() {
 document.getElementById("four").addEventListener("mousedown", function() {
   createScene(4);
   welcomeMessage.remove();
+});
+window.addEventListener("keydown", (e) => { // can also click number button
+  if (event.key == "2") {
+    createScene(2);
+    welcomeMessage.remove();
+  }
+  if (event.key == "3") {
+    createScene(3);
+    welcomeMessage.remove();
+  }
+  if (event.key == "4") {
+    createScene(4);
+    welcomeMessage.remove();
+  }
+
 });
