@@ -12,7 +12,7 @@ import { BasicLights } from 'lights';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 
 class Score { // class to create scoreboard
-  constructor(remaining) {
+  constructor(remaining) { // constructor for scoreboard
     this.table = document.createElement("TABLE"); // create table
     this.table.setAttribute("id", "scoring");
     document.body.appendChild(this.table);
@@ -20,11 +20,11 @@ class Score { // class to create scoreboard
     this.row.setAttribute("id", "headerRow");
     document.getElementById("scoring").appendChild(this.row);
     this.column = document.createElement("TH");
-    let t = document.createTextNode("Round");
+    let t = document.createTextNode("Round"); // round column
     this.column.appendChild(t);
     this.column.style = "color: pink;";
     document.getElementById("headerRow").appendChild(this.column);
-    for (let r in remaining) {
+    for (let r in remaining) { // put players in scoring table
       this.column = document.createElement("TH");
       let t = document.createTextNode("Player " + r);
       this.column.appendChild(t);
@@ -44,7 +44,7 @@ class Score { // class to create scoreboard
     this.column.setAttribute("id", "round");
     this.column.style = "color: pink;"
     document.getElementById("scoreRow").appendChild(this.column);
-    for (let r in remaining) {
+    for (let r in remaining) { // fill second row with scores for each player
       this.column = document.createElement("TD");
       let t2 = document.createTextNode(remaining[r]);
       this.column.appendChild(t2);
@@ -52,9 +52,10 @@ class Score { // class to create scoreboard
       this.column.style = "color: white;"
       document.getElementById("scoreRow").appendChild(this.column);
     }
+    // table style
     this.table.style = "border-spacing: 0.5rem; border-radius: 10px; border: 1px solid black; text-align: center; width: 100%; background: black; position: fixed; font-family: 'Monaco';";
   }
-  updateScore(remaining, round) {
+  updateScore(remaining, round) { // update the scores in the table
     document.getElementById("round").textContent = round;
     for (let r in remaining) {
       document.getElementById("player" + r).textContent = remaining[r];
@@ -67,29 +68,24 @@ class Popup { // class for popup messages
     this.modal = document.createElement("DIV");
     this.modal.setAttribute("id", "modal");
     document.body.appendChild(this.modal);
-
     this.modalcontent = document.createElement("DIV");
     this.modalcontent.setAttribute("id", "modalcontent");
     this.modal.appendChild(this.modalcontent);
-
-
     this.text1 = document.createElement("p");
     this.text1.setAttribute("id", "text1");
     this.text1.innerHTML = message;
     this.modalcontent.appendChild(this.text1);
-
     this.text2 = document.createElement("p");
     this.text2.setAttribute("id", "text2");
     this.text2.innerHTML = message;
     this.modalcontent.appendChild(this.text2);
-
+    // style
     this.modal.style = "display: none: position: absolute; z-index: 1; left: 0; top: 0; width: 100%; min-height: 100vh; overflow: auto; background-color: blue;";
     this.modalcontent.style = "background-color: blue; margin: 15% auto; padding: 20px; border: 0px; width: 80%; font-family: 'Monaco';";
-
     this.text1.style = "text-align: center; font-size: 45px;";
     this.text2.style = "text-align: center;";
   }
-  update(header, message) {
+  update(header, message) { // update the popup and make appear with given header and message
     if (header.includes("1")) {
       document.getElementById("modal").style['background-color'] = 'grey';
       document.getElementById("modalcontent").style['background-color'] = 'grey';
@@ -114,12 +110,11 @@ class Popup { // class for popup messages
     document.getElementById("text2").innerHTML = message;
     document.getElementById("modal").style.display = "block";
   }
-  remove(instructions) {
+  remove(instructions) { // hide the popup
     document.getElementById("modal").style.display = "none";
     instructions = true;
   }
 }
-
 
 class SeedScene extends Scene {
   constructor(numPlayers, camera) {
@@ -137,21 +132,15 @@ class SeedScene extends Scene {
     window.addEventListener("keydown", (e) => this.handleImpactEvents(e), false);
 
     this.lastPosition = new Vector3(0, .35, 0);
-
-    this.clock = new Clock();
-
-    this.initial = true;
+    this.clock = new Clock(); // clock for update function
+    this.initial = true; // boolean for if start of game
     // TO be used to select
     this.selectionPlayer = 1;
     this.selectionPenguin = 1;
-
     // If game is not over this is true
     this.gameOn = true;
-
-    this.isPopup = false;
-
-    this.sendMessage = true;
-
+    this.isPopup = false; // true if a popup exists
+    this.sendMessage = true; // if sent message
     this.camera = camera; // save camera
 
     // Set up audio listener and global audio source
@@ -182,18 +171,17 @@ class SeedScene extends Scene {
           texture.wrapS = texture.wrapT = RepeatWrapping;
         } ),
         alpha: 1.0,
-        //sunDirection: lights[0].position.clone().normalize(),
         sunColor: 0xffffff,
         waterColor: 0x001e0f,
         distortionScale: 3.7,
-        //fog: scene.fog !== undefined
       }
     );
     this.water.rotation.x = - Math.PI / 2;
     this.water.position.y -= 10;
-    // flamingo from https://github.com/mrdoob/three.js/blob/master/examples/webgl_lights_hemisphere.html
-    this.mixers = [];
-    this.birds = [];
+    // birds from https://github.com/mrdoob/three.js/blob/master/examples/webgl_lights_hemisphere.html
+    this.mixers = []; // for bird animations
+    this.birds = []; // birds array
+    // Load Flamingo
     const loader1 = new GLTFLoader();
     loader1.load(Flamingo, ( gltf ) => {
       this.flamingo = gltf.scene.children[ 0 ];
@@ -209,6 +197,7 @@ class SeedScene extends Scene {
       this.add(this.flamingo);
       this.birds.push(this.flamingo);
     });
+    // Load Parrot
     const loader2 = new GLTFLoader();
     loader2.load(Parrot, ( gltf ) => {
       this.parrot = gltf.scene.children[ 0 ];
@@ -224,6 +213,7 @@ class SeedScene extends Scene {
       this.add(this.parrot);
       this.birds.push(this.parrot);
     });
+    // Load Stork
     const loader3 = new GLTFLoader();
     loader3.load(Stork, ( gltf ) => {
       this.stork= gltf.scene.children[ 0 ];
@@ -239,28 +229,25 @@ class SeedScene extends Scene {
       this.add(this.stork);
       this.birds.push(this.stork);
     });
-
-    this.shark = new Shark();
-    this.mosasaur = new Mosasaur();
-    this.mountain = new Mountain();
-    this.island = new Island();
-    this.add(this.ice, this.water, this.shark, this.mosasaur, this.mountain, this.island, lights);
+    this.shark = new Shark(); // load shark
+    this.mosasaur = new Mosasaur(); // load mosasaur
+    this.mountain = new Mountain(); // load mountain
+    this.island = new Island(); // load island
+    this.add(this.ice, this.water, this.shark, this.mosasaur, this.mountain, this.island, lights); // add objects to scene
     // Array of penguins in scene
     this.penguinsArray = [];
     // Round number
     this.round = 1;
-    // Number of players + number of penguins remaining per player
-    this.numPlayers = numPlayers;
-    const remaining = {};
-    for (let i = 1; i <= numPlayers; i++) remaining[i] = 4;
+    this.numPlayers = numPlayers; // number of players in game
+    const remaining = {}; // dictionairy: how many penguins for each player
+    for (let i = 1; i <= numPlayers; i++) remaining[i] = 4; // initialize and fill dictionairy
     this.remaining = remaining;
-    // initialize scoreboard
-    this.score = new Score(remaining)
+    this.score = new Score(remaining) // initialize scoreboard
     // set number of players UP TO 4
-    let minimum = -30;
+    let minimum = -30; // cannot be outside max and min of ice block
     let maximum = 30;
     let increment = (maximum-minimum) / 5;
-    for (let i = 0; i < this.numPlayers; i++) {
+    for (let i = 0; i < this.numPlayers; i++) { // create penguins for each player + push to scene
       if (i == 0) {
         for (let j = 1; j <= 4; j++) {
           this.penguin = new Penguin(this, minimum+j*increment, minimum, 0);
@@ -292,17 +279,15 @@ class SeedScene extends Scene {
     }
     // Populate GUI
     //this.state.gui.add(this.state, 'rotationSpeed', -5, 5);
-
-    // Initialize popup of scene
-    this.popup = new Popup('message');
-    this.popup.remove(this.isPopup);
-    this.isPopup = false;
+    this.popup = new Popup('message'); // initialize popup
+    this.popup.remove(this.isPopup); // hide popup
+    this.isPopup = false; // set popup exists to not true
 
   }
 
-  addToUpdateList(object) {
-    this.state.updateList.push(object);
-  }
+  //addToUpdateList(object) {
+    //this.state.updateList.push(object);
+  //}
   // Check if penguin centers are within bounds of ice. If not, apply downward force on penguin. Else do nothing.
   handlePenguinsOffIce() {
     let edge = 34 * this.iceScale;
@@ -536,12 +521,12 @@ drawArrow(currentClick) {
 // Function to check if all penguins on board have velocity of 0
 // Also waits a second or two after penguins have fallen off edge
 // Also removes penguins off ice
+// Returns true if penguins are still, false if not
 arePenguinsStill() {
   let still = true;
   let zero = new Vector3(0.0, 0.0, 0.0);
   for (let p of this.penguinsArray) {
     if (p.coordinates.y < -20) { // removes penguins from scene and array and updates remaining number of penguins
-      console.log(p.coordinates.y);
       let copy = [];
       for (let x of this.penguinsArray) {
         if (x == p) continue;
@@ -570,10 +555,8 @@ arePenguinsStill() {
 
 // Function that performs a single round of the game
 performRound(camera) { // returns false if game is over
-  // Check if Game is over
 
   if (this.sendMessage == false) {
-
     this.isPopup = true;
     let turnHeader = "Player " + this.selectionPlayer + "'s Turn!";
     let turnMessage = "Use the arrow keys to adjust the arrow. Click Enter to move to next Penguin! Press Enter or Click anywhere to begin your turn! Use the '1' button to correct the camera view.";
@@ -591,10 +574,9 @@ performRound(camera) { // returns false if game is over
         player = i;
       }
     }
-    // update scores
-    this.score.updateScore(this.remaining, this.round);
+    this.score.updateScore(this.remaining, this.round); // update scores
     // check if game is over
-    if (playersLeft == 1) {
+    if (playersLeft == 1) { // if 1 player left, announce winner
       this.isPopup = true;
       this.gameOn = false;
       let mesHeader = "Player " + player + " wins!";
@@ -602,7 +584,7 @@ performRound(camera) { // returns false if game is over
       this.popup.update(mesHeader, message);
       return false;
     }
-    if (playersLeft == 0) {
+    if (playersLeft == 0) { // if no players left, announce tie
       this.isPopup = true;
       this.gameOn = false;
       let mesHeader = "TIE!";
@@ -663,7 +645,7 @@ performRoundEnding() {
 }
 
 update(timeStamp, camera) {
-  if (!this.gameOn) return;
+  if (!this.gameOn) return; // return if game is over
   //if (timeStamp < 6000) return;
 
   // Initial camera sweep to showcase scene
@@ -683,9 +665,9 @@ update(timeStamp, camera) {
     this.initial = false;
   }
 
-  let delta = this.clock.getDelta(); // motion of flamingos
-  for (let count = 0; count < this.birds.length; count++) {
-    if (count == 0) {
+  let delta = this.clock.getDelta(); // for motion of birds
+  for (let count = 0; count < this.birds.length; count++) { // update location of birds
+    if (count == 0) { // flamingo movement
       let oldLocation = new Vector2(this.birds[count].position.x, this.birds[count].position.z);
       let newLocation = new Vector2(100*Math.cos(timeStamp/10000) + 40, 100*Math.sin(timeStamp/5000) + 10);
       let difference = oldLocation.clone().sub(newLocation);
@@ -694,7 +676,7 @@ update(timeStamp, camera) {
       this.birds[count].position.x = 100*Math.cos(timeStamp/10000) + 40;
       this.birds[count].position.z = 100*Math.sin(timeStamp/5000) + 10 ;
     }
-    if (count == 1) {
+    if (count == 1) { // parrot movement
       let oldLocation = new Vector2(this.birds[count].position.x, this.birds[count].position.z);
       let newLocation = new Vector2(-100*Math.sin(timeStamp/5000), -100*Math.cos(timeStamp/10000) + 60);
       let difference = oldLocation.clone().sub(newLocation);
@@ -703,7 +685,7 @@ update(timeStamp, camera) {
       this.birds[count].position.x = -100*Math.sin(timeStamp/5000);
       this.birds[count].position.z = -100*Math.cos(timeStamp/10000) + 60;
     }
-    if (count == 2) {
+    if (count == 2) { // stork movement
       let oldLocation = new Vector2(this.birds[count].position.x, this.birds[count].position.z);
       let newLocation = new Vector2(-100*Math.cos(timeStamp/10000), 100*Math.sin(timeStamp/5000));
       let difference = oldLocation.clone().sub(newLocation);
@@ -713,9 +695,7 @@ update(timeStamp, camera) {
       this.birds[count].position.z = 100*Math.sin(timeStamp/5000);
     }
   }
-  for (let m of this.mixers) {
-    m.update( delta );
-  }
+  for (let m of this.mixers) m.update( delta ); // update animation of birds
 
   // move Shark
   let oldSharkLocation = new Vector2(this.shark.position.x, this.shark.position.z);
@@ -738,18 +718,18 @@ update(timeStamp, camera) {
 
   this.water.material.uniforms[ 'time' ].value += 1.0 / 60.0; // animate water
 
-  let still = this.arePenguinsStill();
+  let still = this.arePenguinsStill(); // check if penguins are still
 
   // Only perform round if not in intro and penguins are still
   if (still && !this.initial) {
     this.gameOn = this.performRound(camera); // returns false if game is over
   }
 
-  this.handlePenguinsOffIce();
-  this.handlePenguinCollisions();
-  this.handleFriction();
-  this.updateVelocities(0.01);
-  this.updatePenguinPositions(0.01);
+  this.handlePenguinsOffIce(); // check if penguins off ice
+  this.handlePenguinCollisions(); // handle collisions of penguins
+  this.handleFriction(); // update friction force
+  this.updateVelocities(0.01); // update velocities
+  this.updatePenguinPositions(0.01); // update positions of penguns
 }
 }
 
