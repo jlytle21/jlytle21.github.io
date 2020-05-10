@@ -1,15 +1,15 @@
 import * as Dat from 'dat.gui';
 import { Scene, Color, Clock, AudioLoader, AudioListener, Audio, ArrowHelper, Vector3, Vector2, DodecahedronBufferGeometry, RepeatWrapping, TextureLoader, PlaneBufferGeometry, AnimationMixer } from 'three';
-import { Ice, Penguin, Shark, Mosasaur, Mountain, Island } from 'objects';
-import { Water } from 'three/examples/jsm/objects/Water.js';
-import WaterNormals from './textures/waternormals.jpg';
-import Flamingo from './birds/Flamingo.glb';
-import Stork from './birds/Stork.glb';
-import Parrot from './birds/Parrot.glb';
-import Splash from './sounds/bigSplash.ogg';
-import Squawk from './sounds/squawk.mp3';
-import { BasicLights } from 'lights';
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { Ice, Penguin, Shark, Mosasaur, Mountain, Island } from 'objects'; // import objects
+import { Water } from 'three/examples/jsm/objects/Water.js'; // import water
+import WaterNormals from './textures/waternormals.jpg'; // for water texture
+import Flamingo from './birds/Flamingo.glb'; // flamingo object
+import Stork from './birds/Stork.glb'; // stork object
+import Parrot from './birds/Parrot.glb'; // parrot object
+import Splash from './sounds/bigSplash.ogg'; // splash sound
+import Squawk from './sounds/squawk.mp3'; // squawk sound
+import { BasicLights } from 'lights'; // lights
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'; // GLTF loader
 
 class Score { // class to create scoreboard
   constructor(remaining) { // constructor for scoreboard
