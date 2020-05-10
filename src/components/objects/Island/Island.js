@@ -13,7 +13,7 @@ class Island extends Group {
 
     loader.load(MODEL, (object) => {
       object.scale.multiplyScalar(3);
-      object.position.x = 500;
+      object.position.x = -500;
       object.position.z = 500;
       object.position.y = 100;
       //object.rotation.z = -1;

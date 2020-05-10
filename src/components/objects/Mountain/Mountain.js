@@ -22,7 +22,7 @@ class Mountain extends Group {
       });
       object.scale.multiplyScalar(1000);
       object.position.y -= 12;
-      object.position.x = -1000;
+      object.position.x = 1000;
       object.position.z = -1000;
 
       this.add(object);

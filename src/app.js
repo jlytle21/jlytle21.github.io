@@ -26,7 +26,7 @@ class Welcome { // class to create popup welcome message
     this.divide = document.createElement("hr");
     document.getElementById("message").appendChild(this.divide);
     this.instructions = document.createElement("p");
-    this.instructions.appendChild(document.createTextNode("How To Play: Knock off all your opponent's penguins"));
+    this.instructions.appendChild(document.createTextNode("How To Play: Knock all your opponent's penguins off the ice! "));
     document.getElementById("message").appendChild(this.instructions);
 
     this.numPlayers = document.createElement("p");

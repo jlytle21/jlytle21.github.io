@@ -73,17 +73,23 @@ class Popup { // class for popup messages
     this.modal.appendChild(this.modalcontent);
 
 
-    this.text = document.createElement("p");
-    this.text.setAttribute("id", "text");
-    this.text.innerHTML = message;
-    this.modalcontent.appendChild(this.text);
+    this.text1 = document.createElement("p");
+    this.text1.setAttribute("id", "text1");
+    this.text1.innerHTML = message;
+    this.modalcontent.appendChild(this.text1);
+
+    this.text2 = document.createElement("p");
+    this.text2.setAttribute("id", "text2");
+    this.text2.innerHTML = message;
+    this.modalcontent.appendChild(this.text2);
 
     this.modal.style = "display: none: position: absolute; z-index: 1; left: 0; top: 0; width: 100%; min-height: 100vh; overflow: auto; background-color: blue;";
     this.modalcontent.style = "background-color: blue; margin: 15% auto; padding: 20px; border: 0px; width: 80%; font-family: 'Monaco';";
 
-
+    this.text1.style = "text-align: center; font-size: 45px;";
+    this.text2.style = "text-align: center;";
   }
-  update(message) {
+  update(header, message) {
     if (message.includes("1")) {
       document.getElementById("modal").style['background-color'] = 'grey';
       document.getElementById("modalcontent").style['background-color'] = 'grey';
@@ -100,7 +106,8 @@ class Popup { // class for popup messages
       document.getElementById("modal").style['background-color'] = 'blue';
       document.getElementById("modalcontent").style['background-color'] = 'blue';
     }
-    document.getElementById("text").innerHTML = message;
+    document.getElementById("text1").innerHTML = header;
+    document.getElementById("text2").innerHTML = message;
     document.getElementById("modal").style.display = "block";
   }
   remove(instructions) {
@@ -351,7 +358,7 @@ class SeedScene extends Scene {
       v.multiplyScalar(deltaT);
       p.position.add(v);
       p.coordinates.add(v);
-      
+
       // Make splash sound if penguins enter water
       // load a sound and set it as the Audio object's buffer
       // Sound obtained from royalty free site https://bigsoundbank.com
@@ -564,8 +571,9 @@ performRound(camera) { // returns false if game is over
   if (this.sendMessage == false) {
 
     this.isPopup = true;
-    let turn = "Player " + this.selectionPlayer + "'s Turn!\nUse the arrow keys to adjust the arrow.\nClick Enter to move to next Penguin!\n\nPress enter to begin your turn!";
-    this.popup.update(turn);
+    let turnHeader = "Player " + this.selectionPlayer + "'s Turn!";
+    let turnMessage = "Use the arrow keys to adjust the arrow. Click Enter to move to next Penguin! Press Enter to begin your turn!";
+    this.popup.update(turnHeader, turnMessage);
     this.drawArrow(this.lastPosition);
     this.sendMessage = true;
   }
@@ -585,15 +593,17 @@ performRound(camera) { // returns false if game is over
     if (playersLeft == 1) {
       this.isPopup = true;
       this.gameOn = false;
-      let mes = "Player " + player + " wins!\nPress enter to play again!";
-      this.popup.update(mes);
+      let mesHeader = "Player " + player + " wins!";
+      let message = "Press enter to play again!";
+      this.popup.update(mesHeader, message);
       return false;
     }
     if (playersLeft == 0) {
       this.isPopup = true;
       this.gameOn = false;
-      let mes = "TIE!\nPress enter to play again!";
-      this.popup.update(mes);
+      let mesHeader = "TIE!";
+      let message = "Press enter to play again!";
+      this.popup.update(mesHeader, message);
       return false;
     }
 
