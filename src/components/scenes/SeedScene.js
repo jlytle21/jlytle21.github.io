@@ -346,7 +346,7 @@ class SeedScene extends Scene {
       // Make splash sound if penguins enter water
       // load a sound and set it as the Audio object's buffer
       // Sound obtained from royalty free site https://bigsoundbank.com
-      if (p.coordinates.y < -5.5 && originalY >= -5.5) {
+      if (p.coordinates.y < -7 && originalY >= -7) {
         let audioLoader = new AudioLoader();
         let sound = new Audio(this.listener);
         audioLoader.load(Splash, function( buffer )  {
