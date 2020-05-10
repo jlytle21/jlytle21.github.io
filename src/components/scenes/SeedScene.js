@@ -121,12 +121,6 @@ class SeedScene extends Scene {
     // Call parent Scene() constructor
     super();
 
-    // Init state
-    //this.state = {
-      //gui: new Dat.GUI(), // Create GUI for scene
-    //  rotationSpeed: 0.0,
-    //};
-
     // event listeners for mouse and keys
     window.addEventListener("click", (e) => this.onMouseClick(e), false );
     window.addEventListener("keydown", (e) => this.handleImpactEvents(e), false);
@@ -277,17 +271,14 @@ class SeedScene extends Scene {
         }
       }
     }
-    // Populate GUI
-    //this.state.gui.add(this.state, 'rotationSpeed', -5, 5);
+    
     this.popup = new Popup('message'); // initialize popup
     this.popup.remove(this.isPopup); // hide popup
     this.isPopup = false; // set popup exists to not true
 
   }
 
-  //addToUpdateList(object) {
-    //this.state.updateList.push(object);
-  //}
+  
   // Check if penguin centers are within bounds of ice. If not, apply downward force on penguin. Else do nothing.
   handlePenguinsOffIce() {
     let edge = 34 * this.iceScale;
@@ -298,6 +289,7 @@ class SeedScene extends Scene {
       }
     }
   }
+
   // Check if penguins are currently within eps of one another, calls penguin launch method to update force of
   // colliding penguins
   handlePenguinCollisions() {
@@ -306,6 +298,7 @@ class SeedScene extends Scene {
 
       for (let j = i + 1; j < this.penguinsArray.length; j++) {
         let isColiision = currentPenguin.collide(this.penguinsArray[j]);
+
         // Play noise if there is a collision
         if (isColiision) {
           // load a sound and set it as the Audio object's buffer
@@ -322,27 +315,29 @@ class SeedScene extends Scene {
       }
     }
   }
+
   // Apply friction to each penguin by decreasing acceleration
   handleFriction() {
     for (let p of this.penguinsArray) {
       p.applyFriction();
     }
   }
+
   // Update velocities of each penguin based on accerlations
   updateVelocities(deltaT) {
     for (let p of this.penguinsArray) {
-      //console.log(p);
-      //console.log(p.position.x);
       let acc = p.netForce.clone();
       p.velocity.add(acc.multiplyScalar(deltaT));
     }
   }
+
   // Update positions of each penguin based on displacement
   updatePenguinPositions(deltaT) {
     for (let p of this.penguinsArray) {
       // Store original y coordinate
       let originalY = p.coordinates.y;
 
+      // d = d_initial + v * t
       let v = p.velocity.clone();
       v.multiplyScalar(deltaT);
       p.position.add(v);
@@ -523,8 +518,6 @@ drawArrow(currentClick) {
 // Also removes penguins off ice
 // Returns true if penguins are still, false if not
 arePenguinsStill() {
-  let still = true;
-  let zero = new Vector3(0.0, 0.0, 0.0);
   for (let p of this.penguinsArray) {
     if (p.coordinates.y < -20) { // removes penguins from scene and array and updates remaining number of penguins
       let copy = [];
@@ -556,6 +549,7 @@ arePenguinsStill() {
 // Function that performs a single round of the game
 performRound(camera) { // returns false if game is over
 
+  // Presents player with messaeg that it is their turn and gives directions
   if (this.sendMessage == false) {
     this.isPopup = true;
     let turnHeader = "Player " + this.selectionPlayer + "'s Turn!";
@@ -600,16 +594,14 @@ performRound(camera) { // returns false if game is over
     else {
       this.iceScale = 0.3;
     }
-    //console.log(selectedObject);
-    // selectedObject.shrink(this.iceScale);
+
+    // Removes current ice and Adds new scaled Ice
     this.remove(this.ice);
-    //this.ice.destructor();
     this.ice = new Ice(this.iceScale);
     this.add(this.ice);
-    // console.log(this.ice);
 
 
-    // Also have to move penguins with ice
+    // Also have to move penguins with ice proportionally
     if (this.round <= 7) {
       for (let p of this.penguinsArray) {
         let oldCoords = p.coordinates.clone();
@@ -620,6 +612,7 @@ performRound(camera) { // returns false if game is over
     }
 
 
+    // Iterates through penguin selection
     for (let i = 1; i <= this.numPlayers; i++) {
       if (this.remaining[i] == 0) continue;
       this.selectionPlayer = i;
@@ -646,13 +639,13 @@ performRoundEnding() {
 
 update(timeStamp, camera) {
   if (!this.gameOn) return; // return if game is over
-  //if (timeStamp < 6000) return;
+  //if (timeStamp < 8000) return;
 
   // Initial camera sweep to showcase scene
   if (this.initial) {
-    if (timeStamp < 10000) {
-      camera.position.x = -500*Math.cos((timeStamp)/4000 - 0.93);
-      camera.position.z = 500*Math.sin((timeStamp)/4000 - 0.93);
+    if (timeStamp < 15000) {
+      camera.position.x = -500*Math.cos((timeStamp)/6000 - 0.93);
+      camera.position.z = 500*Math.sin((timeStamp)/6000 - 0.93);
       camera.position.y = 100;
     }
     else {

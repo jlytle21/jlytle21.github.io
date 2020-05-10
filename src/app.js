@@ -125,7 +125,7 @@ function createScene(numPlayers) {
     renderer = new WebGLRenderer({ antialias: true }); // create renderer
     setTimeout(()=> { // start game after timeout
       startGame();
-    }, 2000);
+    }, 6000);
 }
 
 // determine which button was clicked -- how many players to initialize game with
