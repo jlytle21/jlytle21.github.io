@@ -154,7 +154,7 @@ class SeedScene extends Scene {
 
     const lights = new BasicLights(); // load lights
     this.ice = new Ice(this.iceScale); // load ice
-    // load water
+    // load water help from https://github.com/mrdoob/three.js/blob/master/examples/webgl_shaders_ocean.html
     var waterGeometry = new PlaneBufferGeometry( 10000, 10000 );
     this.water = new Water(
       waterGeometry,
@@ -172,7 +172,7 @@ class SeedScene extends Scene {
     );
     this.water.rotation.x = - Math.PI / 2;
     this.water.position.y -= 10;
-    // birds from https://github.com/mrdoob/three.js/blob/master/examples/webgl_lights_hemisphere.html
+    // Flamingo, Parrot, Stork from https://github.com/mrdoob/three.js/blob/master/examples/webgl_lights_hemisphere.html & Mirada: https://mirada.com/ from Rome: http://ro.me/
     this.mixers = []; // for bird animations
     this.birds = []; // birds array
     // Load Flamingo
@@ -271,14 +271,14 @@ class SeedScene extends Scene {
         }
       }
     }
-    
+
     this.popup = new Popup('message'); // initialize popup
     this.popup.remove(this.isPopup); // hide popup
     this.isPopup = false; // set popup exists to not true
 
   }
 
-  
+
   // Check if penguin centers are within bounds of ice. If not, apply downward force on penguin. Else do nothing.
   handlePenguinsOffIce() {
     let edge = 34 * this.iceScale;

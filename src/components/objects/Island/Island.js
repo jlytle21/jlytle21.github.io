@@ -5,6 +5,7 @@ import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 class Island extends Group {
   constructor() {
     // from https://poly.google.com/view/dBGGbCMGTRu
+    // Credit: VR XRTIST
     super();
 
     this.name = 'island';

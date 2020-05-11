@@ -4,17 +4,13 @@ import MATERIAL from './materials.mtl';
 import { MTLLoader } from 'three/examples/jsm/loaders/MTLLoader.js';
 import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
 
+// from https://poly.google.com/view/6S_UehMUbiW
+// Credit: Hoai Nguyen
 class Mosasaur extends Group {
   constructor() {
-    // from https://poly.google.com/view/6S_UehMUbiW
     super();
-
-
-
     const mtlloader = new MTLLoader();
-
     this.name = 'mosasaur';
-
     mtlloader.load(MATERIAL, (materials) => { // load object + material and add to scene
       materials.preload();
       const loader = new OBJLoader();

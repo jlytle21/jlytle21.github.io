@@ -16,6 +16,21 @@ class Welcome { // class to create popup welcome message
     this.backgroundImage = document.createElement("DIV");
     this.backgroundImage.setAttribute("id", "bgimage");
     document.body.appendChild(this.backgroundImage);
+    this.explore = document.createElement("DIV");
+    this.explore.setAttribute("id", "explore");
+    document.getElementById("bgimage").appendChild(this.explore);
+    this.instructions2 = document.createElement("p");
+    this.instructions2.appendChild(document.createTextNode("How To Explore The Scene:"));
+    this.instructions3 = document.createElement("p");
+    this.instructions3.appendChild(document.createTextNode("Press '1' to view the scene from above"));
+    this.instructions4 = document.createElement("p");
+    this.instructions4.appendChild(document.createTextNode("Use your mouse to click and drag to explore the scene"));
+    this.instructions5 = document.createElement("p");
+    this.instructions5.appendChild(document.createTextNode("Zoom in and out by scrolling"));
+    document.getElementById("explore").appendChild(this.instructions2);
+    document.getElementById("explore").appendChild(this.instructions3);
+    document.getElementById("explore").appendChild(this.instructions4);
+    document.getElementById("explore").appendChild(this.instructions5);
     this.message = document.createElement("DIV");
     this.message.setAttribute("id", "message");
     document.getElementById("bgimage").appendChild(this.message);
@@ -58,6 +73,7 @@ class Welcome { // class to create popup welcome message
     this.four.style = "background-color: blue; border: none; color: white; padding: 16px 32px; text-align: center; display: inline-block; font-size: 16px; margin: 4px 2px; transition-duration: 0.4s; cursor: pointer; font-family: 'Courier New', Courier, monospace;";
 
     this.message.style = "position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;"
+    this.explore.style = "position: absolute; top: 0; left: 16px; font-size: 10px;";
     this.divide.style = "margin: auto; width: 40%;";
     this.credits.style = "position: absolute; bottom: 0; left: 16px; font-size: 10px;"
     this.backgroundImage.style = "background-color: black; height: 100%; width: 100%; z-index: -1; opacity: 1; background-position: center; background-size: cover; position: fixed; color: white; font-family: 'Courier New', Courier, monospace; font-size: 25px;"

@@ -9,8 +9,11 @@ import IMAGE2 from './10033_Penguin_v1_Diffuse2.jpg'
 import IMAGE3 from './10033_Penguin_v1_Diffuse3.jpg'
 import IMAGE4 from './10033_Penguin_v1_Diffuse4.jpg'
 
+
+// from https://free3d.com/3d-model/penguin-v2--128210.html
+// Credit: printable_models
 class Penguin extends Group {
-    constructor(parent, x, z, rotation) { //
+    constructor(parent, x, z, rotation) {
         // Call parent Group() constructor
         super();
         //used for user selecting direction
