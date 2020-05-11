@@ -1,7 +1,7 @@
 {
   "name": "knockout",
   "repository": "knockout",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "title": "Knockout",
   "description": "A 2-4 player game where the objective is to be the last player with at least one of your penguins remaining on the ice sheet. Players can launch their penguins each round to try and knock other penguins off the ice into the ocean.",
   "keywords": [
