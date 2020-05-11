@@ -639,13 +639,13 @@ performRoundEnding() {
 
 update(timeStamp, camera) {
   if (!this.gameOn) return; // return if game is over
-  //if (timeStamp < 8000) return;
+  if (timeStamp < 10000) return;
 
   // Initial camera sweep to showcase scene
   if (this.initial) {
-    if (timeStamp < 15000) {
-      camera.position.x = -500*Math.cos((timeStamp)/6000 - 0.93);
-      camera.position.z = 500*Math.sin((timeStamp)/6000 - 0.93);
+    if (timeStamp < 20000) {
+      camera.position.x = -500*Math.cos((timeStamp -10000)/4000 - 0.93);
+      camera.position.z = 500*Math.sin((timeStamp-10000)/4000 - 0.93);
       camera.position.y = 100;
     }
     else {
@@ -662,30 +662,30 @@ update(timeStamp, camera) {
   for (let count = 0; count < this.birds.length; count++) { // update location of birds
     if (count == 0) { // flamingo movement
       let oldLocation = new Vector2(this.birds[count].position.x, this.birds[count].position.z);
-      let newLocation = new Vector2(100*Math.cos(timeStamp/10000) + 40, 100*Math.sin(timeStamp/5000) + 10);
+      let newLocation = new Vector2(100*Math.cos((timeStamp-10000)/10000) + 40, 100*Math.sin((timeStamp-10000)/5000) + 10);
       let difference = oldLocation.clone().sub(newLocation);
       let ang = difference.angle();
       this.birds[count].rotation.y = -1 * (ang -  6 * Math.PI / 4);
-      this.birds[count].position.x = 100*Math.cos(timeStamp/10000) + 40;
-      this.birds[count].position.z = 100*Math.sin(timeStamp/5000) + 10 ;
+      this.birds[count].position.x = 100*Math.cos((timeStamp-10000)/10000) + 40;
+      this.birds[count].position.z = 100*Math.sin((timeStamp-10000)/5000) + 10 ;
     }
     if (count == 1) { // parrot movement
       let oldLocation = new Vector2(this.birds[count].position.x, this.birds[count].position.z);
-      let newLocation = new Vector2(-100*Math.sin(timeStamp/5000), -100*Math.cos(timeStamp/10000) + 60);
+      let newLocation = new Vector2(-100*Math.sin((timeStamp-10000)/5000), -100*Math.cos((timeStamp-10000)/10000) + 60);
       let difference = oldLocation.clone().sub(newLocation);
       let ang = difference.angle();
       this.birds[count].rotation.y = -1 * (ang -  6 * Math.PI / 4);
-      this.birds[count].position.x = -100*Math.sin(timeStamp/5000);
-      this.birds[count].position.z = -100*Math.cos(timeStamp/10000) + 60;
+      this.birds[count].position.x = -100*Math.sin((timeStamp-10000)/5000);
+      this.birds[count].position.z = -100*Math.cos((timeStamp-10000)/10000) + 60;
     }
     if (count == 2) { // stork movement
       let oldLocation = new Vector2(this.birds[count].position.x, this.birds[count].position.z);
-      let newLocation = new Vector2(-100*Math.cos(timeStamp/10000), 100*Math.sin(timeStamp/5000));
+      let newLocation = new Vector2(-100*Math.cos((timeStamp-10000)/10000), 100*Math.sin((timeStamp-10000)/5000));
       let difference = oldLocation.clone().sub(newLocation);
       let ang = difference.angle();
       this.birds[count].rotation.y = -1 * (ang -  6 * Math.PI / 4);
-      this.birds[count].position.x = -100*Math.cos(timeStamp/10000);
-      this.birds[count].position.z = 100*Math.sin(timeStamp/5000);
+      this.birds[count].position.x = -100*Math.cos((timeStamp-10000)/10000);
+      this.birds[count].position.z = 100*Math.sin((timeStamp-10000)/5000);
     }
   }
   for (let m of this.mixers) m.update( delta ); // update animation of birds
@@ -705,7 +705,7 @@ update(timeStamp, camera) {
   if (jumpFactor > 80) {
     jumpFactor = 80;
   }
-  let newHeight = -1 * jumpFactor * Math.cos((timeStamp) / 5000) + -60;
+  let newHeight = -1 * jumpFactor * Math.cos(((timeStamp-10000)) / 5000) + -60;
   this.mosasaur.position.y = newHeight;
 
 
