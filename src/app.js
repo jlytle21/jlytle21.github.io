@@ -123,9 +123,8 @@ function createScene(numPlayers) {
     camera = new PerspectiveCamera(); // create camera
     scene = new SeedScene(numPlayers, camera); // create scene
     renderer = new WebGLRenderer({ antialias: true }); // create renderer
-    setTimeout(()=> { // start game after timeout
-      startGame();
-    }, 6000);
+    startGame();
+
 }
 
 // determine which button was clicked -- how many players to initialize game with
