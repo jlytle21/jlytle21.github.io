@@ -530,7 +530,7 @@ performRound(camera) { // returns false if game is over
   if (this.sendMessage == false) {
     this.isPopup = true;
     let turnHeader = "Player " + this.selectionPlayer + "'s Turn!";
-    let turnMessage = "Use the arrow keys to adjust the arrow. Click Enter to move to next Penguin! Press Enter or Click anywhere to begin your turn! Use the '1' button to correct the camera view.";
+    let turnMessage = "Use the arrow keys to adjust the arrow. Click Enter to move to next Penguin! Press Enter or Click anywhere to begin your turn!";
     this.popup.update(turnHeader, turnMessage);
     this.drawArrow(this.lastPosition);
     this.sendMessage = true;
