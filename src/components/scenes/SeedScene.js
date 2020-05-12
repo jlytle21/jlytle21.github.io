@@ -358,6 +358,7 @@ class SeedScene extends Scene {
       }
     }
   }
+
   onMouseClick(event) {
     // Removes popup when user clicks enter
     if (event.type == "click" && this.isPopup && this.gameOn) {
@@ -372,41 +373,6 @@ class SeedScene extends Scene {
       location.reload();
       return;
     }
-    /*
-    console.log("===========");
-    console.log(this.selectionOver);
-    console.log("-------------");
-    if (this.selectionOver == false) {
-    let translatex = window.innerWidth / 2;
-    let translatey = window.innerHeight / 2;
-    let x = event.screenX - translatex;
-    let y = event.screenY - translatey;
-    let currentClick = new Vector3(x, 0.35, y);
-    let counter = 0;
-    let currPenguin;
-    for (let p of this.penguinsArray) {
-    if (p.player == this.selectionPlayer) {
-    counter++;
-    if (counter == this.selectionPenguin) {
-    currPenguin = p;
-    break;
-  }
-}
-}
-console.log(currPenguin.coordinates);
-console.log(event.screenX + ", " + event.screenY);
-console.log(currentClick);
-let penguinPos = currPenguin.coordinates;
-let direction = currentClick.clone().sub(penguinPos).normalize();
-var color = 0xFF0000;
-var arrow = new ArrowHelper(direction, penguinPos, penguinPos.distanceTo(currentClick), color);
-console.log(arrow);
-if (currPenguin.arrow != null) {
-this.remove(currPenguin.arrow);
-}
-this.add(arrow);
-currPenguin.arrow = arrow;
-} */
 }
 
 handleImpactEvents(event) {
@@ -429,17 +395,20 @@ handleImpactEvents(event) {
   if (event.key == "Enter" && this.selectionOver == false && !this.isPopup) {
     let oldSelection = this.selectionPlayer;
     this.lastPosition = new Vector3(0, .35, 0);
+    // If there is another penguin left for the user to input an arrow, go to next penguin
     if (this.selectionPenguin + 1 <= this.remaining[this.selectionPlayer]) {
       this.selectionPenguin = this.selectionPenguin + 1;
       this.drawArrow(this.lastPosition);
       return;
     }
+    // if all penguins are selected, and all players have selected penguins, shoot off the penguins
     if (this.selectionPlayer + 1 > this.numPlayers) {
       this.selectionOver = true;
       this.deleteArrow(oldSelection);
       this.performRoundEnding();
       return;
     } else {
+      // Find next player to place penguins
       for (let i = this.selectionPlayer + 1; i <= this.numPlayers; i++) {
         if (this.remaining[i] > 0) {
           this.deleteArrow(oldSelection);
@@ -449,6 +418,7 @@ handleImpactEvents(event) {
           break;
         }
       }
+      // If there are no more players to select, shoot off the penguins
       if (oldSelection == this.selectionPlayer) {
         this.selectionOver = true;
         this.deleteArrow(oldSelection);
@@ -457,6 +427,7 @@ handleImpactEvents(event) {
     }
   } else if (this.selectionOver == false) {
     let difference;
+    // Determine the arrow to change
     if (event.key == "ArrowUp") {
       difference = new Vector3(0, 0, -1);
     } else if (event.key == "ArrowDown") {
@@ -475,6 +446,7 @@ handleImpactEvents(event) {
 }
 
 deleteArrow(playerId) {
+  // Deletes all the arrows for the current player
   for (let p of this.penguinsArray) {
     if (p.player == playerId) {
       this.remove(p.arrow);
@@ -483,9 +455,11 @@ deleteArrow(playerId) {
   }
 }
 
+// Method for drawing a arrow given the position
 drawArrow(currentClick) {
   let counter = 0;
   let currPenguin;
+  // for loop finds the penguin that is the current penguin
   for (let p of this.penguinsArray) {
     if (p.player == this.selectionPlayer) {
       counter++;
@@ -497,6 +471,7 @@ drawArrow(currentClick) {
   }
   let penguinPos = currPenguin.coordinates;
   let direction = currentClick.clone().sub(penguinPos).normalize();
+  // colors correspond to the penguin that is currently selecting their arrows
   let colorArray = [];
   colorArray[1] = 0x808080;
   colorArray[2] = 0xFF4500;
@@ -506,9 +481,11 @@ drawArrow(currentClick) {
   let arrow = new ArrowHelper(direction, penguinPos, length, colorArray[this.selectionPlayer]);
   let newForce = direction.clone().multiplyScalar(length * 2.0);
   currPenguin.nextVelocity = newForce;
+  // If there is already an arrow for this penguin, remove the current one before adding a new one.
   if (currPenguin.arrow != null) {
     this.remove(currPenguin.arrow);
   }
+  // Add the arrow using the Arrowhelper
   this.add(arrow);
   currPenguin.arrow = arrow;
 }
@@ -549,7 +526,7 @@ arePenguinsStill() {
 // Function that performs a single round of the game
 performRound(camera) { // returns false if game is over
 
-  // Presents player with messaeg that it is their turn and gives directions
+  // Presents player with message that it is their turn and gives directions
   if (this.sendMessage == false) {
     this.isPopup = true;
     let turnHeader = "Player " + this.selectionPlayer + "'s Turn!";
@@ -612,7 +589,7 @@ performRound(camera) { // returns false if game is over
     }
 
 
-    // Iterates through penguin selection
+    // Iterates through penguin selection to find the first player with penguins remaining
     for (let i = 1; i <= this.numPlayers; i++) {
       if (this.remaining[i] == 0) continue;
       this.selectionPlayer = i;
