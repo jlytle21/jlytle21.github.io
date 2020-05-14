@@ -157,15 +157,15 @@ document.getElementById("four").addEventListener("mousedown", function() {
   welcomeMessage.remove();
 });
 window.addEventListener("keydown", (e) => { // can also click number button
-  if (event.key == "2") {
+  if (event.key == "2" && scene == undefined) {
     createScene(2);
     welcomeMessage.remove();
   }
-  if (event.key == "3") {
+  if (event.key == "3" && scene == undefined) {
     createScene(3);
     welcomeMessage.remove();
   }
-  if (event.key == "4") {
+  if (event.key == "4" && scene == undefined) {
     createScene(4);
     welcomeMessage.remove();
   }
